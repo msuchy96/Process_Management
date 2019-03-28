@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Job</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Jobs</value>
+    </caseValues>
+    <fields>
+        <label><!-- Assigned To --></label>
+        <name>Assigned_To__c</name>
+        <relationshipLabel><!-- Jobs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Due Date --></label>
+        <name>Due_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Next Job --></label>
+        <name>Next_Job__c</name>
+        <relationshipLabel><!-- Previous Jobs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Order In Stream --></label>
+        <name>Number__c</name>
+    </fields>
+    <fields>
+        <label><!-- Second Next Job --></label>
+        <name>Second_Next_Job__c</name>
+        <relationshipLabel><!-- Jobs (Second Next Job) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- Stream --></label>
+        <name>Stream__c</name>
+        <relationshipLabel><!-- Jobs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Time Planned (h) --></label>
+        <name>Time_Planned__c</name>
+    </fields>
+    <fields>
+        <label><!-- Time Spent (h) --></label>
+        <name>Time_Spent__c</name>
+    </fields>
+    <recordTypes>
+        <label><!-- Fork --></label>
+        <name>Fork</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- Fork Template --></label>
+        <name>Fork_Template</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- Standard --></label>
+        <name>Standard</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- Standard Template --></label>
+        <name>Standard_Template</name>
+    </recordTypes>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- You can&apos;t step to &apos;DONE&apos; if there is no time logged. --></errorMessage>
+        <name>Cant_change_to_Done_if_time_isnt_logged</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You can&apos;t log time if task is not in &apos;IN PROGRESS&apos; Status. --></errorMessage>
+        <name>Cant_log_time_for_ToDo_Jobs</name>
+    </validationRules>
+    <workflowTasks>
+        <name>tasktest</name>
+        <subject><!-- tasktest --></subject>
+    </workflowTasks>
+</CustomObjectTranslation>

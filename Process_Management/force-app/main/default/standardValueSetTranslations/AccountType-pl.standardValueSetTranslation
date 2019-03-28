@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>Company</masterLabel>
+        <translation><!-- Company --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Department</masterLabel>
+        <translation><!-- Department --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Other</masterLabel>
+        <translation><!-- Other --></translation>
+    </valueTranslation>
+</StandardValueSetTranslation>
