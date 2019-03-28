@@ -1,4 +1,4 @@
-public with sharing class    {
+public with sharing class TriggerHandler{
 
     public interface Delegate {
         void prepareBefore();
