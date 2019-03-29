@@ -7,7 +7,7 @@ public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
     }
 
     public override void afterInsert(Map<Id, SObject> newObjectsMap) {
-        Map<Id, Account> newJobsMap = (Map<Id, Account>)newObjectsMap;
+        Map<Id, Job__c> newJobsMap = (Map<Id, Job__c>)newObjectsMap;
         for (Id key : newJobsMap.keySet()) {
             Job__c newJob = newJobsMap.get(key);
 

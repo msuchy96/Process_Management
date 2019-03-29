@@ -1,5 +1,5 @@
 public without sharing class TimeReportManager {
-    public static createTimeReports(Map<Job__c, Decimal> jobsWithTimeReported) {
+    public static void createTimeReports(Map<Job__c, Decimal> jobsWithTimeReported) {
         List<Time_Report__c> timeReportToInsert = new List<Time_Report__c>();
         for(Job__c job : jobsWithTimeReported.keySet()) {
             timeReportToInsert.add(
