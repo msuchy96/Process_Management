@@ -75,6 +75,18 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Job_Reporter_Date_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>Job__c + Reporter__c + TEXT(Date__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Job Reporter Date Id</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Job__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
@@ -122,6 +134,16 @@
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
+    <listViews>
+        <fullName>Time_Reports_View</fullName>
+        <columns>NAME</columns>
+        <columns>Date__c</columns>
+        <columns>Job__c</columns>
+        <columns>Reporter__c</columns>
+        <columns>Time_Reported__c</columns>
+        <filterScope>Mine</filterScope>
+        <label>Time Reports View</label>
+    </listViews>
     <nameField>
         <displayFormat>TR# {0}-{DD}{MM}{YY}</displayFormat>
         <label>Time Report Name</label>
@@ -131,5 +153,11 @@
     <pluralLabel>Time Reports</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Cant_log_below_zero</fullName>
+        <active>true</active>
+        <errorConditionFormula>Time_Reported__c &lt; 0</errorConditionFormula>
+        <errorMessage>You can not report time below zero!</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
