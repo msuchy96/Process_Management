@@ -35,7 +35,7 @@ export default class ThirdPartyLibraryDemo extends LightningElement {
         
     }
 
-    showSuccessMessage(msg) { // call back method 
+    showSuccessMessage() { // call back method 
         this.successMessage = 'Scripts are loaded successfully!!';
     }
 }
