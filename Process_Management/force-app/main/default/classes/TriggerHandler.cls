@@ -37,7 +37,6 @@ public with sharing class TriggerHandler{
     public static void execute(Delegate d) {
         if (Trigger.isBefore) {
             d.prepareBefore();
-
             if (Trigger.isInsert) {
                 d.beforeInsert(Trigger.new);
             } else if (Trigger.isUpdate) {
@@ -53,8 +52,7 @@ public with sharing class TriggerHandler{
                 d.afterUpdate(Trigger.oldMap, Trigger.newMap);
             } else if (Trigger.isDelete) {
                 d.afterDelete(Trigger.oldMap);
-            }
-            else if (Trigger.isUndelete) {
+            } else if (Trigger.isUndelete) {
                 d.afterUndelete(Trigger.newMap);
             }
         }
