@@ -23,10 +23,6 @@
         <relationshipLabel><!-- Previous Jobs --></relationshipLabel>
     </fields>
     <fields>
-        <label><!-- Order In Stream --></label>
-        <name>Number__c</name>
-    </fields>
-    <fields>
         <label><!-- Second Next Job --></label>
         <name>Second_Next_Job__c</name>
         <relationshipLabel><!-- Jobs (Second Next Job) --></relationshipLabel>
@@ -72,6 +68,10 @@
     <validationRules>
         <errorMessage><!-- You can&apos;t log time if task is not in &apos;IN PROGRESS&apos; Status. --></errorMessage>
         <name>Cant_log_time_for_ToDo_Jobs</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Can not report time below zero. --></errorMessage>
+        <name>Cant_report_time_below_zero</name>
     </validationRules>
     <workflowTasks>
         <name>tasktest</name>
