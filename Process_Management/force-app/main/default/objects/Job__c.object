@@ -175,6 +175,7 @@
     </fields>
     <fields>
         <fullName>Time_Spent__c</fullName>
+        <defaultValue>0</defaultValue>
         <externalId>false</externalId>
         <label>Time Spent (h)</label>
         <precision>18</precision>
