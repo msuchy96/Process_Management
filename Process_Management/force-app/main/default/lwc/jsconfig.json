@@ -2,11 +2,7 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         "baseUrl": ".",
-        "paths": {
-            "c/libraryTest": [
-                "libraryTest/libraryTest.js"
-            ]
-        }
+        "paths": {}
     },
     "include": [
         "**/*",
