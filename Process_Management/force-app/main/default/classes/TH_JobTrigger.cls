@@ -29,7 +29,7 @@ public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
     private void checkReportedTimeChanges(Job__c oldJob, Job__c newJob) {
         if(
             newJob.Assigned_To__c != null
-            && ((oldJob != null && oldJob.Time_Spent__c < newJob.Time_Spent__c)                    //afterUpdate
+            && ((oldJob != null && oldJob.Time_Spent__c != newJob.Time_Spent__c)                    //afterUpdate
                 || (oldJob == null && newJob.Time_Spent__c != null && newJob.Time_Spent__c != 0)   //afterInsert
             )
         ) {
