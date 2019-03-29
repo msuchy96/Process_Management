@@ -111,17 +111,6 @@
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Number__c</fullName>
-        <externalId>false</externalId>
-        <label>Order In Stream</label>
-        <length>255</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Second_Next_Job__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -163,6 +152,7 @@
     </fields>
     <fields>
         <fullName>Time_Planned__c</fullName>
+        <defaultValue>0</defaultValue>
         <externalId>false</externalId>
         <label>Time Planned (h)</label>
         <precision>18</precision>
@@ -175,6 +165,7 @@
     </fields>
     <fields>
         <fullName>Time_Spent__c</fullName>
+        <defaultValue>0</defaultValue>
         <externalId>false</externalId>
         <label>Time Spent (h)</label>
         <precision>18</precision>
@@ -297,14 +288,35 @@
     <validationRules>
         <fullName>Cant_log_time_for_ToDo_Jobs</fullName>
         <active>true</active>
-        <errorConditionFormula>AND(
-				ISPICKVAL(
-				    Status__c,
-								&apos;TO DO&apos;),
-				Time_Spent__c &lt;&gt; 0
+        <errorConditionFormula>OR(
+  AND(
+   NOT(ISCHANGED(Status__c)),
+   ISCHANGED(Time_Spent__c),
+   NOT(ISPICKVAL(Status__c, &apos;IN PROGRESS&apos;))
+  ),
+  AND(
+   ISCHANGED(Status__c),
+   ISCHANGED(Time_Spent__c),
+   OR(
+     NOT(ISPICKVAL(PRIORVALUE(Status__c), &apos;IN PROGRESS&apos;)),
+     ISPICKVAL(Status__c, &apos;TO DO&apos;)
+   )
+  ),
+  AND(
+   ISNEW(),
+   Time_Spent__c &lt;&gt; 0,
+   ISPICKVAL(Status__c, &apos;TO DO&apos;)
+  )
 )</errorConditionFormula>
         <errorDisplayField>Time_Spent__c</errorDisplayField>
         <errorMessage>You can&apos;t log time if task is not in &apos;IN PROGRESS&apos; Status.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Cant_report_time_below_zero</fullName>
+        <active>true</active>
+        <errorConditionFormula>Time_Spent__c &lt; 0</errorConditionFormula>
+        <errorDisplayField>Time_Spent__c</errorDisplayField>
+        <errorMessage>Can not report time below zero.</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
 </CustomObject>

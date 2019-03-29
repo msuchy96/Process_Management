@@ -13,6 +13,10 @@
         <name>Date__c</name>
     </fields>
     <fields>
+        <label><!-- Job Reporter Date Id --></label>
+        <name>Job_Reporter_Date_Id__c</name>
+    </fields>
+    <fields>
         <label><!-- Job --></label>
         <name>Job__c</name>
         <relationshipLabel><!-- Time Reports --></relationshipLabel>
@@ -27,4 +31,8 @@
         <name>Time_Reported__c</name>
     </fields>
     <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- You can not report time below zero! --></errorMessage>
+        <name>Cant_log_below_zero</name>
+    </validationRules>
 </CustomObjectTranslation>

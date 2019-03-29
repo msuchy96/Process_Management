@@ -40,20 +40,19 @@ public with sharing class TriggerHandler{
             if (Trigger.isInsert) {
                 d.beforeInsert(Trigger.new);
             } else if (Trigger.isUpdate) {
-                    d.beforeUpdate(Trigger.oldMap, Trigger.newMap);
+                d.beforeUpdate(Trigger.oldMap, Trigger.newMap);
             } else if (Trigger.isDelete) {
-                    d.beforeDelete(Trigger.oldMap);
+                d.beforeDelete(Trigger.oldMap);
             }
         } else {
             d.prepareAfter();
             if (Trigger.isInsert) {
-                 d.afterInsert(Trigger.newMap);
+                d.afterInsert(Trigger.newMap);
             } else if (Trigger.isUpdate) {
                 d.afterUpdate(Trigger.oldMap, Trigger.newMap);
             } else if (Trigger.isDelete) {
                 d.afterDelete(Trigger.oldMap);
-            }
-            else if (Trigger.isUndelete) {
+            } else if (Trigger.isUndelete) {
                 d.afterUndelete(Trigger.newMap);
             }
         }
