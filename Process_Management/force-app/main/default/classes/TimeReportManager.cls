@@ -26,7 +26,7 @@ public without sharing class TimeReportManager {
             wrappedJobMap.get(timeReport.Job_Reporter_Date_Id__c).updateTR = true; 
         }
 
-        for(JobWrapper jobWrap : wrappedJobMap.values()) {                                                          // cretate new TR
+        for(JobWrapper jobWrap : wrappedJobMap.values()) {                         // cretate new TR
             if(!jobWrap.updateTR && jobsWithTimeReported.get(jobWrap.job) > 0) {
                 timeReportToUpsert.add(
                     new Time_Report__c(

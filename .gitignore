@@ -1,3 +1,5 @@
 !/Process_Management
 /Process_Management/*
 !/Process_Management/force-app
+*.lnk
+*jsconfig.json
