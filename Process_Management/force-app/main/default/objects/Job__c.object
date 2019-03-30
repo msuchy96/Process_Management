@@ -297,10 +297,7 @@
   AND(
    ISCHANGED(Status__c),
    ISCHANGED(Time_Spent__c),
-   OR(
-     NOT(ISPICKVAL(PRIORVALUE(Status__c), &apos;IN PROGRESS&apos;)),
-     ISPICKVAL(Status__c, &apos;TO DO&apos;)
-   )
+   ISPICKVAL(Status__c, &apos;TO DO&apos;)
   ),
   AND(
    ISNEW(),
