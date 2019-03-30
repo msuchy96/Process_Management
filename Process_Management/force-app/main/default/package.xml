@@ -84,6 +84,10 @@
     </types>
     <types>
         <members>*</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>*</members>
         <name>MatchingRules</name>
     </types>
     <types>
@@ -148,5 +152,5 @@
         <members>*</members>
         <name>WorkflowFieldUpdate</name>
     </types>
-    <version>43.0</version>
+    <version>45.0</version>
 </Package>
