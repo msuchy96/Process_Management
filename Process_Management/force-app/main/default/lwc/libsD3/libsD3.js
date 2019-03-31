@@ -22,11 +22,9 @@ export default class LibsD3 extends LightningElement {
             loadStyle(this, D3 + '/style.css')
         ])
             .then(() => {
-                console.log('@@MacSuc1');
                 this.initializeD3();
             })
             .catch(error => {
-                console.log('@@MacSuc2');
                 this.dispatchEvent(
                     new ShowToastEvent({
                         title: 'Error loading D3',
