@@ -1,10 +1,13 @@
+/* eslint-disable vars-on-top */
+/* global d3 */
 import { LightningElement } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { loadScript, loadStyle } from 'lightning/platformResourceLoader';
 import D3 from '@salesforce/resourceUrl/d3';
+import GraphCreator from './GraphCreator';
 
 export default class ProcessCreator extends LightningElement {
-    svgWidth = 400;
+    svgWidth = 1000;
     svgHeight = 400;
 
     d3Initialized = false;
@@ -33,38 +36,19 @@ export default class ProcessCreator extends LightningElement {
             });
     }
 
-    
-
+    // define graphcreator object 
     initializeCreator() {
-        
         const svg = d3.select(this.template.querySelector('svg.d3'));
-        const width = this.svgWidth;
-        const height = this.svgHeight;
-        const color = d3.scaleOrdinal(d3.schemeDark2);
-
-        var GraphCreator = function(svg, nodes, edges) {
-            var thisGraph = this;
-                thisGraph.idct = 0;
-
-                console.log('teeeeeeest');
-        }
-
-        var xLoc = width/2 - 25,
-        yLoc = 100;
-        
-        // initial node data
-        var nodes = [{title: "new concept", id: 0, x: xLoc, y: yLoc},
-                        {title: "new concept", id: 1, x: xLoc, y: yLoc + 200}];
-
-        var edges = [{source: nodes[1], target: nodes[0]}];
-
-        var graph = new GraphCreator(svg, nodes, edges);
-       // graph.setIdCt(2);
+      
+        var graph = new GraphCreator(svg, d3);
+        //graph.setIdCt(2);
         //graph.updateGraph();
     }
 
+
     
     
+
 
 
        
