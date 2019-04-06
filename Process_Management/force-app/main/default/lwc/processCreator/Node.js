@@ -1,7 +1,10 @@
-function Node(x, y) {
-    console.log('Node1: ' + x + ' ' + y);
-    this.x_pos = x;
-    this.y_pos = y;
+class Node {
+    constructor(x, y, nodeId) {
+        console.log('new Node:  ' + x + ' ' + y);
+        this.x_pos = x;
+        this.y_pos = y;
+        this.nodeId = nodeId;
+    }
 }
 
 Node.prototype.consts =  {
