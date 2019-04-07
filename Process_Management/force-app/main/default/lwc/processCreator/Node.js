@@ -9,7 +9,7 @@ class Node {
 
 Node.prototype.consts =  {
     radius: 20,
-    color: "green"
+    color: "grey"
   };
 
 export default Node;

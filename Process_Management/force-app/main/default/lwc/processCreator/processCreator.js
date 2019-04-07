@@ -50,6 +50,7 @@ export default class ProcessCreator extends LightningElement {
 
         var nodes = [];
         var curGraph = new Graph(nodes);
+        var selectedNode = null;
 
         svg.on('click', function() {
             svg.selectAll("*").remove();
@@ -86,7 +87,36 @@ export default class ProcessCreator extends LightningElement {
 
         function onClick() {
             d3.event.stopPropagation();
-            console.log('circle clicked w/ ID: ' + d3.select(this).attr("id"));
+            var selectedID = d3.select(this).attr("id");
+            console.log('circle clicked w/ ID: ' + selectedID);
+
+            var clickedCircle = this;
+            svg.selectAll("circle").each(function() {
+                var currCircle = this;
+                d3.select(this).style("fill", function(d) {
+                    if(currCircle === clickedCircle) {
+                        curGraph.selectedNode = d;
+                        return "blue";
+                    } return "gray";
+                });
+            });
+
+            console.log('selected node:' + JSON.stringify(curGraph.selectedNode));
+
+            /*
+            curGraph.nodes.forEach(node => {
+                console.log('compare: .'  + node.nodeId + '.' + selectedID +'.');
+                console.log('compare result: '  + isNaN(node.nodeId) + ' ' + isNaN(selectedID));
+                if(node.noteId == selectedID) {
+                    console.log('picked nodee:'  + node);
+                    node.selected = true;
+                    selectedNode = node;
+                } else {
+                    console.log('not this node :'  + node);
+                    node.selected = false;
+                }
+            });
+            */
         }
         
         function dragstarted(d) {

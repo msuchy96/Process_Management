@@ -14,7 +14,7 @@ Graph.prototype.addNode = function(coords) {
     console.log('Graph.addNode');
     var node = new Node(coords[0], coords[1], this.numberOfNodes);
     this.nodes.push(node);
-    this.numberOfNodes++; 
+    this.numberOfNodes = this.numberOfNodes + 1;
     console.log('nodes list: ' + JSON.stringify(this.nodes));
 }
 
