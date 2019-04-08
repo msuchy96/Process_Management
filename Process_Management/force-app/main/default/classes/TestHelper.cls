@@ -16,31 +16,40 @@ global class TestHelper {
         for(Integer i = 0; i < count; i++) {
             String randomNumber = String.valueOf(createRandomNumber());
             Account entity = entityTemplate != null ? entityTemplate : new Account();
-            entity.Name = entity.Name != null ? entity.Name : TEST_CONST + CommonUtility.SOBJECT_NAME_ENTITY + randomNumber;
+            if(entity.Name == null) entity.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_ENTITY + randomNumber;
             result.add(entity);
         } 
         if(isInsert) insert result;
         return result;
     }
 
-    public static Contact createEmployee(Contact employeeTemplate, Boolean isInsert) {
-        return createEmployees(employeeTemplate, 1, isInsert)[0];
+    public static User createUser(User userTemplate, Boolean isInsert){
+        return createUsers(userTemplate, 1, isInsert)[0];
     }
+    global static List<User> createUsers(User userTemplate, Integer count, Boolean isInsert){
+        List<User> result = new List<User>();
 
-    public static List<Contact> createEmployees(Contact employeeTemplate, Integer count, Boolean isInsert) {
-        List<Contact> result = new List<Contact>();
         for(Integer i = 0; i < count; i++) {
             String randomNumber = String.valueOf(createRandomNumber());
-            Contact employee = employeeTemplate != null ? employeeTemplate : new Contact();
-            employee.FirstName = employee.FirstName != null ? employee.FirstName : TEST_CONST + CommonUtility.SOBJECT_NAME_EMPLOYEE;
-            employee.LastName = employee.LastName != null ? employee.LastName : randomNumber;
-            employee.AccountId = employee.AccountId != null ? employee.AccountId : createEntity(null, true).Id;
-            employee.Role__c = employee.Role__c != null ? employee.Role__c : CommonUtility.EMPLOYEE_ROLE_REGULAR;
-            result.add(employee);
+            User u = userTemplate == null ? new User() : userTemplate;
+            if(u.FirstName == null) u.FirstName = TEST_CONST + randomNumber;
+            if(u.Lastname == null) u.Lastname = TEST_CONST + randomNumber;
+            if(u.Email == null) u.Email = 'email-' + TEST_CONST + randomNumber + '@example.com';
+            if(u.Alias == null) { 
+                u.Alias = 'U-'+ randomNumber;
+            }
+            if(u.Username == null) u.Username = TEST_CONST + randomNumber + '@example.com';
+            if(u.LocaleSidKey == null) u.LocaleSidKey = 'en_US';
+            if(u.TimeZoneSidKey == null) u.TimeZoneSidKey = 'GMT';
+            if(u.ProfileID == null) u.ProfileID = CommonUtility.getAdminProfileId();
+            if(u.LanguageLocaleKey == null) u.LanguageLocaleKey = 'en_US';
+            if(u.EmailEncodingKey == null) u.EmailEncodingKey = 'UTF-8';
+            result.add(u);
         }
+
         if(isInsert) insert result;
         return result;
-    }
+    } 
 
     public static Stream__c createStream(Stream__c streamTemplate, Boolean isInsert) {
         return createStreams(streamTemplate, 1, isInsert)[0];
@@ -51,7 +60,7 @@ global class TestHelper {
         for(Integer i=0; i<count; i++) {
             String randomNumber = String.valueOf(createRandomNumber());
             Stream__c stream = streamTemplate != null ? streamTemplate : new Stream__c();
-            stream.Name = stream.Name != null ? stream.Name : TEST_CONST + CommonUtility.SOBJECT_NAME_STREAM + randomNumber;
+            if(stream.Name == null) stream.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_STREAM + randomNumber;
             result.add(stream);
         }
         if(isInsert) insert result;
@@ -67,10 +76,10 @@ global class TestHelper {
         for(Integer i=0; i<count; i++) {
             String randomNumber = String.valueOf(createRandomNumber());
             Job__c job = jobTemplate != null ? jobTemplate : new Job__c();
-            job.Name = job.Name != null ? job.Name : TEST_CONST + CommonUtility.SOBJECT_NAME_JOB + randomNumber;
-            job.Assigned_To__c = createEmployee(null, true).Id;
-            job.Status__c = job.Status__c != null ? job.Status__c : CommonUtility.JOB_STATUS_TODO;
-            job.Stream__c = job.Stream__c != null ? job.Stream__c : createStream(null, true).Id;
+            if(job.Name == null) job.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_JOB + randomNumber;
+            if(job.Assigned_To__c == null) job.Assigned_To__c = createUser(null, true).Id;
+            if(job.Status__c == null) job.Status__c = CommonUtility.JOB_STATUS_TODO;
+            if(job.Stream__c == null) job.Stream__c = createStream(null, true).Id;
             result.add(job);
         }
         if(isInsert) insert result;

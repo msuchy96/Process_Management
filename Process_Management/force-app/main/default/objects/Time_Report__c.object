@@ -49,7 +49,6 @@
     <compactLayouts>
         <fullName>Time_Report_Compact_Layout</fullName>
         <fields>Name</fields>
-        <fields>Reporter__c</fields>
         <fields>Job__c</fields>
         <fields>Date__c</fields>
         <fields>Time_Reported__c</fields>
@@ -101,13 +100,12 @@
     </fields>
     <fields>
         <fullName>Reporter__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Reporter</label>
-        <referenceTo>Contact</referenceTo>
-        <relationshipLabel>Time Reports</relationshipLabel>
+        <referenceTo>User</referenceTo>
         <relationshipName>Time_Reports</relationshipName>
-        <required>true</required>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -128,7 +126,6 @@
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>Reporter__c</columns>
         <columns>Job__c</columns>
         <columns>Time_Reported__c</columns>
         <filterScope>Everything</filterScope>
@@ -139,7 +136,6 @@
         <columns>NAME</columns>
         <columns>Date__c</columns>
         <columns>Job__c</columns>
-        <columns>Reporter__c</columns>
         <columns>Time_Reported__c</columns>
         <filterScope>Mine</filterScope>
         <label>Time Reports View</label>

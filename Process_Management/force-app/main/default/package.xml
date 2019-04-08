@@ -32,7 +32,6 @@
         <members>Account</members>
         <members>Activity</members>
         <members>Client__c</members>
-        <members>Contact</members>
         <members>Event</members>
         <members>Job__c</members>
         <members>Stream__c</members>
