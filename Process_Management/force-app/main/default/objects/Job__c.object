@@ -80,8 +80,7 @@
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Assigned To</label>
-        <referenceTo>Contact</referenceTo>
-        <relationshipLabel>Jobs</relationshipLabel>
+        <referenceTo>User</referenceTo>
         <relationshipName>Jobs</relationshipName>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -274,7 +273,7 @@
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
-        <fullName>Cant_change_to_Done_if_time_isnt_logged</fullName>
+        <fullName>JOB01_CantChangeToDoneIfTimeIsntLogged</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
 				ISPICKVAL(Status__c,
@@ -286,7 +285,14 @@
         <errorMessage>You can&apos;t step to &apos;DONE&apos; if there is no time logged.</errorMessage>
     </validationRules>
     <validationRules>
-        <fullName>Cant_log_time_for_ToDo_Jobs</fullName>
+        <fullName>JOB02_CantReportTimeBelowZero</fullName>
+        <active>true</active>
+        <errorConditionFormula>Time_Spent__c &lt; 0</errorConditionFormula>
+        <errorDisplayField>Time_Spent__c</errorDisplayField>
+        <errorMessage>Can not report time below zero.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>JOB03_CantLogTimeForToDoJobs</fullName>
         <active>true</active>
         <errorConditionFormula>OR(
   AND(
@@ -309,11 +315,13 @@
         <errorMessage>You can&apos;t log time if task is not in &apos;IN PROGRESS&apos; Status.</errorMessage>
     </validationRules>
     <validationRules>
-        <fullName>Cant_report_time_below_zero</fullName>
+        <fullName>JOB04_CantModifyIfNotOwner</fullName>
         <active>true</active>
-        <errorConditionFormula>Time_Spent__c &lt; 0</errorConditionFormula>
-        <errorDisplayField>Time_Spent__c</errorDisplayField>
-        <errorMessage>Can not report time below zero.</errorMessage>
+        <errorConditionFormula>AND(
+  $Profile.Name &lt;&gt; &quot;System Administrator&quot;,
+  Assigned_To__c &lt;&gt; $User.Id
+)</errorConditionFormula>
+        <errorMessage>You can&apos;t change Job which is not yours.</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
 </CustomObject>

@@ -60,6 +60,32 @@
     <enableFeeds>true</enableFeeds>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
+        <fullName>Allow_Email_Notification__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Allow Email Notification</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Allow_SMS_Notification__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Allow SMS Notification</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Earnings__c</fullName>
+        <externalId>false</externalId>
+        <label>Earnings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>ManagerId</fullName>
         <trackFeedHistory>true</trackFeedHistory>
         <type>Hierarchy</type>

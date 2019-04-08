@@ -63,15 +63,19 @@
     <startsWith>Consonant</startsWith>
     <validationRules>
         <errorMessage><!-- You can&apos;t step to &apos;DONE&apos; if there is no time logged. --></errorMessage>
-        <name>Cant_change_to_Done_if_time_isnt_logged</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage><!-- You can&apos;t log time if task is not in &apos;IN PROGRESS&apos; Status. --></errorMessage>
-        <name>Cant_log_time_for_ToDo_Jobs</name>
+        <name>JOB01_CantChangeToDoneIfTimeIsntLogged</name>
     </validationRules>
     <validationRules>
         <errorMessage><!-- Can not report time below zero. --></errorMessage>
-        <name>Cant_report_time_below_zero</name>
+        <name>JOB02_CantReportTimeBelowZero</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You can&apos;t log time if task is not in &apos;IN PROGRESS&apos; Status. --></errorMessage>
+        <name>JOB03_CantLogTimeForToDoJobs</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You can&apos;t change Job which is not yours. --></errorMessage>
+        <name>JOB04_CantModifyIfNotOwner</name>
     </validationRules>
     <workflowTasks>
         <name>tasktest</name>
