@@ -32,5 +32,4 @@ global without sharing class CommonUtility {
     global static Id getAdminProfileId() {
         return adminProfile != null ? adminProfile.Id : [SELECT Id FROM Profile WHERE Name = :PROFILE_SYSTEM_ADMINISTRATOR LIMIT 1].Id;
     }
-
 }
