@@ -12,20 +12,19 @@ public with sharing class ManageApprovalProcess {
                 Approval.ProcessSubmitRequest req = new Approval.ProcessSubmitRequest();
 				req.setObjectId(jobId);
 				req.setSubmitterId(jobToApprove.Assigned_To__c);
-				req.setProcessDefinitionNameOrId('ChangingDueDate');
+				req.setProcessDefinitionNameOrId(CommonUtility.APPROVAL_PROCESS_NAME_CHANGING_DUE_DATE);
 				Approval.ProcessResult result = Approval.process(req);
 
-                return new ResponseWrapper(true, 'Approval request has been sent to your Manager.');
+                return new ResponseWrapper(true, Label.APP_ApprovalSentManager);
             } catch (Exception e) {
                 return new ResponseWrapper(false, e.getMessage());
             }
             
         } else {
-            return new ResponseWrapper(false, 'Record has pending approval.');
+            return new ResponseWrapper(false, Label.APP_RecordPendingApp);
         }
 	}
 
-    
     public class ResponseWrapper {
         @AuraEnabled
 		public Boolean isSuccess {get; set;}

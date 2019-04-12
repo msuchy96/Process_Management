@@ -25,6 +25,9 @@ global without sharing class CommonUtility {
     //PROFILE NAMES
     global static final String PROFILE_SYSTEM_ADMINISTRATOR = 'System Administrator';
 
+    //APPROVAL PROCCESS
+    global static final String APPROVAL_PROCESS_NAME_CHANGING_DUE_DATE = 'ChangingDueDate';
+
     global static Profile adminProfile;
     global static Id getAdminProfileId() {
         return adminProfile != null ? adminProfile.Id : [SELECT Id FROM Profile WHERE Name = :PROFILE_SYSTEM_ADMINISTRATOR LIMIT 1].Id;
