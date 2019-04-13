@@ -44,7 +44,6 @@
         <members>Account-en_US</members>
         <members>Activity-en_US</members>
         <members>Client__c-en_US</members>
-        <members>Contact-en_US</members>
         <members>Event-en_US</members>
         <members>Job__c-en_US</members>
         <members>Task-en_US</members>
@@ -66,7 +65,6 @@
     </types>
     <types>
         <members>Account_Record_Page</members>
-        <members>Contact_Record_Page</members>
         <name>FlexiPage</name>
     </types>
     <types>
