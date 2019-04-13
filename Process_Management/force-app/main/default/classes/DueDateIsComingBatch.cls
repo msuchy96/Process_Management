@@ -18,8 +18,7 @@ public without sharing class DueDateIsComingBatch implements Schedulable, Databa
                 ' AND Time_Planned__c > 0' +
                 ' AND Time_Spent__c != null' +
                 ' AND Assigned_To__r.Allow_Email_Notification__c = true' +
-                ' AND Assigned_To__r.Email != null' +
-                ' AND Time_Planned__c > Time_Spent__c';
+                ' AND Assigned_To__r.Email != null';
 
         emailTemplate = [SELECT Id FROM EmailTemplate WHERE Name =: CommonUtility.EMAIL_NOTIFICATION_DUE_DATE_DEADLINE_TEMPLATE]; 
     }
@@ -32,22 +31,23 @@ public without sharing class DueDateIsComingBatch implements Schedulable, Databa
         List<Job__c> jobToUpdate = new List<Job__c>();
         List<Messaging.SingleEmailMessage> emailToSent = new List<Messaging.SingleEmailMessage>();
         for(Job__c job: scope) {
-            
-            String [] hoursAndMinutesRemain = String.valueOf(job.Time_Planned__c - job.Time_Spent__c).split('\\.');
-            Integer hoursRemain = Integer.valueOf(hoursAndMinutesRemain[0]);
-            Integer minutesRemain = Integer.valueOf(hoursAndMinutesRemain[1]);
+            if(job.Time_Planned__c > job.Time_Spent__c) {
+                String [] hoursAndMinutesRemain = String.valueOf(job.Time_Planned__c - job.Time_Spent__c).split('\\.');
+                Integer hoursRemain = Integer.valueOf(hoursAndMinutesRemain[0]);
+                Integer minutesRemain = Integer.valueOf(hoursAndMinutesRemain[1]);
 
-            if(DateTime.now().addHours(hoursRemain).addMinutes(minutesRemain) > job.Due_Date__c) {
-                Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage(); 
-                mail.setTargetObjectId(job.Assigned_To__c); 
-                mail.setSenderDisplayName(CommonUtility.EMAIL_NOTIFICATION_SALESFORCE_SENDER); 
-                mail.setSaveAsActivity(true); 
-                mail.setWhatId(job.Id);
-                mail.setTemplateId(emailTemplate.id); 
-                emailToSent.add(mail);
-                job.Reminder_Sent__c = true;
-                jobToUpdate.add(job);
-            } 
+                if(DateTime.now().addHours(hoursRemain).addMinutes(minutesRemain) > job.Due_Date__c) {
+                    Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage(); 
+                    mail.setTargetObjectId(job.Assigned_To__c); 
+                    mail.setSenderDisplayName(CommonUtility.EMAIL_NOTIFICATION_SALESFORCE_SENDER); 
+                    mail.setSaveAsActivity(true); 
+                    mail.setWhatId(job.Id);
+                    mail.setTemplateId(emailTemplate.id); 
+                    emailToSent.add(mail);
+                    job.Reminder_Sent__c = true;
+                    jobToUpdate.add(job);
+                } 
+            }
         }
 
         Messaging.SendEmailResult [] r = Messaging.sendEmail(emailToSent);
