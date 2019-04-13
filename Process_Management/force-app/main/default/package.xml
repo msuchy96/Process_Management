@@ -60,7 +60,8 @@
         <name>DuplicateRule</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Notification</members>
+        <members>Notification/DueDateDeadline</members>
         <name>EmailTemplate</name>
     </types>
     <types>
