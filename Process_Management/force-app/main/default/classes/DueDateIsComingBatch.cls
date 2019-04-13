@@ -21,7 +21,7 @@ public without sharing class DueDateIsComingBatch implements Schedulable, Databa
                 ' AND Assigned_To__r.Email != null' +
                 ' AND Time_Planned__c > Time_Spent__c';
 
-        emailTemplate = [SELECT Id FROM EmailTemplate WHERE Name=: 'SFDC TEST']; 
+        emailTemplate = [SELECT Id FROM EmailTemplate WHERE Name =: CommonUtility.EMAIL_NOTIFICATION_DUE_DATE_DEADLINE_TEMPLATE]; 
     }
 
     public Database.QueryLocator start(Database.BatchableContext BC) {

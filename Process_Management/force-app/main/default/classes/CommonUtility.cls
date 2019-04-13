@@ -28,8 +28,9 @@ global without sharing class CommonUtility {
     //APPROVAL PROCCESS
     global static final String APPROVAL_PROCESS_NAME_CHANGING_DUE_DATE = 'ChangingDueDate';
 
-    //NOTIFICATION EMAIK
+    //NOTIFICATION EMAIL
     global static final String EMAIL_NOTIFICATION_SALESFORCE_SENDER = 'Salesforce Notification';
+    global static final String EMAIL_NOTIFICATION_DUE_DATE_DEADLINE_TEMPLATE = 'DueDateDeadline';
 
     global static Profile adminProfile;
     global static Id getAdminProfileId() {
