@@ -92,6 +92,11 @@
         <name>PermissionSet</name>
     </types>
     <types>
+        <members>Process Management Employee</members>
+        <members>Process Management Manager</members>
+        <name>Profile</name>
+    </types>
+    <types>
         <members>*</members>
         <name>QuickAction</name>
     </types>

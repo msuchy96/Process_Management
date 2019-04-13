@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <label><!-- APP_ApprovalSentManager --></label>
+        <name>APP_ApprovalSentManager</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- APP_RecordPendingApp --></label>
+        <name>APP_RecordPendingApp</name>
+    </customLabels>
     <quickActions>
         <label><!-- LogACall --></label>
         <name>LogACall</name>
