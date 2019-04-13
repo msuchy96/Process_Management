@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <alerts>
-        <fullName>NotificationDueDateEmail</fullName>
-        <description>Notification Email with Due Date approval request.</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Manager_Email__c</field>
-            <type>email</type>
-        </recipients>
-        <senderType>CurrentUser</senderType>
-        <template>ApprovalProcess/DueDateChangeReq</template>
-    </alerts>
     <fieldUpdates>
         <fullName>DueDateChange</fullName>
         <field>Due_Date__c</field>
@@ -34,15 +23,6 @@
         <name>DueDateToChangeClear</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Null</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>ManagerEmailUpdate</fullName>
-        <field>Manager_Email__c</field>
-        <formula>Assigned_To__r.Manager.Email</formula>
-        <name>ManagerEmailUpdate</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
         <protected>false</protected>
     </fieldUpdates>
     <tasks>
