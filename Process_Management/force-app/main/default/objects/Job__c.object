@@ -336,10 +336,32 @@
         <fullName>JOB04_CantModifyIfNotOwner</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
-  $Profile.Name &lt;&gt; &quot;System Administrator&quot;,
+  $Profile.Name = &quot;Process Management Employee&quot;,
   Assigned_To__c &lt;&gt; $User.Id
 )</errorConditionFormula>
-        <errorMessage>You can&apos;t change Job which is not yours.</errorMessage>
+        <errorMessage>You can&apos;t edit Job which is not yours.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>JOB05_CantChangeDueDate</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( 
+$Profile.Name = &quot;Process Management Employee&quot;, 
+NOT(ISNEW()),
+				ISCHANGED(Due_Date__c)
+)</errorConditionFormula>
+        <errorDisplayField>Due_Date__c</errorDisplayField>
+        <errorMessage>You can&apos;t change Due Date, submit Due Date change via manager approval.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>JOB06_TimeHasToBePlannedOnTODO</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ $Profile.Name &lt;&gt; &quot;System Administrator&quot;, 
+	ISCHANGED(Time_Planned__c),
+	ISPICKVAL(Status__c, &apos;TO DO&apos;)
+)</errorConditionFormula>
+        <errorDisplayField>Time_Planned__c</errorDisplayField>
+        <errorMessage>Time has to be planned on &apos;TO DO&apos; Status.</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
