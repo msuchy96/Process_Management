@@ -8,6 +8,10 @@
         <label><!-- APP_RecordPendingApp --></label>
         <name>APP_RecordPendingApp</name>
     </customLabels>
+    <customLabels>
+        <label><!-- Task_JobDeadlineDesc --></label>
+        <name>Task_JobDeadlineDesc</name>
+    </customLabels>
     <quickActions>
         <label><!-- LogACall --></label>
         <name>LogACall</name>

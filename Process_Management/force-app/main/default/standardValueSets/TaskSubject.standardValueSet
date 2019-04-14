@@ -12,18 +12,13 @@
         <label>Email</label>
     </standardValue>
     <standardValue>
-        <fullName>Send Letter</fullName>
-        <default>false</default>
-        <label>Send Letter</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Send Quote</fullName>
-        <default>false</default>
-        <label>Send Quote</label>
-    </standardValue>
-    <standardValue>
         <fullName>Other</fullName>
         <default>false</default>
         <label>Other</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Check if you can make it on time</fullName>
+        <default>false</default>
+        <label>Check if you can make it on time</label>
     </standardValue>
 </StandardValueSet>
