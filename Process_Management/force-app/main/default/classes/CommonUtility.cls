@@ -99,5 +99,4 @@ global without sharing class CommonUtility {
     global static string createKeyForRtMap(string objectName, string recTypeDevName) {
         return objectName.toUpperCase() + '.' + recTypeDevName.toUpperCase();
     }
-
 }
