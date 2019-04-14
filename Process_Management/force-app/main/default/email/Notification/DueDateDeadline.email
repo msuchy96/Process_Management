@@ -1,0 +1,9 @@
+Hello!
+
+You already spent  {!Job__c.Time_Spent__c} (h) of  {!Job__c.Time_Planned__c} (h) planned.
+There is a possibility that you couldn't end this task till this deadline {!Job__c.Due_Date__c}.
+
+If you are sure that you will not make it, please submit new due date for manager approval.
+
+Best regards,
+Salesforce Platform
