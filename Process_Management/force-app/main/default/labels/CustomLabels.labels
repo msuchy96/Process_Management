@@ -1,3 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata"/>
-
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>APP_ApprovalSentManager</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>APP_ApprovalSentManager</shortDescription>
+        <value>Approval request has been sent to your Manager.</value>
+    </labels>
+    <labels>
+        <fullName>APP_RecordPendingApp</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>APP_RecordPendingApp</shortDescription>
+        <value>Record has pending approval.</value>
+    </labels>
+    <labels>
+        <fullName>Task_JobDeadlineDesc</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Task_JobDeadlineDesc</shortDescription>
+        <value>There is not much time left to complete this Job! Please work on it or submit new due date for Manager approval.</value>
+    </labels>
+</CustomLabels>

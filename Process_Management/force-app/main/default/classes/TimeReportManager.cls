@@ -3,9 +3,10 @@ public without sharing class TimeReportManager {
         Map<String, JobWrapper> wrappedJobMap = new Map<String, JobWrapper>();
         List<Time_Report__c> timeReportToUpsert = new List<Time_Report__c>();
         List<Time_Report__c> timeReportToDelete = new List<Time_Report__c>();
-
+        Id userId = UserInfo.getUserId();
+        
         for(Job__c job : jobsWithTimeReported.keySet()) {
-            String externalId = String.valueOf(job.Id).substring(0, 15) + String.valueOf(job.Assigned_To__c).substring(0, 15) + String.valueOf(Date.today());
+            String externalId = String.valueOf(job.Id).substring(0, 15) + String.valueOf(userId).substring(0, 15) + String.valueOf(Date.today());
             JobWrapper wrappedJob = new JobWrapper(job, externalId);
             wrappedJobMap.put(wrappedJob.externalId, wrappedJob);
         }
@@ -31,7 +32,7 @@ public without sharing class TimeReportManager {
                 timeReportToUpsert.add(
                     new Time_Report__c(
                         Time_Reported__c = jobsWithTimeReported.get(jobWrap.job),
-                        Reporter__c = jobWrap.job.Assigned_To__c,
+                        Reporter__c = userId,
                         Job__c = jobWrap.job.Id,
                         Date__c = Date.today())
                 );

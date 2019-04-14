@@ -44,7 +44,6 @@
         <members>Account-en_US</members>
         <members>Activity-en_US</members>
         <members>Client__c-en_US</members>
-        <members>Contact-en_US</members>
         <members>Event-en_US</members>
         <members>Job__c-en_US</members>
         <members>Task-en_US</members>
@@ -61,12 +60,12 @@
         <name>DuplicateRule</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Notification</members>
+        <members>Notification/DueDateDeadline</members>
         <name>EmailTemplate</name>
     </types>
     <types>
         <members>Account_Record_Page</members>
-        <members>Contact_Record_Page</members>
         <name>FlexiPage</name>
     </types>
     <types>
@@ -92,6 +91,11 @@
     <types>
         <members>*</members>
         <name>PermissionSet</name>
+    </types>
+    <types>
+        <members>Process Management Employee</members>
+        <members>Process Management Manager</members>
+        <name>Profile</name>
     </types>
     <types>
         <members>*</members>
