@@ -82,8 +82,16 @@
         <name>JOB03_CantLogTimeForToDoJobs</name>
     </validationRules>
     <validationRules>
-        <errorMessage><!-- You can&apos;t change Job which is not yours. --></errorMessage>
+        <errorMessage><!-- You can&apos;t edit Job which is not yours. --></errorMessage>
         <name>JOB04_CantModifyIfNotOwner</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You can&apos;t change Due Date, submit Due Date change via manager approval. --></errorMessage>
+        <name>JOB05_CantChangeDueDate</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Time has to be planned on &apos;TO DO&apos; Status. --></errorMessage>
+        <name>JOB06_TimeHasToBePlannedOnTODO</name>
     </validationRules>
     <workflowTasks>
         <name>tasktest</name>
