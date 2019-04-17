@@ -50,7 +50,6 @@ export default class ProcessCreator extends LightningElement {
 
         var nodes = [];
         var curGraph = new Graph(nodes);
-        var selectedNode = null;
 
         svg.on('click', function() {
             svg.selectAll("*").remove();
@@ -60,7 +59,8 @@ export default class ProcessCreator extends LightningElement {
 
             svg.selectAll("circle")
                 .data(curGraph.nodes)
-                .enter().append("circle")
+                .enter()
+                .append("circle")
                 .attr("cx", function(d) {
                     return d.x_pos;
                 })
@@ -96,27 +96,16 @@ export default class ProcessCreator extends LightningElement {
                 d3.select(this).style("fill", function(d) {
                     if(currCircle === clickedCircle) {
                         curGraph.selectedNode = d;
+                        d.selected = true;
                         return "blue";
-                    } return "gray";
+                    } else {
+                        d.selected = false;
+                        return "gray";
+                    } 
                 });
             });
 
             console.log('selected node:' + JSON.stringify(curGraph.selectedNode));
-
-            /*
-            curGraph.nodes.forEach(node => {
-                console.log('compare: .'  + node.nodeId + '.' + selectedID +'.');
-                console.log('compare result: '  + isNaN(node.nodeId) + ' ' + isNaN(selectedID));
-                if(node.noteId == selectedID) {
-                    console.log('picked nodee:'  + node);
-                    node.selected = true;
-                    selectedNode = node;
-                } else {
-                    console.log('not this node :'  + node);
-                    node.selected = false;
-                }
-            });
-            */
         }
         
         function dragstarted(d) {
@@ -132,7 +121,7 @@ export default class ProcessCreator extends LightningElement {
 
         function dragended(d) {
             d3.select(this).classed("active", false);
-        }
+        }        
 
     }
 

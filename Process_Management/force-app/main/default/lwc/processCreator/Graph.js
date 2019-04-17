@@ -7,6 +7,7 @@ class Graph {
     constructor(nodes) {
         this.nodes = nodes;
         this.numberOfNodes = 0;
+        this.selectedNode = null;
     }
 }
 
