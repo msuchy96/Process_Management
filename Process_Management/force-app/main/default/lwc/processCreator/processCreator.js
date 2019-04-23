@@ -17,7 +17,7 @@ import Node from './Node';
 export default class ProcessCreator extends LightningElement {
     svgWidth = 1000;
     svgHeight = 400;
-
+    graph = null;
     d3Initialized = false;
 
     renderedCallback() {
@@ -49,7 +49,7 @@ export default class ProcessCreator extends LightningElement {
         const svg = d3.select(this.template.querySelector('svg.d3'));
 
         var nodes = [];
-        var curGraph = new Graph(nodes);
+        var curGraph = this.graph = new Graph(nodes);
 
         svg.on('click', function() {
             svg.selectAll("*").remove();
@@ -93,7 +93,8 @@ export default class ProcessCreator extends LightningElement {
             var clickedCircle = this;
             svg.selectAll("circle").each(function() {
                 var currCircle = this;
-                d3.select(this).style("fill", function(d) {
+                d3.select(this)
+                .style("fill", function(d) {
                     if(currCircle === clickedCircle) {
                         curGraph.selectedNode = d;
                         d.selected = true;
@@ -101,6 +102,15 @@ export default class ProcessCreator extends LightningElement {
                     } else {
                         d.selected = false;
                         return "gray";
+                    } 
+                })
+                .attr("class", function(d) {
+                    if(currCircle === clickedCircle) {
+                        console.log('this is selected');
+                        return "selected";
+                    } else {
+                        console.log('this is not selected');
+                        return "notSelected";
                     } 
                 });
             });
@@ -115,14 +125,25 @@ export default class ProcessCreator extends LightningElement {
         function dragged(d) {
             var x = Math.max(d.consts.radius, Math.min(1000-d.consts.radius, d3.event.x));
             var y = Math.max(d.consts.radius, Math.min(400-d.consts.radius, d3.event.y));
-            console.log('drag2.2' + JSON.stringify(d));
             d3.select(this).attr("cx", d.x_pos = x).attr("cy", d.y_pos = y);
         }
 
         function dragended(d) {
             d3.select(this).classed("active", false);
-        }        
-
+        }
+        
     }
+
+    deleteSelectedElement() {
+        const svg = d3.select(this.template.querySelector('svg.d3'));
+        this.graph.nodes = this.removeElement(this.graph.nodes, this.graph.selectedNode);
+        svg.selectAll(".selected").remove();
+    }
+
+    removeElement(array, element) {
+        return array.filter(el => el !== element);
+    }
+
+    
 
 }
