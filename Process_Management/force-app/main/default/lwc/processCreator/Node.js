@@ -4,7 +4,6 @@ class Node {
         this.x_pos = x;
         this.y_pos = y;
         this.nodeId = nodeId;
-        this.selected = false; 
     }
 }
 

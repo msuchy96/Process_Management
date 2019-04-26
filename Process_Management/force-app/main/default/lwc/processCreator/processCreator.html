@@ -1,7 +1,12 @@
 <template>
     <lightning-card title="GCreator" icon-name="custom:custom19">
-        <div class="slds-m-horizontal_x-large">
-            <lightning-button variant="brand" name="delete" label="Delete selected element" onclick={deleteSelectedElement}></lightning-button>
+        <div class="buttonGroup">
+            <div class="button">
+                <lightning-button variant="destructive" name="delete" label="Delete selected element" onclick={deleteSelectedElement}></lightning-button>
+            </div>
+            <div class="button">
+                <lightning-button variant={edgeModeVariant} name="addLink" label="Edge Mode" onclick={addingEdgeMode}></lightning-button>
+            </div>
         </div>
         <div class="slds-m-around_medium">
             <svg
