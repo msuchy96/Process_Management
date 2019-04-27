@@ -13,6 +13,7 @@ import {
 import D3 from '@salesforce/resourceUrl/d3';
 import Graph from './Graph';
 import Node from './Node';
+import Edge from './Edge';
 
 export default class ProcessCreator extends LightningElement {
     svgWidth = 1000;
@@ -28,9 +29,9 @@ export default class ProcessCreator extends LightningElement {
         this.d3Initialized = true;
 
         Promise.all([
-                loadScript(this, D3 + '/d3.v5.min.js'),
-                loadStyle(this, D3 + '/style.css')
-            ])
+            loadScript(this, D3 + '/d3.v5.min.js'),
+            loadStyle(this, D3 + '/style.css')
+        ])
             .then(() => {
                 this.initializeCreator();
             })
@@ -48,89 +49,89 @@ export default class ProcessCreator extends LightningElement {
     // define graphcreator object 
     initializeCreator() {
         const svg = d3.select(this.template.querySelector('svg.d3'));
-
         var nodes = [];
-        var curGraph = this.graph = new Graph(nodes);
+        var edges = [];
+        var curGraph = this.graph = new Graph(nodes, edges);
         var edgeMode = this.edgeMode;
-        console.log('edge mode: ' + this.edgeMode);
-        
-        svg.on('click', function() {
-            svg.selectAll("circle").remove();
-            console.log('edge mode status: ' + curGraph.edgeMode);
-            console.log('click!!');
 
+        svg.on('click', function () {
             if (!curGraph.edgeMode) {
-                console.log('edge mode status2: ' + curGraph.edgeMode);
                 var coords = d3.mouse(this);
                 curGraph.addNode(coords);
-            }              
-                
-            svg.selectAll("circle")
-                .data(curGraph.nodes)
-                .enter()
-                .append("circle")
-                .attr("cx", function(d) {
-                    return d.x_pos;
-                })
-                .attr("cy", function(d) {
-                    return d.y_pos;
-                })
-                .attr("r", function(d) {
-                    return d.consts.radius;
-                })
-                .attr("stroke", "black")
-                .attr("stroke-width", 1)
-                .attr("id", function(d) {
-                    return d.nodeId
-                })
-                .style("fill", function(d) {
-                    return d.consts.color;
-                })
-                .on("click", selectNode)
-                .call(d3.drag()
-                    .on("start", dragstarted)
-                    .on("drag", dragged)
-                    .on("end", dragended)
-                );
+            }
+            clearAndRedrawGraph();
         });
 
         function selectNode() {
+
             d3.event.stopPropagation();
             var selectedID = d3.select(this).attr("id");
-            console.log('circle clicked w/ ID: ' + selectedID);
-
             var clickedCircle = this;
-            svg.selectAll("circle").each(function() {
-                var currCircle = this;
-                d3.select(this)
-                .attr("class", function(d) {
-                    return currCircle === clickedCircle && !curGraph.edgeMode ? "selected" : "notSelected";
-                })
-                .style("fill", function(d) {        
-                    var color = '';
-                    if (currCircle === clickedCircle) {
-                        if(curGraph.edgeMode) {
-                            curGraph.startNodeForEdge = d;
-                            color = 'green';
-                        } else {
-                            curGraph.selectedElement = d;
-                            color = "blue";
-                        }
-                    } else {
-                        color = "gray";
-                    }
-                    return color;
-                });
-            });
 
-            if(curGraph.edgeMode) {
+            console.log('selected node with id: ' + JSON.stringify(clickedCircle));
+
+            if (curGraph.edgeMode) {
+                if (curGraph.startNodeForEdge == null) {
+                    firstNodeInEdgeModeSelection();
+                } else { // create edge
+                    createEdge(clickedCircle);
+                }
+            } else {
+                normalNodeSelection();
+            }
+
+            function normalNodeSelection() {
+                svg.selectAll("circle").each(function () {
+                    var currCircle = this;
+                    d3.select(this)
+                        .attr("class", function (d) {
+                            return currCircle === clickedCircle ? "selected" : "notSelected";
+                        })
+                        .style("fill", function (d) {
+                            var color = '';
+                            if (currCircle === clickedCircle) {
+                                curGraph.selectedElement = d;
+                                color = "blue";
+                            } else {
+                                color = "gray";
+                            }
+                            return color;
+                        });
+                });
+            }
+
+            function firstNodeInEdgeModeSelection() {
+                svg.selectAll("circle").each(function () {
+                    var currCircle = this;
+                    d3.select(this)
+                        .style("fill", function (d) {
+                            var color = '';
+                            if (currCircle === clickedCircle) {
+                                curGraph.startNodeForEdge = d;
+                                color = "green";
+                            } else {
+                                color = "gray";
+                            }
+                            return color;
+                        });
+                });
+
                 this.dispatchEvent(
                     new ShowToastEvent({
                         title: 'Build an enge!',
-                        message: 'Please select secont node to build edge.',
+                        message: 'Please select second node to build edge.',
                         variant: 'info'
                     })
                 );
+            }
+
+            function createEdge(clickedCircle) {
+                console.log('create Edge to the : ' + JSON.stringify(clickedCircle));
+                var secondSelectedCircle = null;
+                d3.select(clickedCircle).attr("class", function (d) { secondSelectedCircle = d; })
+                curGraph.addEdge(curGraph.startNodeForEdge, secondSelectedCircle)
+                clearAndRedrawGraph();
+                curGraph.startNodeForEdge = null;
             }
         }
 
@@ -140,7 +141,6 @@ export default class ProcessCreator extends LightningElement {
         }
 
         function dragged(d) {
-            
             var x = Math.max(d.consts.radius, Math.min(1000 - d.consts.radius, d3.event.x));
             var y = Math.max(d.consts.radius, Math.min(400 - d.consts.radius, d3.event.y));
             d3.select(this).attr("cx", d.x_pos = x).attr("cy", d.y_pos = y);
@@ -150,6 +150,64 @@ export default class ProcessCreator extends LightningElement {
             d3.select(this).classed("active", false);
         }
 
+        function clearAndRedrawGraph() {
+            svg.selectAll("circle").remove();
+            svg.selectAll("line").remove();
+            drawEdges();
+            drawNodes();
+        }
+
+        function drawEdges() {
+            svg.selectAll("line")
+                .data(curGraph.edges)
+                .enter()
+                .append("line")
+                .attr("x1", function (d) {
+                    return d.nodeStart.x_pos;
+                })
+                .attr("y1", function (d) {
+                    return d.nodeStart.y_pos;
+                })
+                .attr("x2", function (d) {
+                    return d.nodeEnd.x_pos;
+                })
+                .attr("y2", function (d) {
+                    return d.nodeEnd.y_pos;
+                })
+                .attr("stroke-width", 3)
+                .attr("stroke", "black")
+                .attr("marker-end", "url(#triangle)");
+        }
+
+        function drawNodes() {
+            svg.selectAll("circle")
+                .data(curGraph.nodes)
+                .enter()
+                .append("circle")
+                .attr("cx", function (d) {
+                    return d.x_pos;
+                })
+                .attr("cy", function (d) {
+                    return d.y_pos;
+                })
+                .attr("r", function (d) {
+                    return d.consts.radius;
+                })
+                .attr("stroke", "black")
+                .attr("stroke-width", 1)
+                .attr("id", function (d) {
+                    return d.nodeId
+                })
+                .style("fill", function (d) {
+                    return d.consts.color;
+                })
+                .on("click", selectNode)
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended)
+                );
+        }
     }
 
     deleteSelectedElement() {
@@ -170,23 +228,23 @@ export default class ProcessCreator extends LightningElement {
         this.graph.selectedElement = null;
         this.graph.startNodeForEdge = null;
         const svg = d3.select(this.template.querySelector('svg.d3'));
-        svg.selectAll(".selected").each(function() {
+        svg.selectAll(".selected").each(function () {
             d3.select(this)
-                .attr("class", function(d) {
+                .attr("class", function (d) {
                     return "notSelected";
                 });
         });
 
-        svg.selectAll("circle").each(function() {
+        svg.selectAll("circle").each(function () {
             d3.select(this)
-                .style("fill", function(d) {        
+                .style("fill", function (d) {
                     return "gray";
                 });
         });
 
-        
+
     }
 
 
-   
+
 }
