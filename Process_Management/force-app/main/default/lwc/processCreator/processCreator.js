@@ -52,28 +52,44 @@ export default class ProcessCreator extends LightningElement {
         var nodes = [];
         var edges = [];
         var curGraph = this.graph = new Graph(nodes, edges);
+        defineDefaults();
+        clickBehaviour();
 
-        svg.on('click', function () {
-            if (!curGraph.edgeMode) {
-                var coords = d3.mouse(this);
-                curGraph.addNode(coords);
-            }
-            clearAndRedrawGraph();
-        });
+        function clickBehaviour() {
+            svg.on('click', function () {
+                if (!curGraph.edgeMode) {
+                    var coords = d3.mouse(this);
+                    curGraph.addNode(coords);
+                }
+                clearAndRedrawGraph();
+            });
+        }
+
+        function defineDefaults() {
+            svg.append('defs').append('marker')
+            .attr("id", "marker")
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 23)
+            .attr("refY", 0)
+            .attr("markerWidth", 5)
+            .attr("markerHeight", 5)
+            .attr("orient", "auto")
+            .append('svg:path')
+            .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
+            .attr('fill', 'black')
+            .attr('stroke', 'black');
+        }
 
         function selectNode() {
-
             d3.event.stopPropagation();
             var selectedID = d3.select(this).attr("id");
             var clickedCircle = this;
-
             console.log('selected node with id: ' + JSON.stringify(clickedCircle));
-
             if (curGraph.edgeMode) {
                 if (curGraph.startNodeForEdge == null) {
                     firstNodeInEdgeModeSelection();
                 } else { // create edge
-                    createEdge(clickedCircle);
+                    createEdge();
                 }
             } else {
                 normalNodeSelection();
@@ -85,14 +101,14 @@ export default class ProcessCreator extends LightningElement {
                     d3.select(this)
                         .attr("class", function (d) {
                             var classStatus = "";
-                            if(currCircle === clickedCircle) {
+                            if (currCircle === clickedCircle) {
                                 classStatus = "selected";
                                 svg.selectAll("line").each(function () {
                                     d3.select(this)
-                                    .attr("class", function (edge) {
-                                        if(edge.nodeEnd === d || edge.nodeStart === d) return "selected";
-                                        return "notSelected";
-                                    });
+                                        .attr("class", function (edge) {
+                                            if (edge.nodeEnd === d || edge.nodeStart === d) return "selected";
+                                            return "notSelected";
+                                        });
                                 });
                             } else {
                                 classStatus = "notSelected";
@@ -137,18 +153,31 @@ export default class ProcessCreator extends LightningElement {
                 );
             }
 
-            function createEdge(clickedCircle) {
+            function createEdge() {
                 console.log('create Edge to the : ' + JSON.stringify(clickedCircle));
                 var secondSelectedCircle = null;
                 d3.select(clickedCircle).attr("class", function (d) { secondSelectedCircle = d; })
-                curGraph.addEdge(curGraph.startNodeForEdge, secondSelectedCircle)
-                clearAndRedrawGraph();
-                curGraph.startNodeForEdge = null;
+
+                //check if there is an edge between nodes
+                var nodeExist = false;
+                curGraph.edges.forEach(function (edge) {
+                    if(
+                        (edge.nodeStart === curGraph.startNodeForEdge 
+                            && edge.nodeEnd === secondSelectedCircle)
+                        || (edge.nodeStart === secondSelectedCircle 
+                            && edge.nodeEnd === curGraph.startNodeForEdge)
+                    ) nodeExist = true;
+                });
+
+                if(curGraph.startNodeForEdge !== secondSelectedCircle && !nodeExist) {
+                    curGraph.addEdge(curGraph.startNodeForEdge, secondSelectedCircle)
+                    clearAndRedrawGraph();
+                    curGraph.startNodeForEdge = null;
+                }  
             }
         }
 
-
-        function dragstarted(d) {
+        function dragstarted() {
             d3.select(this).raise().classed("active", true);
         }
 
@@ -162,26 +191,26 @@ export default class ProcessCreator extends LightningElement {
         function updateEdges(node, x, y) {
             svg.selectAll("line").each(function () {
                 d3.select(this)
-                .attr("x1", function (edge) {
-                    if(edge.nodeStart === node) return x;
-                    return edge.nodeStart.x_pos;
-                })
-                .attr("y1", function (edge) {
-                    if(edge.nodeStart === node) return y;
-                    return edge.nodeStart.y_pos;
-                })
-                .attr("x2", function (edge) {
-                    if(edge.nodeEnd === node) return x;
-                    return edge.nodeEnd.x_pos;
-                })
-                .attr("y2", function (edge) {
-                    if(edge.nodeEnd === node) return y;
-                    return edge.nodeEnd.y_pos;
-                });
+                    .attr("x1", function (edge) {
+                        if (edge.nodeStart === node) return x;
+                        return edge.nodeStart.x_pos;
+                    })
+                    .attr("y1", function (edge) {
+                        if (edge.nodeStart === node) return y;
+                        return edge.nodeStart.y_pos;
+                    })
+                    .attr("x2", function (edge) {
+                        if (edge.nodeEnd === node) return x;
+                        return edge.nodeEnd.x_pos;
+                    })
+                    .attr("y2", function (edge) {
+                        if (edge.nodeEnd === node) return y;
+                        return edge.nodeEnd.y_pos;
+                    });
             });
         }
 
-        function dragended(d) {
+        function dragended() {
             d3.select(this).classed("active", false);
         }
 
@@ -211,7 +240,7 @@ export default class ProcessCreator extends LightningElement {
                 })
                 .attr("stroke-width", 3)
                 .attr("stroke", "black")
-                .attr("marker-end", "url(#triangle)");
+                .attr('marker-end', 'url(#marker)');
         }
 
         function drawNodes() {
