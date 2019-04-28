@@ -52,7 +52,6 @@ export default class ProcessCreator extends LightningElement {
         var nodes = [];
         var edges = [];
         var curGraph = this.graph = new Graph(nodes, edges);
-        var edgeMode = this.edgeMode;
 
         svg.on('click', function () {
             if (!curGraph.edgeMode) {
@@ -85,7 +84,20 @@ export default class ProcessCreator extends LightningElement {
                     var currCircle = this;
                     d3.select(this)
                         .attr("class", function (d) {
-                            return currCircle === clickedCircle ? "selected" : "notSelected";
+                            var classStatus = "";
+                            if(currCircle === clickedCircle) {
+                                classStatus = "selected";
+                                svg.selectAll("line").each(function () {
+                                    d3.select(this)
+                                    .attr("class", function (edge) {
+                                        if(edge.nodeEnd === d || edge.nodeStart === d) return "selected";
+                                        return "notSelected";
+                                    });
+                                });
+                            } else {
+                                classStatus = "notSelected";
+                            }
+                            return classStatus;
                         })
                         .style("fill", function (d) {
                             var color = '';
@@ -144,6 +156,29 @@ export default class ProcessCreator extends LightningElement {
             var x = Math.max(d.consts.radius, Math.min(1000 - d.consts.radius, d3.event.x));
             var y = Math.max(d.consts.radius, Math.min(400 - d.consts.radius, d3.event.y));
             d3.select(this).attr("cx", d.x_pos = x).attr("cy", d.y_pos = y);
+            updateEdges(d, x, y);
+        }
+
+        function updateEdges(node, x, y) {
+            svg.selectAll("line").each(function () {
+                d3.select(this)
+                .attr("x1", function (edge) {
+                    if(edge.nodeStart === node) return x;
+                    return edge.nodeStart.x_pos;
+                })
+                .attr("y1", function (edge) {
+                    if(edge.nodeStart === node) return y;
+                    return edge.nodeStart.y_pos;
+                })
+                .attr("x2", function (edge) {
+                    if(edge.nodeEnd === node) return x;
+                    return edge.nodeEnd.x_pos;
+                })
+                .attr("y2", function (edge) {
+                    if(edge.nodeEnd === node) return y;
+                    return edge.nodeEnd.y_pos;
+                });
+            });
         }
 
         function dragended(d) {
@@ -212,6 +247,7 @@ export default class ProcessCreator extends LightningElement {
 
     deleteSelectedElement() {
         const svg = d3.select(this.template.querySelector('svg.d3'));
+        this.graph.edges = this.graph.edges.filter(el => (el.nodeStart !== this.graph.selectedElement && el.nodeEnd !== this.graph.selectedElement));
         this.graph.nodes = this.removeElement(this.graph.nodes, this.graph.selectedElement);
         this.graph.selectedElement = null;
         svg.selectAll(".selected").remove();
