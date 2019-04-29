@@ -12,6 +12,10 @@
         <label><!-- Task_JobDeadlineDesc --></label>
         <name>Task_JobDeadlineDesc</name>
     </customLabels>
+    <customTabs>
+        <label><!-- Stream Creator --></label>
+        <name>Stream_Creator</name>
+    </customTabs>
     <quickActions>
         <label><!-- LogACall --></label>
         <name>LogACall</name>

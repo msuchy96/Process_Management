@@ -36,4 +36,3 @@ public without sharing class ResetReminderSentBatch implements Schedulable, Data
 		Database.executeBatch(new ResetReminderSentBatch(), 200);
     }
 }
-

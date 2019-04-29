@@ -470,6 +470,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Stream_Creator</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Stream__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
