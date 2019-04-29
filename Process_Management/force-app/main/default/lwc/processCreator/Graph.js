@@ -26,10 +26,16 @@ Graph.prototype.addNode = function(coords) {
 
 Graph.prototype.addEdge = function(nodeStart, nodeEnd) {
     console.log('Graph.addEdge');
-    var edge = new Edge(nodeStart, nodeEnd, this.numberOfEdges);
-    this.edges.push(edge);
+    var createdEdge = new Edge(nodeStart, nodeEnd, this.numberOfEdges);
+    nodeStart.edgeAdded();
+    this.edges.push(createdEdge);
     this.numberOfEdges = this.numberOfEdges + 1;
     console.log('edge list: ' + JSON.stringify(this.edges));
+}
+
+Graph.prototype.clearTempParams = function() {
+    this.selectedElement = null;
+    this.startNodeForEdge = null;
 }
 
 
