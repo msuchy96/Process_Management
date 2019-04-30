@@ -10,7 +10,6 @@ class Graph {
         this.edges = edges;
         this.numberOfNodes = 0;
         this.numberOfEdges = 0;
-        this.selectedElement = null;
         this.startNodeForEdge = null;
         this.edgeMode = false;
     }
@@ -34,9 +33,7 @@ Graph.prototype.addEdge = function(nodeStart, nodeEnd) {
 }
 
 Graph.prototype.clearTempParams = function() {
-    this.selectedElement = null;
     this.startNodeForEdge = null;
 }
-
 
 export default Graph;

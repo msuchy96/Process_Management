@@ -82,9 +82,8 @@ export default class ProcessCreator extends LightningElement {
 
         function selectNode() {
             d3.event.stopPropagation();
-            var selectedID = d3.select(this).attr("id");
             var clickedCircle = this;
-            console.log('selected node with id: ' + JSON.stringify(clickedCircle));
+            console.log('selected node  ' + JSON.stringify(clickedCircle));
             if (curGraph.edgeMode) {
                 if (curGraph.startNodeForEdge == null) {
                     firstNodeInEdgeModeSelection();
@@ -96,36 +95,20 @@ export default class ProcessCreator extends LightningElement {
             }
 
             function normalNodeSelection() {
+                deselectAllEdges();
                 svg.selectAll("circle").each(function () {
                     var currCircle = this;
                     d3.select(this)
                         .attr("class", function (d) {
-                            var classStatus = "";
                             if (currCircle === clickedCircle) {
-                                classStatus = "selected";
-                                svg.selectAll("line").each(function () {
-                                    d3.select(this)
-                                        .attr("class", function (edge) {
-                                            if (edge.nodeEnd === d || edge.nodeStart === d) return "selected";
-                                            return "notSelected";
-                                        });
-                                });
+                                d.selected = true;
+                                selectEdgesConnectedToNode(d);
                             } else {
-                                classStatus = "notSelected";
+                                d.selected = false;
                             }
-                            return classStatus;
-                        })
-                        .style("fill", function (d) {
-                            var color = '';
-                            if (currCircle === clickedCircle) {
-                                curGraph.selectedElement = d;
-                                color = "blue";
-                            } else {
-                                color = "gray";
-                            }
-                            return color;
                         });
                 });
+                clearAndRedrawGraph();
             }
 
             function firstNodeInEdgeModeSelection() {
@@ -134,11 +117,11 @@ export default class ProcessCreator extends LightningElement {
                     d3.select(this)
                         .style("fill", function (d) {
                             var color = '';
-                            if (currCircle === clickedCircle) {
+                            if (currCircle === clickedCircle && d.edgeCounter !== 2) {
                                 curGraph.startNodeForEdge = d;
                                 color = "green";
                             } else {
-                                color = "gray";
+                                color = d.consts.color;
                             }
                             return color;
                         });
@@ -166,10 +149,30 @@ export default class ProcessCreator extends LightningElement {
                 if(curGraph.startNodeForEdge !== secondSelectedCircle && !nodeExist) {
                     if(curGraph.startNodeForEdge.edgeCounter !== 2) {
                         curGraph.addEdge(curGraph.startNodeForEdge, secondSelectedCircle);
+                        clearAndRedrawGraph();
                     }
-                } else {
-                    this.alert('msg');
                 }
+                
+            }
+        }
+
+        function selectEdge() {
+            d3.event.stopPropagation();
+            var clickedEdge = this;
+            console.log('selected edge  ' + JSON.stringify(clickedEdge));
+            if(!curGraph.edgeMode) {
+                svg.selectAll("line").each(function () {
+                    var currEdge = this;
+                    d3.select(this)
+                        .attr("class", function (d) {
+                            if (currEdge === clickedEdge) {
+                                d.selected = true;
+                            } else {
+                                d.selected = false;
+                            }
+                        });
+                });
+                deselectAllNodes();
                 clearAndRedrawGraph();
             }
         }
@@ -211,6 +214,37 @@ export default class ProcessCreator extends LightningElement {
             d3.select(this).classed("active", false);
         }
 
+        function deselectAllNodes() {
+            svg.selectAll("circle").each(function () {
+                d3.select(this)
+                    .attr("class", function (d) {
+                       d.selected = false;
+                    });
+            });
+        }
+
+        function deselectAllEdges() {
+            svg.selectAll("line").each(function () {
+                d3.select(this)
+                    .attr("class", function (edge) {
+                       edge.selected = false;
+                    });
+            });
+        }
+
+        function selectEdgesConnectedToNode(node) {
+            svg.selectAll("line").each(function () {
+                d3.select(this)
+                    .attr("class", function (edge) {
+                        if (edge.nodeEnd === node || edge.nodeStart === node) {
+                            edge.selected = true;
+                        } else {
+                            edge.selected = false;
+                        }
+                    });
+            });
+        }
+
         function clearAndRedrawGraph() {
             svg.selectAll("circle").remove();
             svg.selectAll("line").remove();
@@ -236,8 +270,16 @@ export default class ProcessCreator extends LightningElement {
                 .attr("y2", function (d) {
                     return d.nodeEnd.y_pos;
                 })
+                .attr("class", function(d) {
+                    if(d.selected) return "selected";
+                    return "notSelected";
+                })
+                .on("click", selectEdge)
                 .attr("stroke-width", 3)
-                .attr("stroke", "black")
+                .attr("stroke", function(d) {
+                    if(d.selected) return "blue";
+                    return "black";
+                })
                 .attr('marker-end', 'url(#marker)');
         }
 
@@ -255,13 +297,18 @@ export default class ProcessCreator extends LightningElement {
                 .attr("r", function (d) {
                     return d.consts.radius;
                 })
+                .attr("class", function(d) {
+                    if(d.selected) return "selected";
+                    return "notSelected";
+                })
                 .attr("stroke", "black")
                 .attr("stroke-width", 1)
                 .attr("id", function (d) {
                     return d.nodeId
                 })
-                .style("fill", function (d) {
-                    return d.consts.color;
+                .attr("fill", function(d) {
+                    if(d.selected) return "blue";
+                    return "grey";
                 })
                 .on("click", selectNode)
                 .call(d3.drag()
@@ -273,46 +320,54 @@ export default class ProcessCreator extends LightningElement {
     }
 
     deleteSelectedElement() {
-        const svg = d3.select(this.template.querySelector('svg.d3'));        
-        this.graph.edges = this.graph.edges.filter(el  =>  {
-            var result;
-            if(el.nodeStart !== this.graph.selectedElement && el.nodeEnd !== this.graph.selectedElement) {
-                result = true;
-            } else {
+        const svg = d3.select(this.template.querySelector('svg.d3'));
+        svg.selectAll(".selected").remove();
+        this.graph.edges = this.graph.edges.filter(el => {
+            var result ='';
+            if(el.selected) {
                 el.nodeStart.edgeDeleted();
                 result = false;
+            } else {
+                result = true;
             }
             return result;
         });
-        this.graph.nodes = this.removeElement(this.graph.nodes, this.graph.selectedElement);
-        this.graph.selectedElement = null;
-        svg.selectAll(".selected").remove();
+        this.graph.nodes = this.graph.nodes.filter(el => !el.selected);
     }
-
-
 
     removeElement(array, element) {
         return array.filter(el => el !== element);
     }
 
-    addingEdgeMode() {
-        console.log('edge mode enable');
+    changeEdgeModeStatus() {
+        function resetSelectedElements(svg) {
+            svg.selectAll(".selected").each(function () {
+                d3.select(this)
+                    .attr("class", function (d) {
+                        d.selected = false;
+                        return "notSelected";
+                    });
+            });
+    
+            svg.selectAll("circle").each(function () {
+                d3.select(this)
+                    .style("fill", function (d) {
+                        return d.consts.color;
+                    });
+            });
+    
+            svg.selectAll("line").each(function () {
+                d3.select(this)
+                    .style("stroke", function () {
+                        return "black";
+                    });
+            });
+        }
         this.graph.edgeMode = !this.graph.edgeMode;
         this.edgeModeVariant = this.graph.edgeMode ? 'success' : 'neutral';
         this.graph.clearTempParams();
         const svg = d3.select(this.template.querySelector('svg.d3'));
-        svg.selectAll(".selected").each(function () {
-            d3.select(this)
-                .attr("class", function (d) {
-                    return "notSelected";
-                });
-        });
-
-        svg.selectAll("circle").each(function () {
-            d3.select(this)
-                .style("fill", function (d) {
-                    return "gray";
-                });
-        });
+        resetSelectedElements(svg);
     }
+
 }

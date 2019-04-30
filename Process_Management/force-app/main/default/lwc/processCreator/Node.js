@@ -5,6 +5,7 @@ class Node {
         this.y_pos = y;
         this.nodeId = nodeId;
         this.edgeCounter = 0;
+        this.selected = false;
     }
 }
 
