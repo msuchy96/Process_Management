@@ -1,20 +1,21 @@
 <template>
-    <lightning-card title="GCreator" icon-name="custom:custom19">
+    <lightning-card title="Stream Creator" icon-name="custom:custom19">
         <div class="buttonGroup">
             <div class="button">
-                <lightning-button variant="destructive" name="delete" label="Delete selected element" onclick={deleteSelectedElement}></lightning-button>
+                <lightning-button variant="destructive" name="delete" label="Delete selected element"
+                    disabled={edgeModeEnable} onclick={deleteSelectedElement}></lightning-button>
             </div>
             <div class="button">
-                <lightning-button variant={edgeModeVariant} name="addLink" label="Building Edges" onclick={changeEdgeModeStatus}></lightning-button>
+                <lightning-button variant={edgeModeVariant} name="addLink" label="Building Edges"
+                    onclick={changeEdgeModeStatus}></lightning-button>
             </div>
         </div>
-        <div class="slds-m-around_medium">
-            <svg
-                class="d3"
-                width={svgWidth}
-                height={svgHeight}
-                lwc:dom="manual"
-            ></svg>
+        <div class="bottomArea">
+            <div class="svgArea">
+                <svg class="d3" width="100%" height="100%" lwc:dom="manual"></svg>
+            </div>
+            <div class="formArea">
+            </div>
         </div>
     </lightning-card>
 </template>

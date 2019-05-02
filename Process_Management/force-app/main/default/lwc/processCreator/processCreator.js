@@ -12,15 +12,12 @@ import {
 } from 'lightning/platformResourceLoader';
 import D3 from '@salesforce/resourceUrl/d3';
 import Graph from './Graph';
-import Node from './Node';
-import Edge from './Edge';
 
 export default class ProcessCreator extends LightningElement {
-    svgWidth = 1000;
-    svgHeight = 400;
     graph = null;
     d3Initialized = false;
     @api edgeModeVariant = 'neutral';
+    @api edgeModeEnable = false;
 
     renderedCallback() {
         if (this.d3Initialized) {
@@ -49,6 +46,11 @@ export default class ProcessCreator extends LightningElement {
     // define graphcreator object 
     initializeCreator() {
         const svg = d3.select(this.template.querySelector('svg.d3'));
+        var svgWidth = svg.style("width");
+        var svgHeight = svg.style("height");
+        svgWidth = parseInt(svgWidth.substring(0, svgWidth.length-2), 10);
+        svgHeight = parseInt(svgHeight.substring(0, svgHeight.length-2), 10);
+        console.log('svg size: ' + svgHeight + ' ' + svgWidth);
         var nodes = [];
         var edges = [];
         var curGraph = this.graph = new Graph(nodes, edges);
@@ -182,8 +184,8 @@ export default class ProcessCreator extends LightningElement {
         }
 
         function dragged(d) {
-            var x = Math.max(d.consts.radius, Math.min(1000 - d.consts.radius, d3.event.x));
-            var y = Math.max(d.consts.radius, Math.min(400 - d.consts.radius, d3.event.y));
+            var x = Math.max(d.consts.radius, Math.min(svgWidth - d.consts.radius, d3.event.x));
+            var y = Math.max(d.consts.radius, Math.min(svgHeight - d.consts.radius, d3.event.y));
             d3.select(this).attr("cx", d.x_pos = x).attr("cy", d.y_pos = y);
             updateEdges(d, x, y);
         }
@@ -365,6 +367,7 @@ export default class ProcessCreator extends LightningElement {
         }
         this.graph.edgeMode = !this.graph.edgeMode;
         this.edgeModeVariant = this.graph.edgeMode ? 'success' : 'neutral';
+        this.edgeModeEnable = this.graph.edgeMode;
         this.graph.clearTempParams();
         const svg = d3.select(this.template.querySelector('svg.d3'));
         resetSelectedElements(svg);
