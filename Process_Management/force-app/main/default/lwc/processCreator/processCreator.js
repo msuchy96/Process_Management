@@ -13,11 +13,24 @@ import {
 import D3 from '@salesforce/resourceUrl/d3';
 import Graph from './Graph';
 
+// Import custom labels
+import errorLoadingMsg from '@salesforce/label/c.D3_ErrorLoading';
+import streamCreator from '@salesforce/label/c.BTN_StreamCreator';
+import deleteSelectedElement from '@salesforce/label/c.BTN_DeleteElement';
+import edgeMode from '@salesforce/label/c.BTN_EdgeMode';
+import buttonVariantNeutral from '@salesforce/label/c.BTN_VariantNeutral';
+import buttonVariantSuccess from '@salesforce/label/c.BTN_VariantSuccess';
+
 export default class ProcessCreator extends LightningElement {
-    graph = null;
     d3Initialized = false;
-    @api edgeModeVariant = 'neutral';
-    @api edgeModeEnable = false;
+    @api edgeModeVariant = buttonVariantNeutral;
+    @api edgeModeEnable = false; 
+
+    label = {
+        streamCreator,
+        deleteSelectedElement,
+        edgeMode
+    };
 
     renderedCallback() {
         if (this.d3Initialized) {
@@ -35,7 +48,7 @@ export default class ProcessCreator extends LightningElement {
             .catch(error => {
                 this.dispatchEvent(
                     new ShowToastEvent({
-                        title: 'Error loading D3 lib',
+                        title: errorLoadingMsg,
                         message: error.message,
                         variant: 'error'
                     })
@@ -46,14 +59,16 @@ export default class ProcessCreator extends LightningElement {
     // define graphcreator object 
     initializeCreator() {
         const svg = d3.select(this.template.querySelector('svg.d3'));
+
         var svgWidth = svg.style("width");
         var svgHeight = svg.style("height");
         svgWidth = parseInt(svgWidth.substring(0, svgWidth.length-2), 10);
         svgHeight = parseInt(svgHeight.substring(0, svgHeight.length-2), 10);
-        console.log('svg size: ' + svgHeight + ' ' + svgWidth);
+
         var nodes = [];
         var edges = [];
         var curGraph = this.graph = new Graph(nodes, edges);
+
         defineDefaults();
         clickBehaviour();
 
@@ -121,9 +136,9 @@ export default class ProcessCreator extends LightningElement {
                             var color = '';
                             if (currCircle === clickedCircle && d.edgeCounter !== 2) {
                                 curGraph.startNodeForEdge = d;
-                                color = "green";
+                                color = d.consts.createEdgeColor;
                             } else {
-                                color = d.consts.color;
+                                color = d.consts.standardColor;
                             }
                             return color;
                         });
@@ -273,16 +288,20 @@ export default class ProcessCreator extends LightningElement {
                     return d.nodeEnd.y_pos;
                 })
                 .attr("class", function(d) {
-                    if(d.selected) return "selected";
-                    return "notSelected";
+                    if(d.selected) return d.consts.classSelected;
+                    return d.consts.classNotSelected;
                 })
                 .on("click", selectEdge)
-                .attr("stroke-width", 3)
-                .attr("stroke", function(d) {
-                    if(d.selected) return "blue";
-                    return "black";
+                .attr("stroke-width", function (d) {
+                    return d.consts.strokeWidth;
                 })
-                .attr('marker-end', 'url(#marker)');
+                .attr("stroke", function(d) {
+                    if(d.selected) return d.consts.selectedColor;
+                    return d.consts.standardColor;
+                })
+                .attr('marker-end', function(d) {
+                    return d.consts.marker;
+                });
         }
 
         function drawNodes() {
@@ -300,17 +319,21 @@ export default class ProcessCreator extends LightningElement {
                     return d.consts.radius;
                 })
                 .attr("class", function(d) {
-                    if(d.selected) return "selected";
-                    return "notSelected";
+                    if(d.selected) return d.consts.selectedColor;
+                    return d.consts.standardColor;
                 })
-                .attr("stroke", "black")
-                .attr("stroke-width", 1)
+                .attr("stroke", function(d) {
+                    return d.consts.strokeColor;
+                })
+                .attr("stroke-width", function(d) {
+                    return d.consts.strokeWidth;
+                })
                 .attr("id", function (d) {
                     return d.nodeId
                 })
                 .attr("fill", function(d) {
-                    if(d.selected) return "blue";
-                    return "grey";
+                    if(d.selected) return d.consts.selectedColor;
+                    return d.consts.standardColor;
                 })
                 .on("click", selectNode)
                 .call(d3.drag()
@@ -347,26 +370,26 @@ export default class ProcessCreator extends LightningElement {
                 d3.select(this)
                     .attr("class", function (d) {
                         d.selected = false;
-                        return "notSelected";
+                        return d.consts.classNotSelected;
                     });
             });
     
             svg.selectAll("circle").each(function () {
                 d3.select(this)
                     .style("fill", function (d) {
-                        return d.consts.color;
+                        return d.consts.standardColor;
                     });
             });
     
             svg.selectAll("line").each(function () {
                 d3.select(this)
-                    .style("stroke", function () {
-                        return "black";
+                    .style("stroke", function (d) {
+                        return d.consts.standardColor;
                     });
             });
         }
         this.graph.edgeMode = !this.graph.edgeMode;
-        this.edgeModeVariant = this.graph.edgeMode ? 'success' : 'neutral';
+        this.edgeModeVariant = this.graph.edgeMode ? buttonVariantSuccess : buttonVariantNeutral ;
         this.edgeModeEnable = this.graph.edgeMode;
         this.graph.clearTempParams();
         const svg = d3.select(this.template.querySelector('svg.d3'));

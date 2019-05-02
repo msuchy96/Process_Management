@@ -13,7 +13,12 @@ class Edge {
 
 Node.prototype.consts =  {
     radius: 20,
-    color: "grey"
+    standardColor: "black",
+    selectedColor: "blue",
+    classSelected: "selected",
+    classNotSelected: "notSelected",
+    strokeWidth: 3,
+    marker: 'url(#marker)'
   };
 
 export default Edge;

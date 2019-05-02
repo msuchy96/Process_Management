@@ -9,6 +9,30 @@
         <name>APP_RecordPendingApp</name>
     </customLabels>
     <customLabels>
+        <label><!-- BTN_DeleteElement --></label>
+        <name>BTN_DeleteElement</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- BTN_EdgeMode --></label>
+        <name>BTN_EdgeMode</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- BTN_StreamCreator --></label>
+        <name>BTN_StreamCreator</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- BTN_VariantNeutral --></label>
+        <name>BTN_VariantNeutral</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- BTN_VariantSuccess --></label>
+        <name>BTN_VariantSuccess</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- D3_ErrorLoading --></label>
+        <name>D3_ErrorLoading</name>
+    </customLabels>
+    <customLabels>
         <label><!-- Task_JobDeadlineDesc --></label>
         <name>Task_JobDeadlineDesc</name>
     </customLabels>

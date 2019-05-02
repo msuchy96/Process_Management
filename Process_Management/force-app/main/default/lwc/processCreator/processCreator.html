@@ -1,12 +1,12 @@
 <template>
-    <lightning-card title="Stream Creator" icon-name="custom:custom19">
+    <lightning-card title={label.streamCreator} icon-name="custom:custom19">
         <div class="buttonGroup">
             <div class="button">
-                <lightning-button variant="destructive" name="delete" label="Delete selected element"
+                <lightning-button variant="destructive" name="delete" label={label.deleteSelectedElement}
                     disabled={edgeModeEnable} onclick={deleteSelectedElement}></lightning-button>
             </div>
             <div class="button">
-                <lightning-button variant={edgeModeVariant} name="addLink" label="Building Edges"
+                <lightning-button variant={edgeModeVariant} name="addLink" label={label.edgeMode}
                     onclick={changeEdgeModeStatus}></lightning-button>
             </div>
         </div>

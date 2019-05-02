@@ -15,6 +15,48 @@
         <value>Record has pending approval.</value>
     </labels>
     <labels>
+        <fullName>BTN_DeleteElement</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BTN_DeleteElement</shortDescription>
+        <value>Delete selected element</value>
+    </labels>
+    <labels>
+        <fullName>BTN_EdgeMode</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BTN_EdgeMode</shortDescription>
+        <value>Building Edges</value>
+    </labels>
+    <labels>
+        <fullName>BTN_StreamCreator</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BTN_StreamCreator</shortDescription>
+        <value>Stream Creator</value>
+    </labels>
+    <labels>
+        <fullName>BTN_VariantNeutral</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BTN_VariantNeutral</shortDescription>
+        <value>neutral</value>
+    </labels>
+    <labels>
+        <fullName>BTN_VariantSuccess</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BTN_VariantSuccess</shortDescription>
+        <value>success</value>
+    </labels>
+    <labels>
+        <fullName>D3_ErrorLoading</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>D3_ErrorLoading</shortDescription>
+        <value>Error loading D3 lib</value>
+    </labels>
+    <labels>
         <fullName>Task_JobDeadlineDesc</fullName>
         <language>en_US</language>
         <protected>true</protected>
