@@ -11,7 +11,7 @@ class Edge {
     }
 }
 
-Node.prototype.consts =  {
+Edge.prototype.consts =  {
     radius: 20,
     standardColor: "black",
     selectedColor: "blue",
