@@ -319,8 +319,8 @@ export default class ProcessCreator extends LightningElement {
                     return d.consts.radius;
                 })
                 .attr("class", function(d) {
-                    if(d.selected) return d.consts.selectedColor;
-                    return d.consts.standardColor;
+                    if(d.selected) return d.consts.classSelected;
+                    return d.consts.classNotSelected;
                 })
                 .attr("stroke", function(d) {
                     return d.consts.strokeColor;

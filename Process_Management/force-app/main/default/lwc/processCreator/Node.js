@@ -13,9 +13,12 @@ Node.prototype.consts =  {
     radius: 20,
     standardColor: "grey",
     selectedColor: "blue",
+    savedColor: "black",
     strokeColor: "black",
     strokeWidth: 1,
-    createEdgeColor: "green"
+    createEdgeColor: "green",
+    classSelected: "selected",
+    classNotSelected: "notSelected",
 };
 
 Node.prototype.edgeAdded = function() {
