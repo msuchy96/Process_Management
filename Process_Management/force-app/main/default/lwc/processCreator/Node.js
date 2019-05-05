@@ -1,9 +1,8 @@
 class Node {
-    constructor(x, y, nodeId) {
+    constructor(x, y) {
         console.log('new Node:  ' + x + ' ' + y);
         this.x_pos = x;
         this.y_pos = y;
-        this.nodeId = nodeId;
         this.edgeCounter = 0;
         this.selected = false;
     }
