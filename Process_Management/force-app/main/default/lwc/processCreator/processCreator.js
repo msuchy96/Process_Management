@@ -299,9 +299,7 @@ export default class ProcessCreator extends LightningElement {
                     if(d.selected) return d.consts.selectedColor;
                     return d.consts.standardColor;
                 })
-                .attr('marker-end', function(d) {
-                    return d.consts.marker;
-                });
+                .attr('marker-end', 'url(#marker)');
         }
 
         function drawNodes() {

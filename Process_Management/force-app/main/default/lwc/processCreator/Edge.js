@@ -16,8 +16,7 @@ Edge.prototype.consts =  {
     selectedColor: "blue",
     classSelected: "selected",
     classNotSelected: "notSelected",
-    strokeWidth: 3,
-    marker: 'url(#marker)'
+    strokeWidth: 3
   };
 
 export default Edge;
