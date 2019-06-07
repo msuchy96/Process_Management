@@ -14,7 +14,7 @@
             <div class="svgArea">
                 <svg class="d3" width="100%" height="100%" lwc:dom="manual"></svg>
             </div>
-            <div class="formArea">
+            <div class="formArea" if:true={showFormArea}>
                     <lightning-record-edit-form 
                         object-api-name="Job__c" 
                         onsuccess={handleSuccess}>

@@ -28,6 +28,7 @@ export default class ProcessCreator extends LightningElement {
     @track jobId;
     @track streamId = 'a011t00000AOQy9AAH';
     @track assignId = '0051t000002KZfRAAW';
+    @track showFormArea = false;
 
     handleSuccess(event) {
        this.jobId = event.detail.id;
@@ -44,6 +45,7 @@ export default class ProcessCreator extends LightningElement {
             return;
         }
         this.d3Initialized = true;
+        console.log('Test1: ' + this.showFormArea);
 
         Promise.all([
             loadScript(this, D3 + '/d3.v5.min.js'),
@@ -65,6 +67,7 @@ export default class ProcessCreator extends LightningElement {
 
     // define graphcreator object 
     initializeCreator() {
+        console.log('Test2: ' + this.showFormArea);
         const svg = d3.select(this.template.querySelector('svg.d3'));
 
         var svgWidth = svg.style("width");
@@ -75,7 +78,6 @@ export default class ProcessCreator extends LightningElement {
         var nodes = [];
         var edges = [];
         var curGraph = this.graph = new Graph(nodes, edges);
-
         defineDefaults();
         clickBehaviour();
 
@@ -108,6 +110,7 @@ export default class ProcessCreator extends LightningElement {
             d3.event.stopPropagation();
             var clickedCircle = this;
             console.log('selected node  ' + JSON.stringify(clickedCircle));
+            console.log('Test3: ' + this.showFormArea); // this is not working - fire event? 
             if (curGraph.edgeMode) {
                 if (curGraph.startNodeForEdge == null) {
                     firstNodeInEdgeModeSelection();
