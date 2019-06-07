@@ -1,7 +1,7 @@
 /* eslint-disable vars-on-top */
 /* global d3 */
 import {
-    LightningElement, api
+    LightningElement, api, track
 } from 'lwc';
 import {
     ShowToastEvent
@@ -24,7 +24,14 @@ import buttonVariantSuccess from '@salesforce/label/c.BTN_VariantSuccess';
 export default class ProcessCreator extends LightningElement {
     d3Initialized = false;
     @api edgeModeVariant = buttonVariantNeutral;
-    @api edgeModeEnable = false; 
+    @api edgeModeEnable = false;
+    @track jobId;
+    @track streamId = 'a011t00000AOQy9AAH';
+    @track assignId = '0051t000002KZfRAAW';
+
+    handleSuccess(event) {
+       this.jobId = event.detail.id;
+    }
 
     label = {
         streamCreator,

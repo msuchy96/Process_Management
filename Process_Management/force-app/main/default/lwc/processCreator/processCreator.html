@@ -15,6 +15,20 @@
                 <svg class="d3" width="100%" height="100%" lwc:dom="manual"></svg>
             </div>
             <div class="formArea">
+                    <lightning-record-edit-form 
+                        object-api-name="Job__c" 
+                        onsuccess={handleSuccess}>
+                            <lightning-messages></lightning-messages>
+                            <lightning-input-field field-name='Id' value={jobId}></lightning-input-field>
+                            <lightning-input-field field-name="Name"></lightning-input-field>
+                            <lightning-input-field field-name="Stream__c" value={streamId}></lightning-input-field>
+                            <lightning-input-field field-name="Assigned_To__c" value={assignId}></lightning-input-field>
+                                <lightning-button
+                                    class="slds-m-top_small"
+                                    type="submit"
+                                    label="Create new">
+                                </lightning-button>
+                        </lightning-record-edit-form>
             </div>
         </div>
     </lightning-card>
