@@ -1,25 +1,14 @@
 .buttonGroup {
     display: flex; 
     justify-content: space-evenly;
-    width: 70%;
     margin-bottom: 1%;
 }
 
 .svgArea {
     height: 500px; 
-    width: 70%; 
     border-style: dotted;
     border-width: 2px; 
     border-color: blue;
     margin: 1%;
 }
 
-.formArea {
-    width: 30%;
-    border-style: dotted;
-    margin-right: 1%;
-}
-
-.bottomArea {
-    display: flex;
-}
