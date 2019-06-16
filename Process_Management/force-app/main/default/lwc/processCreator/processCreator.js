@@ -31,11 +31,6 @@ export default class ProcessCreator extends LightningElement {
     @track streamId = 'a011t00000AOQy9AAH';
     @track assignId = '0051t000002KZfRAAW';
     @track showFormArea = false;
-    
-
-    handleSuccess(event) {
-       this.jobId = event.detail.id;
-    }
 
     label = {
         streamCreator,
@@ -65,6 +60,34 @@ export default class ProcessCreator extends LightningElement {
                     })
                 );
             });
+    }
+
+    handleSuccess(event) {
+        var upsertedJobId = event.detail.id;
+        if(this.jobId == '') {
+            this.assignJobIdToSelectedNode(upsertedJobId);
+        }
+        this.jobId = upsertedJobId;
+        this.showFormArea = false;   
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: 'Success!',
+                message: 'Job successfully saved!',
+                variant: 'success'
+            })
+        );     
+    }
+
+    assignJobIdToSelectedNode(jobId) {
+        const svg = d3.select(this.template.querySelector('svg.d3'));
+        svg.selectAll("circle").each(function () {
+            d3.select(this)
+                .attr("class", function (d) {
+                    if (d.selected) {
+                        d.jobId = jobId;
+                    }
+                });
+        });
     }
 
     // define graphcreator object 
@@ -406,16 +429,19 @@ export default class ProcessCreator extends LightningElement {
 
     openForm() {
         const svg = d3.select(this.template.querySelector('svg.d3'));
-        var sel = false;
+        var tempShowFormArea = false;
+        var tempJobId = '';
         svg.selectAll("circle").each(function () {
             d3.select(this)
                 .attr("class", function (d) {
                     if (d.selected) {
-                        sel = true;
+                        tempShowFormArea = true;
+                        tempJobId = d.jobId;
                     } 
                 });
         });
-        this.showFormArea = sel;
+        this.showFormArea = tempShowFormArea;
+        this.jobId = tempJobId;
     }
 
     closeModal() {

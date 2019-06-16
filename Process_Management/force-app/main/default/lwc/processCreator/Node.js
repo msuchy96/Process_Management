@@ -5,6 +5,7 @@ class Node {
         this.y_pos = y;
         this.edgeCounter = 0;
         this.selected = false;
+        this.jobId = '';
     }
 }
 
