@@ -13,7 +13,7 @@ Node.prototype.consts =  {
     radius: 20,
     standardColor: "grey",
     selectedColor: "blue",
-    savedColor: "black",
+    savedColor: "green",
     strokeColor: "black",
     strokeWidth: 1,
     createEdgeColor: "green",

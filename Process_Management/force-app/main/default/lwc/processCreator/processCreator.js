@@ -34,6 +34,12 @@ export default class ProcessCreator extends LightningElement {
     @track assignId = '0051t000002KZfRAAW';
     @track showFormArea = false;
 
+    label = {
+        streamCreator,
+        deleteSelectedElement,
+        edgeMode
+    };
+
 
     renderedCallback() {
         if (this.d3Initialized) {
@@ -65,14 +71,15 @@ export default class ProcessCreator extends LightningElement {
             this.assignJobIdToSelectedNode(upsertedJobId);
         }
         this.jobId = upsertedJobId;
-        this.showFormArea = false;   
+        this.showFormArea = false;
+        this.resetSelectedElements();
         this.dispatchEvent(
             new ShowToastEvent({
                 title: toastTitleSuccess,
                 message: toastMsgJobSaved,
                 variant: 'success'
             })
-        );     
+        );
     }
 
     assignJobIdToSelectedNode(jobId) {
@@ -361,6 +368,7 @@ export default class ProcessCreator extends LightningElement {
                 })
                 .attr("fill", function(d) {
                     if(d.selected) return d.consts.selectedColor;
+                    if(d.jobId !== '') return d.consts.savedColor;
                     return d.consts.standardColor;
                 })
                 .on("click", selectNode)
@@ -393,35 +401,37 @@ export default class ProcessCreator extends LightningElement {
     }
 
     changeEdgeModeStatus() {
-        function resetSelectedElements(svg) {
-            svg.selectAll(".selected").each(function () {
-                d3.select(this)
-                    .attr("class", function (d) {
-                        d.selected = false;
-                        return d.consts.classNotSelected;
-                    });
-            });
-    
-            svg.selectAll("circle").each(function () {
-                d3.select(this)
-                    .style("fill", function (d) {
-                        return d.consts.standardColor;
-                    });
-            });
-    
-            svg.selectAll("line").each(function () {
-                d3.select(this)
-                    .style("stroke", function (d) {
-                        return d.consts.standardColor;
-                    });
-            });
-        }
         this.graph.edgeMode = !this.graph.edgeMode;
         this.edgeModeVariant = this.graph.edgeMode ? buttonVariantSuccess : buttonVariantNeutral ;
         this.edgeModeEnable = this.graph.edgeMode;
         this.graph.clearTempParams();
+        this.resetSelectedElements();
+    }
+
+    resetSelectedElements() {
         const svg = d3.select(this.template.querySelector('svg.d3'));
-        resetSelectedElements(svg);
+        
+        svg.selectAll(".selected").each(function () {
+            d3.select(this)
+                .attr("class", function (d) {
+                    d.selected = false;
+                    return d.consts.classNotSelected;
+                });
+        });
+
+        svg.selectAll("circle").each(function () {
+            d3.select(this)
+                .style("fill", function (d) {
+                    return d.jobId == '' ? d.consts.standardColor : d.consts.savedColor;
+                });
+        });
+
+        svg.selectAll("line").each(function () {
+            d3.select(this)
+                .style("stroke", function (d) {
+                    return d.consts.standardColor;
+                });
+        });
     }
 
     openForm() {
