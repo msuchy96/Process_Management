@@ -33,6 +33,14 @@
         <name>D3_ErrorLoading</name>
     </customLabels>
     <customLabels>
+        <label><!-- TST_MSG_JobSaved --></label>
+        <name>TST_MSG_JobSaved</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TST_MSG_JobSaved --></label>
+        <name>TST_TITLE_Success</name>
+    </customLabels>
+    <customLabels>
         <label><!-- Task_JobDeadlineDesc --></label>
         <name>Task_JobDeadlineDesc</name>
     </customLabels>
