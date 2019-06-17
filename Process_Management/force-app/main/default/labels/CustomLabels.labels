@@ -57,20 +57,6 @@
         <value>Error loading D3 lib</value>
     </labels>
     <labels>
-        <fullName>TST_MSG_JobSaved</fullName>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>TST_MSG_JobSaved</shortDescription>
-        <value>Job successfully saved!</value>
-    </labels>
-    <labels>
-        <fullName>TST_TITLE_Success</fullName>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>TST_MSG_JobSaved</shortDescription>
-        <value>Job successfully saved!</value>
-    </labels>
-    <labels>
         <fullName>Task_JobDeadlineDesc</fullName>
         <language>en_US</language>
         <protected>true</protected>
