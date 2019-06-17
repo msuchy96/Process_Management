@@ -20,6 +20,8 @@ import deleteSelectedElement from '@salesforce/label/c.BTN_DeleteElement';
 import edgeMode from '@salesforce/label/c.BTN_EdgeMode';
 import buttonVariantNeutral from '@salesforce/label/c.BTN_VariantNeutral';
 import buttonVariantSuccess from '@salesforce/label/c.BTN_VariantSuccess';
+import toastTitleSuccess from '@salesforce/label/c.TST_TITLE_Success'; 
+import toastMsgJobSaved from '@salesforce/label/c.TST_MSG_JobSaved';
 
 export default class ProcessCreator extends LightningElement {
     d3Initialized = false;
@@ -32,11 +34,6 @@ export default class ProcessCreator extends LightningElement {
     @track assignId = '0051t000002KZfRAAW';
     @track showFormArea = false;
 
-    label = {
-        streamCreator,
-        deleteSelectedElement,
-        edgeMode
-    };
 
     renderedCallback() {
         if (this.d3Initialized) {
@@ -71,8 +68,8 @@ export default class ProcessCreator extends LightningElement {
         this.showFormArea = false;   
         this.dispatchEvent(
             new ShowToastEvent({
-                title: 'Success!',
-                message: 'Job successfully saved!',
+                title: toastTitleSuccess,
+                message: toastMsgJobSaved,
                 variant: 'success'
             })
         );     
