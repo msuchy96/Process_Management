@@ -20,8 +20,12 @@ import deleteSelectedElement from '@salesforce/label/c.BTN_DeleteElement';
 import edgeMode from '@salesforce/label/c.BTN_EdgeMode';
 import buttonVariantNeutral from '@salesforce/label/c.BTN_VariantNeutral';
 import buttonVariantSuccess from '@salesforce/label/c.BTN_VariantSuccess';
-import toastTitleSuccess from '@salesforce/label/c.TST_TITLE_Success'; 
+import toastTitleSuccess from '@salesforce/label/c.TST_TITLE_Success';
+import toastTitleError from '@salesforce/label/c.TST_TITLE_Error';
 import toastMsgJobSaved from '@salesforce/label/c.TST_MSG_JobSaved';
+
+// Apex methods
+import deleteSelectedJob from '@salesforce/apex/ProcessCreatorController.deleteSelectedJob';
 
 export default class ProcessCreator extends LightningElement {
     d3Initialized = false;
@@ -29,7 +33,7 @@ export default class ProcessCreator extends LightningElement {
     @api configureJobVariant = buttonVariantNeutral;
     @api edgeModeEnable = false;
     @api configureJobEnable = false;
-    @track jobId;
+    @track selectedJobId;
     @track streamId = 'a011t00000AOQy9AAH';
     @track assignId = '0051t000002KZfRAAW';
     @track showFormArea = false;
@@ -55,31 +59,19 @@ export default class ProcessCreator extends LightningElement {
                 this.initializeCreator();
             })
             .catch(error => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: errorLoadingMsg,
-                        message: error.message,
-                        variant: 'error'
-                    })
-                );
+                this.fireToastEvent(errorLoadingMsg, error.message, 'error');
             });
     }
 
     handleSuccess(event) {
         var upsertedJobId = event.detail.id;
-        if(this.jobId == '') {
+        if(this.selectedJobId === undefined || this.selectedJobId === '' || this.selectedJobId === null) {
             this.assignJobIdToSelectedNode(upsertedJobId);
         }
-        this.jobId = upsertedJobId;
+        this.selectedJobId = upsertedJobId;
         this.showFormArea = false;
         this.resetSelectedElements();
-        this.dispatchEvent(
-            new ShowToastEvent({
-                title: toastTitleSuccess,
-                message: toastMsgJobSaved,
-                variant: 'success'
-            })
-        );
+        this.fireToastEvent(toastTitleSuccess, toastMsgJobSaved, 'success');
     }
 
     assignJobIdToSelectedNode(jobId) {
@@ -381,17 +373,36 @@ export default class ProcessCreator extends LightningElement {
     }
 
     deleteSelectedElement() {
+        if(this.selectedJobId !== '' && this.selectedJobId !== undefined && this.selectedJobId !== null) {
+            deleteSelectedJob({jobId: this.selectedJobId})
+            .then(result => {
+                if(result.isSuccess) {
+                    this.fireToastEvent(toastTitleSuccess, result.msg, 'success');
+                    this.removeNodeFromSVG();
+                } else {
+                    this.fireToastEvent(toastTitleError, result.msg, 'error');
+                }
+            })
+            .catch(error => {
+                this.fireToastEvent(toastTitleError, JSON.stringify(error), 'error');
+            });
+        } else {
+            this.removeNodeFromSVG();
+        }
+    }
+
+    removeNodeFromSVG() {
         const svg = d3.select(this.template.querySelector('svg.d3'));
         svg.selectAll(".selected").remove();
         this.graph.edges = this.graph.edges.filter(el => {
-            var result ='';
+            var keepThisNode = '';
             if(el.selected) {
                 el.nodeStart.edgeDeleted();
-                result = false;
+                keepThisNode = false;
             } else {
-                result = true;
+                keepThisNode = true;
             }
-            return result;
+            return keepThisNode;
         });
         this.graph.nodes = this.graph.nodes.filter(el => !el.selected);
     }
@@ -410,7 +421,6 @@ export default class ProcessCreator extends LightningElement {
 
     resetSelectedElements() {
         const svg = d3.select(this.template.querySelector('svg.d3'));
-        
         svg.selectAll(".selected").each(function () {
             d3.select(this)
                 .attr("class", function (d) {
@@ -422,7 +432,7 @@ export default class ProcessCreator extends LightningElement {
         svg.selectAll("circle").each(function () {
             d3.select(this)
                 .style("fill", function (d) {
-                    return d.jobId == '' ? d.consts.standardColor : d.consts.savedColor;
+                    return d.jobId === '' ? d.consts.standardColor : d.consts.savedColor;
                 });
         });
 
@@ -448,11 +458,21 @@ export default class ProcessCreator extends LightningElement {
                 });
         });
         this.showFormArea = tempShowFormArea;
-        this.jobId = tempJobId;
+        this.selectedJobId = tempJobId;
     }
 
     closeModal() {
         this.showFormArea = !this.showFormArea;
+    }
+
+    fireToastEvent(title, msg, variant) {
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: title,
+                message: msg,
+                variant: variant
+            })
+        );
     }
 
 }

@@ -2,7 +2,7 @@ public with sharing class ManageApprovalProcess {
     public ManageApprovalProcess() {}
 
     @AuraEnabled
-	public static ResponseWrapper submitDueDateApproval(Id jobId, DateTime dueDateToChange) {
+	public static FrontResponseWrapper submitDueDateApproval(Id jobId, DateTime dueDateToChange) {
         if(!Approval.isLocked(jobId)) {
             try {
                 Job__c jobToApprove = [SELECT Id, Assigned_To__c FROM Job__c WHERE Id =: jobId];
@@ -15,25 +15,13 @@ public with sharing class ManageApprovalProcess {
 				req.setProcessDefinitionNameOrId(CommonUtility.APPROVAL_PROCESS_NAME_CHANGING_DUE_DATE);
 				Approval.ProcessResult result = Approval.process(req);
 
-                return new ResponseWrapper(true, Label.APP_ApprovalSentManager);
+                return new FrontResponseWrapper(true, Label.APP_ApprovalSentManager);
             } catch (Exception e) {
-                return new ResponseWrapper(false, e.getMessage());
+                return new FrontResponseWrapper(false, e.getMessage());
             }
             
         } else {
-            return new ResponseWrapper(false, Label.APP_RecordPendingApp);
+            return new FrontResponseWrapper(false, Label.APP_RecordPendingApp);
         }
 	}
-
-    public class ResponseWrapper {
-        @AuraEnabled
-		public Boolean isSuccess {get; set;}
-        @AuraEnabled
-        public String msg {get; set;}
-
-		public ResponseWrapper(Boolean isSuccess, String msg) {
-			this.isSuccess = isSuccess;
-			this.msg = msg;
-		}
-    }
 }
