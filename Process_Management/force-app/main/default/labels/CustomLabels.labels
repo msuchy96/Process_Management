@@ -74,8 +74,8 @@
         <fullName>TST_TITLE_Success</fullName>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>TST_MSG_JobSaved</shortDescription>
-        <value>Job successfully saved!</value>
+        <shortDescription>TST_TITLE_Success</shortDescription>
+        <value>Success!</value>
     </labels>
     <labels>
         <fullName>Task_JobDeadlineDesc</fullName>
