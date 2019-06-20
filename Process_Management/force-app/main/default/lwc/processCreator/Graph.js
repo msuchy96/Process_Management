@@ -12,6 +12,7 @@ class Graph {
         this.numberOfEdges = 0;
         this.startNodeForEdge = null;
         this.edgeMode = false;
+        this.selectedJobId = null;
     }
 }
 

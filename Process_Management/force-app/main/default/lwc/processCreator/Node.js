@@ -6,6 +6,7 @@ class Node {
         this.edgeCounter = 0;
         this.selected = false;
         this.jobId = '';
+        this.name = '';
     }
 }
 
@@ -16,7 +17,7 @@ Node.prototype.consts =  {
     savedColor: "green",
     strokeColor: "black",
     strokeWidth: 1,
-    createEdgeColor: "green",
+    createEdgeColor: "purple",
     classSelected: "selected",
     classNotSelected: "notSelected",
 };

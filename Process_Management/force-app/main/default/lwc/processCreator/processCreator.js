@@ -65,22 +65,22 @@ export default class ProcessCreator extends LightningElement {
 
     handleSuccess(event) {
         var upsertedJobId = event.detail.id;
-        if(this.selectedJobId === undefined || this.selectedJobId === '' || this.selectedJobId === null) {
-            this.assignJobIdToSelectedNode(upsertedJobId);
-        }
+        var upsertedName = event.detail.Name;
+        this.assignJobIdToSelectedNode(upsertedJobId, upsertedName);
         this.selectedJobId = upsertedJobId;
         this.showFormArea = false;
         this.resetSelectedElements();
         this.fireToastEvent(toastTitleSuccess, toastMsgJobSaved, 'success');
     }
 
-    assignJobIdToSelectedNode(jobId) {
+    assignJobIdToSelectedNode(jobId, upsertedName) {
         const svg = d3.select(this.template.querySelector('svg.d3'));
         svg.selectAll("circle").each(function () {
             d3.select(this)
                 .attr("class", function (d) {
                     if (d.selected) {
                         d.jobId = jobId;
+                        d.Name = upsertedName;
                     }
                 });
         });
@@ -103,6 +103,7 @@ export default class ProcessCreator extends LightningElement {
 
         function clickBehaviour() {
             svg.on('click', function () {
+                this.selectedJobId = null;
                 if (!curGraph.edgeMode) {
                     var coords = d3.mouse(this);
                     curGraph.addNode(coords);
@@ -130,39 +131,90 @@ export default class ProcessCreator extends LightningElement {
             d3.event.stopPropagation();
             var clickedCircle = this;
             console.log('selected node  ' + JSON.stringify(clickedCircle));
+            curGraph.selectedJobId = null;
             if (curGraph.edgeMode) {
                 if (curGraph.startNodeForEdge == null) {
                     firstNodeInEdgeModeSelection();
-                } else if(checkIfSecondNodeIsSaved()) { // create edge
-                    console.log('123');
-                    createEdge();
-                } else {
-                    console.log('123456');
-                    //this.fireToastEvent('Sorki','Nie zapisano Joba','error');
-                    this.dispatchEvent(
-                        new ShowToastEvent({
-                            title: 'sry',
-                            message: 'test',
-                            variant: 'error'
-                        })
-                    );
+                } else { // create edge
+                    var edgeCreationValidation = checkIfNodeCreationIsPossible();
+                    if(edgeCreationValidation.isPossible) {
+                        createEdge();
+                    } else {
+                        this.dispatchEvent(
+                            new ShowToastEvent({
+                                title: 'Edge creation is not possible',
+                                message: edgeCreationValidation.msg,
+                                variant: 'error'
+                            })
+                        );
+                    }
                 }
             } else {
                 normalNodeSelection();
             }
 
-            function checkIfSecondNodeIsSaved() {
-                console.log('check Edge to the : ' + JSON.stringify(clickedCircle));
-                var isSaved = false;
+            function checkIfNodeCreationIsPossible() {
+                var secondSelectedCircle = null;
+                let response = {
+                    'isPossible': true,
+                    'msg': ''
+                };
                 d3.select(clickedCircle).attr("class", function (d) { 
-                    console.log('checkSaved: ' + isSaved);
-                    isSaved = d.jobId !== '' && d.jobId !== undefined && d.jobId != null; 
+                    secondSelectedCircle = d; 
                 });
-                console.log('isNodeSaved: ' + isSaved);
-                return isSaved;
+                if(!checkIfSecondNodeIsNotFirst(secondSelectedCircle)) {
+                    response.isPossible = false;
+                    response.msg = 'You can not create edge to the same node!';
+                } else if (!checkIfEdgeNotExist(secondSelectedCircle)) {
+                    response.isPossible = false;
+                    response.msg = 'Edge already exist!';
+                } else if (!checkIfSecondNodeIsSaved(secondSelectedCircle)) {
+                    response.isPossible  = false;
+                    response.msg = 'Job is not saved!';
+                } else if (!checkNumberOfNodes(secondSelectedCircle)) {
+                    response.isPossible  = false;
+                    response.msg = 'This job already has two edges!';
+                }
+                return response;
+            }
+
+            function checkIfSecondNodeIsNotFirst(secondSelectedCircle) {
+                return curGraph.startNodeForEdge !== secondSelectedCircle;
+            }
+
+            function checkIfEdgeNotExist(secondSelectedCircle) {
+                //check if there is an edge between nodes
+                var nodeExist = false;
+                curGraph.edges.forEach(function (edge) {
+                    if(
+                        (edge.nodeStart === curGraph.startNodeForEdge 
+                            && edge.nodeEnd === secondSelectedCircle)
+                        || (edge.nodeStart === secondSelectedCircle 
+                            && edge.nodeEnd === curGraph.startNodeForEdge)
+                    ) nodeExist = true;
+                });
+                return !nodeExist;
+            }
+            
+            function checkIfSecondNodeIsSaved(secondSelectedCircle) {
+                return (secondSelectedCircle.jobId !== '' && secondSelectedCircle.jobId !== undefined && secondSelectedCircle.jobId != null);
+            }
+            function checkNumberOfNodes() {
+                return curGraph.startNodeForEdge.edgeCounter !== 2;
+            }
+
+            function createEdge() {
+                console.log('create Edge to the : ' + JSON.stringify(clickedCircle));
+                var secondSelectedCircle = null;
+                d3.select(clickedCircle).attr("class", function (d) { 
+                    secondSelectedCircle = d; 
+                });
+                curGraph.addEdge(curGraph.startNodeForEdge, secondSelectedCircle);
+                clearAndRedrawGraph();
             }
 
             function normalNodeSelection() {
+                curGraph.selectedJobId = null;
                 deselectAllEdges();
                 svg.selectAll("circle").each(function () {
                     var currCircle = this;
@@ -170,11 +222,12 @@ export default class ProcessCreator extends LightningElement {
                         .attr("class", function (d) {
                             if (currCircle === clickedCircle) {
                                 d.selected = true;
+                                curGraph.selectedJobId = d.jobId;
                                 selectEdgesConnectedToNode(d);
                             } else {
                                 d.selected = false;
                             }
-                        });
+                        });  
                 });
                 clearAndRedrawGraph();
             }
@@ -194,33 +247,6 @@ export default class ProcessCreator extends LightningElement {
                             return color;
                         });
                 });
-            }
-
-            function createEdge() {
-                console.log('create Edge to the : ' + JSON.stringify(clickedCircle));
-                var secondSelectedCircle = null;
-                d3.select(clickedCircle).attr("class", function (d) { 
-                    secondSelectedCircle = d; 
-                });
-
-                //check if there is an edge between nodes
-                var nodeExist = false;
-                curGraph.edges.forEach(function (edge) {
-                    if(
-                        (edge.nodeStart === curGraph.startNodeForEdge 
-                            && edge.nodeEnd === secondSelectedCircle)
-                        || (edge.nodeStart === secondSelectedCircle 
-                            && edge.nodeEnd === curGraph.startNodeForEdge)
-                    ) nodeExist = true;
-                });
-
-                if(curGraph.startNodeForEdge !== secondSelectedCircle && !nodeExist) {
-                    if(curGraph.startNodeForEdge.edgeCounter !== 2) {
-                        curGraph.addEdge(curGraph.startNodeForEdge, secondSelectedCircle);
-                        clearAndRedrawGraph();
-                    }
-                }
-                
             }
         }
 
@@ -289,6 +315,7 @@ export default class ProcessCreator extends LightningElement {
                        d.selected = false;
                     });
             });
+            curGraph.selectedJobId = null;
         }
 
         function deselectAllEdges() {
@@ -316,8 +343,10 @@ export default class ProcessCreator extends LightningElement {
         function clearAndRedrawGraph() {
             svg.selectAll("circle").remove();
             svg.selectAll("line").remove();
+            svg.selectAll("text").remove();
             drawEdges();
             drawNodes();
+          //  drawLabels();
             curGraph.clearTempParams();
         }
 
@@ -354,6 +383,7 @@ export default class ProcessCreator extends LightningElement {
         }
 
         function drawNodes() {
+            var selectedtempJobId = '123';
             svg.selectAll("circle")
                 .data(curGraph.nodes)
                 .enter()
@@ -378,7 +408,8 @@ export default class ProcessCreator extends LightningElement {
                     return d.consts.strokeWidth;
                 })
                 .attr("id", function (d) {
-                    return d.nodeId
+                    if(d.selected) curGraph.selectedtempJobId = d.jobId;
+                    return d.jobId;
                 })
                 .attr("fill", function(d) {
                     if(d.selected) return d.consts.selectedColor;
@@ -392,9 +423,30 @@ export default class ProcessCreator extends LightningElement {
                     .on("end", dragended)
                 );
         }
+
+        function drawLabels() {
+            svg.selectAll("text")
+                .data(curGraph.nodes)
+                .enter()
+                .append("text")
+                .attr("x", function(d) {
+                    return d.x_pos; 
+                })
+                .attr("y", function(d) {
+                    return d.y_pos;
+                })
+                .text(function(d) {
+                    return d.name;
+                })
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "20px")
+                .attr("fill", "black");
+        }
     }
 
     deleteSelectedElement() {
+        console.log('selected job id to deletion: ' + this.graph.selectedJobId);
+        this.selectedJobId = this.graph.selectedJobId;
         if(this.selectedJobId !== '' && this.selectedJobId !== undefined && this.selectedJobId !== null) {
             deleteSelectedJob({jobId: this.selectedJobId})
             .then(result => {
@@ -427,6 +479,8 @@ export default class ProcessCreator extends LightningElement {
             return keepThisNode;
         });
         this.graph.nodes = this.graph.nodes.filter(el => !el.selected);
+        this.selectedJobId = null;
+        this.graph.selectedJobId = null;
     }
 
     removeElement(array, element) {
@@ -464,6 +518,9 @@ export default class ProcessCreator extends LightningElement {
                     return d.consts.standardColor;
                 });
         });
+
+        this.selectedJobId = null;
+        this.graph.selectedJobId = null;
     }
 
     openForm() {
