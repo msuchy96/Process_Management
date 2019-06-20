@@ -133,11 +133,33 @@ export default class ProcessCreator extends LightningElement {
             if (curGraph.edgeMode) {
                 if (curGraph.startNodeForEdge == null) {
                     firstNodeInEdgeModeSelection();
-                } else { // create edge
+                } else if(checkIfSecondNodeIsSaved()) { // create edge
+                    console.log('123');
                     createEdge();
+                } else {
+                    console.log('123456');
+                    //this.fireToastEvent('Sorki','Nie zapisano Joba','error');
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'sry',
+                            message: 'test',
+                            variant: 'error'
+                        })
+                    );
                 }
             } else {
                 normalNodeSelection();
+            }
+
+            function checkIfSecondNodeIsSaved() {
+                console.log('check Edge to the : ' + JSON.stringify(clickedCircle));
+                var isSaved = false;
+                d3.select(clickedCircle).attr("class", function (d) { 
+                    console.log('checkSaved: ' + isSaved);
+                    isSaved = d.jobId !== '' && d.jobId !== undefined && d.jobId != null; 
+                });
+                console.log('isNodeSaved: ' + isSaved);
+                return isSaved;
             }
 
             function normalNodeSelection() {
