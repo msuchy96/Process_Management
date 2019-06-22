@@ -57,11 +57,46 @@
         <value>Error loading D3 lib</value>
     </labels>
     <labels>
+        <fullName>TST_MSG_EdgeExist</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_EdgeExist</shortDescription>
+        <value>Edge already exist!</value>
+    </labels>
+    <labels>
+        <fullName>TST_MSG_JobHasTwoEdges</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_JobHasTwoEdges</shortDescription>
+        <value>This job already has two edges!</value>
+    </labels>
+    <labels>
         <fullName>TST_MSG_JobSaved</fullName>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>TST_MSG_JobSaved</shortDescription>
         <value>Job successfully saved!</value>
+    </labels>
+    <labels>
+        <fullName>TST_MSG_JobsNotSaved</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_JobsNotSaved</shortDescription>
+        <value>Jobs are not saved!</value>
+    </labels>
+    <labels>
+        <fullName>TST_MSG_SameNode</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_SameNode</shortDescription>
+        <value>You can not create edge to the same node!</value>
+    </labels>
+    <labels>
+        <fullName>TST_TITLE_EdgeCreationNotPossible</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_TITLE_EdgeCreationNotPossible</shortDescription>
+        <value>Edge creation is not possible!</value>
     </labels>
     <labels>
         <fullName>TST_TITLE_Error</fullName>
