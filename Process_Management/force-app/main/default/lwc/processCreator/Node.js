@@ -6,7 +6,7 @@ class Node {
         this.edgeCounter = 0;
         this.selected = false;
         this.jobId = '';
-        this.name = '';
+        this.Name = '';
     }
 }
 
@@ -20,6 +20,11 @@ Node.prototype.consts =  {
     createEdgeColor: "purple",
     classSelected: "selected",
     classNotSelected: "notSelected",
+    labelYTranslation : 35,
+    labelXTranslation : 3.5,
+    labelSize: '15px',
+    labelFont: 'sans-serif',
+    labelFill: 'black'
 };
 
 Node.prototype.edgeAdded = function() {

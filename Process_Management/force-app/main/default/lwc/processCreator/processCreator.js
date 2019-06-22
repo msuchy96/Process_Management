@@ -22,7 +22,12 @@ import buttonVariantNeutral from '@salesforce/label/c.BTN_VariantNeutral';
 import buttonVariantSuccess from '@salesforce/label/c.BTN_VariantSuccess';
 import toastTitleSuccess from '@salesforce/label/c.TST_TITLE_Success';
 import toastTitleError from '@salesforce/label/c.TST_TITLE_Error';
+import toastTitleNotPossible from '@salesforce/label/c.TST_TITLE_EdgeCreationNotPossible';
 import toastMsgJobSaved from '@salesforce/label/c.TST_MSG_JobSaved';
+import toastMsgJobNotSaved from '@salesforce/label/c.TST_MSG_JobsNotSaved';
+import toastMsgSameNode from '@salesforce/label/c.TST_MSG_SameNode';
+import toastMsgEdgeExist from '@salesforce/label/c.TST_MSG_EdgeExist';
+import toastMsgTwoEdgesExist from '@salesforce/label/c.TST_MSG_JobHasTwoEdges';
 
 // Apex methods
 import deleteSelectedJob from '@salesforce/apex/ProcessCreatorController.deleteSelectedJob';
@@ -44,7 +49,6 @@ export default class ProcessCreator extends LightningElement {
         edgeMode
     };
 
-
     renderedCallback() {
         if (this.d3Initialized) {
             return;
@@ -65,25 +69,27 @@ export default class ProcessCreator extends LightningElement {
 
     handleSuccess(event) {
         var upsertedJobId = event.detail.id;
-        var upsertedName = event.detail.Name;
-        this.assignJobIdToSelectedNode(upsertedJobId, upsertedName);
+        var upsertedName = event.detail.fields.Name.value;
+        this.updateAttributesToSelectedNode(upsertedJobId, upsertedName);
         this.selectedJobId = upsertedJobId;
         this.showFormArea = false;
         this.resetSelectedElements();
         this.fireToastEvent(toastTitleSuccess, toastMsgJobSaved, 'success');
     }
 
-    assignJobIdToSelectedNode(jobId, upsertedName) {
+    updateAttributesToSelectedNode(jobId, upsertedName) {
         const svg = d3.select(this.template.querySelector('svg.d3'));
-        svg.selectAll("circle").each(function () {
-            d3.select(this)
-                .attr("class", function (d) {
-                    if (d.selected) {
-                        d.jobId = jobId;
-                        d.Name = upsertedName;
-                    }
-                });
-        });
+        if(jobId !== null && upsertedName !== null) {
+            svg.selectAll("circle").each(function () {
+                d3.select(this)
+                    .attr("class", function (d) {
+                        if (d.selected) {
+                            d.jobId = jobId;
+                            d.Name = upsertedName;
+                        }
+                    });
+            });
+        }
     }
 
     // define graphcreator object 
@@ -133,7 +139,7 @@ export default class ProcessCreator extends LightningElement {
             console.log('selected node  ' + JSON.stringify(clickedCircle));
             curGraph.selectedJobId = null;
             if (curGraph.edgeMode) {
-                if (curGraph.startNodeForEdge == null) {
+                if (!valueValidation(curGraph.startNodeForEdge)) {
                     firstNodeInEdgeModeSelection();
                 } else { // create edge
                     var edgeCreationValidation = checkIfNodeCreationIsPossible();
@@ -142,7 +148,7 @@ export default class ProcessCreator extends LightningElement {
                     } else {
                         this.dispatchEvent(
                             new ShowToastEvent({
-                                title: 'Edge creation is not possible',
+                                title: toastTitleNotPossible,
                                 message: edgeCreationValidation.msg,
                                 variant: 'error'
                             })
@@ -164,16 +170,16 @@ export default class ProcessCreator extends LightningElement {
                 });
                 if(!checkIfSecondNodeIsNotFirst(secondSelectedCircle)) {
                     response.isPossible = false;
-                    response.msg = 'You can not create edge to the same node!';
+                    response.msg = toastMsgSameNode;
                 } else if (!checkIfEdgeNotExist(secondSelectedCircle)) {
                     response.isPossible = false;
-                    response.msg = 'Edge already exist!';
-                } else if (!checkIfSecondNodeIsSaved(secondSelectedCircle)) {
+                    response.msg = toastMsgEdgeExist;
+                } else if (!checkIfNodesAreSaved(secondSelectedCircle)) {
                     response.isPossible  = false;
-                    response.msg = 'Job is not saved!';
+                    response.msg = toastMsgJobNotSaved;
                 } else if (!checkNumberOfNodes(secondSelectedCircle)) {
                     response.isPossible  = false;
-                    response.msg = 'This job already has two edges!';
+                    response.msg = toastMsgTwoEdgesExist;
                 }
                 return response;
             }
@@ -196,11 +202,16 @@ export default class ProcessCreator extends LightningElement {
                 return !nodeExist;
             }
             
-            function checkIfSecondNodeIsSaved(secondSelectedCircle) {
-                return (secondSelectedCircle.jobId !== '' && secondSelectedCircle.jobId !== undefined && secondSelectedCircle.jobId != null);
+            function checkIfNodesAreSaved(secondSelectedCircle) {
+                return valueValidation(curGraph.startNodeForEdge.jobId) && valueValidation(secondSelectedCircle.jobId);
             }
+            
             function checkNumberOfNodes() {
                 return curGraph.startNodeForEdge.edgeCounter !== 2;
+            }
+
+            function valueValidation(variable) {
+                return (variable !== null && variable !== undefined && variable !== '');
             }
 
             function createEdge() {
@@ -241,6 +252,8 @@ export default class ProcessCreator extends LightningElement {
                             if (currCircle === clickedCircle && d.edgeCounter !== 2) {
                                 curGraph.startNodeForEdge = d;
                                 color = d.consts.createEdgeColor;
+                            } else if(valueValidation(d.jobId)){
+                                color = d.consts.savedColor;
                             } else {
                                 color = d.consts.standardColor;
                             }
@@ -302,6 +315,17 @@ export default class ProcessCreator extends LightningElement {
                         return edge.nodeEnd.y_pos;
                     });
             });
+
+            svg.selectAll("text").each(function() {
+                d3.select(this)
+                .attr("x", function(d) {                    
+                    var nameLength = d.Name === undefined || d.Name === null ? 0 : d.Name.length;
+                    return d.x_pos - nameLength * d.consts.labelXTranslation; 
+                })
+                .attr("y", function(d) {
+                    return d.y_pos + d.consts.labelYTranslation;
+                })
+            });
         }
 
         function dragended() {
@@ -346,7 +370,7 @@ export default class ProcessCreator extends LightningElement {
             svg.selectAll("text").remove();
             drawEdges();
             drawNodes();
-          //  drawLabels();
+            drawLabels();
             curGraph.clearTempParams();
         }
 
@@ -383,7 +407,6 @@ export default class ProcessCreator extends LightningElement {
         }
 
         function drawNodes() {
-            var selectedtempJobId = '123';
             svg.selectAll("circle")
                 .data(curGraph.nodes)
                 .enter()
@@ -408,7 +431,7 @@ export default class ProcessCreator extends LightningElement {
                     return d.consts.strokeWidth;
                 })
                 .attr("id", function (d) {
-                    if(d.selected) curGraph.selectedtempJobId = d.jobId;
+                    if(d.selected) curGraph.selectedJobId = d.jobId;
                     return d.jobId;
                 })
                 .attr("fill", function(d) {
@@ -429,19 +452,25 @@ export default class ProcessCreator extends LightningElement {
                 .data(curGraph.nodes)
                 .enter()
                 .append("text")
+                .attr("class", function(d) {
+                    if(d.selected) return d.consts.classSelected;
+                    return d.consts.classNotSelected;
+                })
                 .attr("x", function(d) {
-                    return d.x_pos; 
+                    var nameLength = d.Name === undefined || d.Name === null ? 0 : d.Name.length;
+                    return d.x_pos - nameLength * d.consts.labelXTranslation; 
                 })
                 .attr("y", function(d) {
-                    return d.y_pos;
+                    return d.y_pos + d.consts.labelYTranslation;
                 })
                 .text(function(d) {
-                    return d.name;
+                    return d.Name;
                 })
                 .attr("font-family", "sans-serif")
-                .attr("font-size", "20px")
+                .attr("font-size", "15px")
                 .attr("fill", "black");
         }
+
     }
 
     deleteSelectedElement() {
@@ -516,6 +545,29 @@ export default class ProcessCreator extends LightningElement {
             d3.select(this)
                 .style("stroke", function (d) {
                     return d.consts.standardColor;
+                });
+        });
+
+        svg.selectAll("text").each(function () {
+            d3.select(this)
+                .attr("x", function(d) {
+                    var nameLength = d.Name === undefined || d.Name === null ? 0 : d.Name.length;
+                    return d.x_pos - nameLength * d.consts.labelXTranslation; 
+                })
+                .attr("y", function(d) {
+                    return d.y_pos + d.consts.labelYTranslation;
+                })
+                .text(function(d) {
+                    return d.Name;
+                })
+                .attr("font-family", function(d) {
+                    return d.consts.labelFont;
+                })
+                .attr("font-size",function(d) {
+                    return d.consts.labelSize;
+                })
+                .attr("fill", function(d) {
+                    return d.consts.labelFill;
                 });
         });
 
