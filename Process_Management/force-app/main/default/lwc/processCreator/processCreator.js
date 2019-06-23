@@ -67,31 +67,6 @@ export default class ProcessCreator extends LightningElement {
             });
     }
 
-    handleSuccess(event) {
-        var upsertedJobId = event.detail.id;
-        var upsertedName = event.detail.fields.Name.value;
-        this.updateAttributesToSelectedNode(upsertedJobId, upsertedName);
-        this.selectedJobId = upsertedJobId;
-        this.showFormArea = false;
-        this.resetSelectedElements();
-        this.fireToastEvent(toastTitleSuccess, toastMsgJobSaved, 'success');
-    }
-
-    updateAttributesToSelectedNode(jobId, upsertedName) {
-        const svg = d3.select(this.template.querySelector('svg.d3'));
-        if(jobId !== null && upsertedName !== null) {
-            svg.selectAll("circle").each(function () {
-                d3.select(this)
-                    .attr("class", function (d) {
-                        if (d.selected) {
-                            d.jobId = jobId;
-                            d.Name = upsertedName;
-                        }
-                    });
-            });
-        }
-    }
-
     // define graphcreator object 
     initializeCreator() {
         const svg = d3.select(this.template.querySelector('svg.d3'));
@@ -512,10 +487,6 @@ export default class ProcessCreator extends LightningElement {
         this.graph.selectedJobId = null;
     }
 
-    removeElement(array, element) {
-        return array.filter(el => el !== element);
-    }
-
     changeEdgeModeStatus() {
         this.graph.edgeMode = !this.graph.edgeMode;
         this.edgeModeVariant = this.graph.edgeMode ? buttonVariantSuccess : buttonVariantNeutral ;
@@ -590,6 +561,35 @@ export default class ProcessCreator extends LightningElement {
         });
         this.showFormArea = tempShowFormArea;
         this.selectedJobId = tempJobId;
+    }
+
+    handleSuccess(event) {
+        var upsertedJobId = event.detail.id;
+        var upsertedName = event.detail.fields.Name.value;
+        this.updateAttributesToSelectedNode(upsertedJobId, upsertedName);
+        this.selectedJobId = upsertedJobId;
+        this.showFormArea = false;
+        this.resetSelectedElements();
+        this.fireToastEvent(toastTitleSuccess, toastMsgJobSaved, 'success');
+    }
+
+    updateAttributesToSelectedNode(jobId, upsertedName) {
+        const svg = d3.select(this.template.querySelector('svg.d3'));
+        if(jobId !== null && upsertedName !== null) {
+            svg.selectAll("circle").each(function () {
+                d3.select(this)
+                    .attr("class", function (d) {
+                        if (d.selected) {
+                            d.jobId = jobId;
+                            d.Name = upsertedName;
+                        }
+                    });
+            });
+        }
+    }
+
+    removeElement(array, element) {
+        return array.filter(el => el !== element);
     }
 
     closeModal() {
