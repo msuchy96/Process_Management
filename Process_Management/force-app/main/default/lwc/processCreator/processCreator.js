@@ -31,6 +31,7 @@ import toastMsgTwoEdgesExist from '@salesforce/label/c.TST_MSG_JobHasTwoEdges';
 
 // Apex methods
 import deleteSelectedJob from '@salesforce/apex/ProcessCreatorController.deleteSelectedJob';
+import createConnectionBetweenJobs from '@salesforce/apex/ProcessCreatorController.createConnectionBetweenJobs';
 
 export default class ProcessCreator extends LightningElement {
     d3Initialized = false;
@@ -121,13 +122,7 @@ export default class ProcessCreator extends LightningElement {
                     if(edgeCreationValidation.isPossible) {
                         createEdge();
                     } else {
-                        this.dispatchEvent(
-                            new ShowToastEvent({
-                                title: toastTitleNotPossible,
-                                message: edgeCreationValidation.msg,
-                                variant: 'error'
-                            })
-                        );
+                        fireToastEvent(toastTitleNotPossible, edgeCreationValidation.msg, 'error');
                     }
                 }
             } else {
@@ -195,8 +190,20 @@ export default class ProcessCreator extends LightningElement {
                 d3.select(clickedCircle).attr("class", function (d) { 
                     secondSelectedCircle = d; 
                 });
-                curGraph.addEdge(curGraph.startNodeForEdge, secondSelectedCircle);
-                clearAndRedrawGraph();
+
+                createConnectionBetweenJobs({firstJobId: curGraph.startNodeForEdge.jobId, secondJobId: secondSelectedCircle.jobId})
+                .then(result => {
+                    if(result.isSuccess) {
+                        curGraph.addEdge(curGraph.startNodeForEdge, secondSelectedCircle);
+                        clearAndRedrawGraph();
+                        fireToastEvent(toastTitleSuccess, result.msg, 'success');
+                    } else {
+                        fireToastEvent(toastTitleError, result.msg, 'error');
+                    }
+                })
+                .catch(error => {
+                    fireToastEvent(toastTitleError, JSON.stringify(error), 'error');
+                });
             }
 
             function normalNodeSelection() {
@@ -444,6 +451,16 @@ export default class ProcessCreator extends LightningElement {
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "15px")
                 .attr("fill", "black");
+        }
+
+        function fireToastEvent(title, msg, variant) {
+            dispatchEvent(
+                new ShowToastEvent({
+                    title: title,
+                    message: msg,
+                    variant: variant
+                })
+            );
         }
 
     }
