@@ -26,6 +26,10 @@ public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
         }
     }
 
+    public override void beforeDelete(Map<Id, SObject> oldObjectsMap) {
+        JobManager.updateRelatedJobs(oldObjectsMap.keySet());
+    }
+
     private void checkReportedTimeChanges(Job__c oldJob, Job__c newJob) {
         if(
             newJob.Assigned_To__c != null
@@ -34,8 +38,7 @@ public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
             )
         ) {
             jobsWithTimeReported.put(newJob, oldJob != null ? newJob.Time_Spent__c - oldJob.Time_Spent__c : newJob.Time_Spent__c);
-        }
-            
+        }  
     }
 
     public override void finish() {
