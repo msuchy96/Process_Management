@@ -40,9 +40,10 @@ export default class ProcessCreator extends LightningElement {
     @api edgeModeEnable = false;
     @api configureJobEnable = false;
     @track selectedJobId;
-    @track streamId = 'a011t00000AOQy9AAH';
+    @track streamId; //= 'a011t00000AOQy9AAH';
     @track assignId = '0051t000002KZfRAAW';
-    @track showFormArea = false;
+    @track showJobFormArea = false;
+    @track showStreamFormArea = true;
 
     label = {
         streamCreator,
@@ -576,17 +577,23 @@ export default class ProcessCreator extends LightningElement {
                     } 
                 });
         });
-        this.showFormArea = tempShowFormArea;
+        this.showJobFormArea = tempShowFormArea;
         this.selectedJobId = tempJobId;
     }
 
-    handleSuccess(event) {
+    handleSavingJobSuccess(event) {
         var upsertedJobId = event.detail.id;
         var upsertedName = event.detail.fields.Name.value;
         this.updateAttributesToSelectedNode(upsertedJobId, upsertedName);
         this.selectedJobId = upsertedJobId;
-        this.showFormArea = false;
+        this.showJobFormArea = false;
         this.resetSelectedElements();
+        this.fireToastEvent(toastTitleSuccess, toastMsgJobSaved, 'success');
+    }
+
+    handleSavingStreamSuccess(event) {
+        this.streamId = event.detail.id;
+        this.showStreamFormArea = false;
         this.fireToastEvent(toastTitleSuccess, toastMsgJobSaved, 'success');
     }
 
@@ -609,8 +616,8 @@ export default class ProcessCreator extends LightningElement {
         return array.filter(el => el !== element);
     }
 
-    closeModal() {
-        this.showFormArea = !this.showFormArea;
+    closeJobModal() {
+        this.showJobFormArea = !this.showJobFormArea;
     }
 
     fireToastEvent(title, msg, variant) {

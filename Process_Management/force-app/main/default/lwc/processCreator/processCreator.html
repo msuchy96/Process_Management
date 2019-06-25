@@ -15,25 +15,51 @@
                 <svg class="d3" width="100%" height="100%" lwc:dom="manual"></svg>
             </div>
         </lightning-card>
-        <!-- modal start -->
-        <template if:true={showFormArea}>
+        <template if:true={showStreamFormArea}>
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <!-- modal header start -->
+                        <lightning-record-edit-form record-id={streamId} object-api-name="Stream__c" onsuccess={handleSavingStreamSuccess}>
+                            <header class="slds-modal__header">
+                                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Configuring Stream</h2>
+                            </header>
+                            <!-- modal body start -->
+                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                <lightning-messages></lightning-messages>
+                                <lightning-input-field field-name="Id"></lightning-input-field>
+                                <lightning-input-field required field-name="Name"></lightning-input-field>
+                                <lightning-input-field required field-name="Client__c"></lightning-input-field>
+                                <lightning-input-field required field-name="RecordTypeId"></lightning-input-field>
+                            </div>
+                            <!-- modal footer start-->
+                            <footer class="slds-modal__footer">
+                                <lightning-button class="slds-m-top_small" type="submit" label="Save">
+                                </lightning-button>
+                            </footer>
+                        </lightning-record-edit-form>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </template>
+        <!-- job modal start -->
+        <template if:true={showJobFormArea}>
             <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
                 <div class="slds-modal__container">
                     <!-- modal header start -->
-                    <lightning-record-edit-form record-id={selectedJobId} object-api-name="Job__c" onsuccess={handleSuccess}>
+                    <lightning-record-edit-form record-id={selectedJobId} object-api-name="Job__c" onsuccess={handleSavingJobSuccess}>
                         <header class="slds-modal__header">
-                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeJobModal}>
                                 <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
                                 <span class="slds-assistive-text">Close</span>
                             </button>
-                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Configuring Job</h2>
+                            <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Configuring Job</h2>
                         </header>
                         <!-- modal body start -->
-                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
                             <lightning-messages></lightning-messages>
                             <lightning-input-field field-name="Id"></lightning-input-field>
                             <lightning-input-field field-name="Name"></lightning-input-field>
-                            <lightning-input-field field-name="Assigned_To__c" value={assignId}></lightning-input-field>
+                            <lightning-input-field field-name="Assigned_To__c"></lightning-input-field>
                             <lightning-input-field disabled field-name="Stream__c" value={streamId} ></lightning-input-field>    
                         </div>
                         <!-- modal footer start-->
@@ -46,5 +72,5 @@
             </section>
             <div class="slds-backdrop slds-backdrop_open"></div>
         </template>
-        <!-- modal end -->
+        <!-- job modal end -->
     </template>
