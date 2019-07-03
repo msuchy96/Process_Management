@@ -32,6 +32,7 @@ import toastMsgTwoEdgesExist from '@salesforce/label/c.TST_MSG_JobHasTwoEdges';
 // Apex methods
 import deleteSelectedJob from '@salesforce/apex/ProcessCreatorController.deleteSelectedJob';
 import createConnectionBetweenJobs from '@salesforce/apex/ProcessCreatorController.createConnectionBetweenJobs';
+import saveStreamAsTemplate from '@salesforce/apex/ProcessCreatorController.saveStreamAsTemplate';
 
 export default class ProcessCreator extends LightningElement {
     d3Initialized = false;
@@ -597,13 +598,36 @@ export default class ProcessCreator extends LightningElement {
     handleSavingStreamSuccess(event) {
         this.streamId = event.detail.id;
         this.showStreamFormArea = false;
-        this.fireToastEvent(toastTitleSuccess, toastMsgJobSaved, 'success');
+        this.fireToastEvent(toastTitleSuccess, 'Stream saved!', 'success');
+    }
+
+    updateStreamNameValue(event) {
+        this.streamName = event.detail.value;
+    }
+
+    updateStreamClientValue(event) {
+        this.streamClient = event.detail.value;
+    }
+
+    valueValidation(variable) {
+        return (variable !== null && variable !== undefined && variable !== '');
     }
 
     submitTemplate(event) {
-        //TODO CREATE CUSTOM LOGIC TO CREATE TEMPLATE STREAM
-        console.log('test1: ' + this.streamName);
-        console.log('test2: ' + this.streamClient);
+        let streamClientToConnect = this.valueValidation(this.streamClient) ? this.streamClient.toString() : null;
+        saveStreamAsTemplate({streamNameSelection: this.streamName, streamClientId: streamClientToConnect})
+        .then(result => {
+            if(result.isSuccess) {
+                //TODO populate streamId and remove hardcodes
+                this.showStreamFormArea = false;
+                this.fireToastEvent(toastTitleSuccess, result.msg, 'success');
+            } else {
+               this.fireToastEvent(toastTitleError, result.msg, 'error');
+            }
+        })
+        .catch(error => {
+            this.fireToastEvent(toastTitleError, JSON.stringify(error), 'error');
+        });
     }
 
     updateAttributesToSelectedNode(jobId, upsertedName) {
