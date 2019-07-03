@@ -40,9 +40,12 @@ export default class ProcessCreator extends LightningElement {
     @api edgeModeEnable = false;
     @api configureJobEnable = false;
     @track selectedJobId;
-    @track streamId; //= 'a011t00000AOQy9AAH';
     @track assignId = '0051t000002KZfRAAW';
     @track showJobFormArea = false;
+
+    @track streamId;
+    @track streamName;
+    @track streamClient;
     @track showStreamFormArea = true;
 
     label = {
@@ -595,6 +598,12 @@ export default class ProcessCreator extends LightningElement {
         this.streamId = event.detail.id;
         this.showStreamFormArea = false;
         this.fireToastEvent(toastTitleSuccess, toastMsgJobSaved, 'success');
+    }
+
+    submitTemplate(event) {
+        //TODO CREATE CUSTOM LOGIC TO CREATE TEMPLATE STREAM
+        console.log('test1: ' + this.streamName);
+        console.log('test2: ' + this.streamClient);
     }
 
     updateAttributesToSelectedNode(jobId, upsertedName) {

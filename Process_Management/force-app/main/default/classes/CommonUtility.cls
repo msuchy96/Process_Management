@@ -31,6 +31,9 @@ global without sharing class CommonUtility {
     global static final String JOB_TYPE_STANDARD_TEMPLATE = 'Standard_Template';
     global static final String JOB_TYPE_FORK_TEMPLATE = 'Fork_Template';
 
+    // STREAM RECORD TYPES
+    global static final String STREAM_TYPE_STANDARD_TEMPLATE = 'Standard_Template';
+
     // JOB STATUS PICKLIST FIELD VALUES
     global static final String JOB_STATUS_TODO = 'TO DO';
     global static final String JOB_STATUS_INPROGRESS = 'IN PROGRESS';
