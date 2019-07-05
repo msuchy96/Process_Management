@@ -53,19 +53,11 @@
         <name>Time_Spent__c</name>
     </fields>
     <recordTypes>
-        <label><!-- Fork --></label>
-        <name>Fork</name>
-    </recordTypes>
-    <recordTypes>
-        <label><!-- Fork Template --></label>
-        <name>Fork_Template</name>
-    </recordTypes>
-    <recordTypes>
         <label><!-- Standard --></label>
         <name>Standard</name>
     </recordTypes>
     <recordTypes>
-        <label><!-- Standard Template --></label>
+        <label><!-- Template --></label>
         <name>Standard_Template</name>
     </recordTypes>
     <startsWith>Consonant</startsWith>

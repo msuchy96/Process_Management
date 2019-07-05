@@ -207,47 +207,6 @@
     <pluralLabel>Jobs</pluralLabel>
     <recordTypeTrackHistory>false</recordTypeTrackHistory>
     <recordTypes>
-        <fullName>Fork</fullName>
-        <active>true</active>
-        <compactLayoutAssignment>Job_Fork_Compact_Layout</compactLayoutAssignment>
-        <label>Fork</label>
-        <picklistValues>
-            <picklist>Status__c</picklist>
-            <values>
-                <fullName>DONE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN PROGRESS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TO DO</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-    </recordTypes>
-    <recordTypes>
-        <fullName>Fork_Template</fullName>
-        <active>true</active>
-        <label>Fork Template</label>
-        <picklistValues>
-            <picklist>Status__c</picklist>
-            <values>
-                <fullName>DONE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN PROGRESS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TO DO</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-    </recordTypes>
-    <recordTypes>
         <fullName>Standard</fullName>
         <active>true</active>
         <compactLayoutAssignment>Job_Compact_Layout</compactLayoutAssignment>
@@ -271,7 +230,7 @@
     <recordTypes>
         <fullName>Standard_Template</fullName>
         <active>true</active>
-        <label>Standard Template</label>
+        <label>Template</label>
         <picklistValues>
             <picklist>Status__c</picklist>
             <values>
