@@ -47,6 +47,7 @@ export default class ProcessCreator extends LightningElement {
     @track streamId;
     @track streamName;
     @track streamClient;
+    @track streamTemplate = false;
     @track showStreamFormArea = true;
 
     label = {
@@ -618,8 +619,9 @@ export default class ProcessCreator extends LightningElement {
         saveStreamAsTemplate({streamNameSelection: this.streamName, streamClientId: streamClientToConnect})
         .then(result => {
             if(result.isSuccess) {
-                //TODO populate streamId and remove hardcodes
+                this.streamId = JSON.parse(result.dataJSON);
                 this.showStreamFormArea = false;
+                this.streamTemplate = true;
                 this.fireToastEvent(toastTitleSuccess, result.msg, 'success');
             } else {
                this.fireToastEvent(toastTitleError, result.msg, 'error');

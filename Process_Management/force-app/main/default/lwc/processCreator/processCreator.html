@@ -27,17 +27,17 @@
                         
                             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
                                 <lightning-messages></lightning-messages>
-                                <lightning-input-field field-name="Id"></lightning-input-field>
+
                                 <lightning-input-field required field-name="Name" onchange={updateStreamNameValue}></lightning-input-field>
                                 <lightning-input-field required field-name="Client__c" onchange={updateStreamClientValue}></lightning-input-field>
                             </div>
                     
                             <footer class="slds-modal__footer buttonGroup">
                                     <div class="button">
-                                <lightning-button class="slds-m-top_small" type="submit" label="Save as Standard">
+                                <lightning-button class="slds-m-top_small" type="submit" label="Create Standard">
                                 </lightning-button> </div>
                                 <div class="button">
-                                <lightning-button class="slds-m-top_small" onclick={submitTemplate} label="Save as Template">
+                                <lightning-button class="slds-m-top_small" onclick={submitTemplate} label="Create Template">
                                 </lightning-button></div>
                             </footer>
                         </lightning-record-edit-form>
@@ -61,10 +61,14 @@
                         <!-- modal body start -->
                         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
                             <lightning-messages></lightning-messages>
-                            <lightning-input-field field-name="Id"></lightning-input-field>
                             <lightning-input-field field-name="Name"></lightning-input-field>
-                            <lightning-input-field field-name="Assigned_To__c"></lightning-input-field>
-                            <lightning-input-field disabled field-name="Stream__c" value={streamId} ></lightning-input-field>    
+                            <lightning-input-field disabled field-name="Stream__c" value={streamId} ></lightning-input-field>
+                            <lightning-input-field field-name="Time_Planned__c"></lightning-input-field>
+                            <div if:false={streamTemplate}>
+                                <lightning-input-field field-name="Assigned_To__c"></lightning-input-field>
+                                <lightning-input-field field-name="Time_Spent__c"></lightning-input-field>
+                                <lightning-input-field field-name="Due_Date__c"></lightning-input-field>
+                            </div>
                         </div>
                         <!-- modal footer start-->
                         <footer class="slds-modal__footer">

@@ -30,10 +30,11 @@ public with sharing class ProcessCreatorController {
     @AuraEnabled
     public static FrontResponseWrapper saveStreamAsTemplate(String streamNameSelection, String streamClientId){
         try {
-            insert new Stream__c(Name = streamNameSelection,
-                Client__c = streamClientId,
-                RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE));
-            return new FrontResponseWrapper(true, 'Stream saved!');
+            Stream__c streamToInsert =  new Stream__c(Name = streamNameSelection,
+                                                        Client__c = streamClientId,
+                                                        RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE));
+            insert streamToInsert;
+            return new FrontResponseWrapper(true, 'Stream saved!', JSON.serialize(streamToInsert.Id)); 
         } catch (Exception e) {
             System.debug('@@MacSuc1: ' + e.getMessage());
             return new FrontResponseWrapper(false, e.getMessage());
