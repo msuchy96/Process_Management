@@ -55,16 +55,6 @@
         <fields>Next_Job__c</fields>
         <label>Job Compact Layout</label>
     </compactLayouts>
-    <compactLayouts>
-        <fullName>Job_Fork_Compact_Layout</fullName>
-        <fields>Name</fields>
-        <fields>RecordTypeId</fields>
-        <fields>Status__c</fields>
-        <fields>Stream__c</fields>
-        <fields>Next_Job__c</fields>
-        <fields>Second_Next_Job__c</fields>
-        <label>Job Fork Compact Layout</label>
-    </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
