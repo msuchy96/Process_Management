@@ -20,8 +20,7 @@ public without sharing class DueDateIsComingBatch implements Schedulable, Databa
                 ' AND Assigned_To__r.Email != null' +
                 ' AND ( Status__c = \'' + CommonUtility.JOB_STATUS_TODO + '\'' +
                     ' OR Status__c = \'' + CommonUtility.JOB_STATUS_INPROGRESS + '\')' +
-                ' AND ( RecordTypeId = \'' + CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_STANDARD) + '\'' +
-                    ' OR RecordTypeId = \'' + CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_FORK) + '\')';
+                ' AND RecordTypeId = \'' + CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_STANDARD) + '\'';
 
         emailTemplate = [SELECT Id FROM EmailTemplate WHERE Name =: CommonUtility.EMAIL_NOTIFICATION_DUE_DATE_DEADLINE_TEMPLATE]; 
     }

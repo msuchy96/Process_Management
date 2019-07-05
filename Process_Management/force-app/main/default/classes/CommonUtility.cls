@@ -27,9 +27,7 @@ global without sharing class CommonUtility {
 
     // JOB RECORD TYPES
     global static final String JOB_TYPE_STANDARD = 'Standard';
-    global static final String JOB_TYPE_FORK = 'Fork';
     global static final String JOB_TYPE_STANDARD_TEMPLATE = 'Standard_Template';
-    global static final String JOB_TYPE_FORK_TEMPLATE = 'Fork_Template';
 
     // STREAM RECORD TYPES
     global static final String STREAM_TYPE_STANDARD_TEMPLATE = 'Standard_Template';
