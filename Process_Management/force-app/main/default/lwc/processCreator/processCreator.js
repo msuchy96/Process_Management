@@ -202,6 +202,7 @@ export default class ProcessCreator extends LightningElement {
                         curGraph.addEdge(curGraph.startNodeForEdge, secondSelectedCircle);
                         clearAndRedrawGraph();
                         fireToastEvent(toastTitleSuccess, result.msg, 'success');
+                        // TODO - update stream JSON
                     } else {
                         fireToastEvent(toastTitleError, result.msg, 'error');
                     }
@@ -507,6 +508,7 @@ export default class ProcessCreator extends LightningElement {
         this.graph.nodes = this.graph.nodes.filter(el => !el.selected);
         this.selectedJobId = null;
         this.graph.selectedJobId = null;
+        // TODO - update stream JSON
     }
 
     changeEdgeModeStatus() {
@@ -566,6 +568,7 @@ export default class ProcessCreator extends LightningElement {
 
         this.selectedJobId = null;
         this.graph.selectedJobId = null;
+        // TODO - update stream JSON
     }
 
     openForm() {
@@ -593,6 +596,7 @@ export default class ProcessCreator extends LightningElement {
         this.showJobFormArea = false;
         this.resetSelectedElements();
         this.fireToastEvent(toastTitleSuccess, toastMsgJobSaved, 'success');
+        // TODO - update stream JSON
     }
 
     handleSavingStreamSuccess(event) {
