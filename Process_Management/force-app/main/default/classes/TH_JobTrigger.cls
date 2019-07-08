@@ -1,9 +1,20 @@
 public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
 
     Map<Job__c, Decimal> jobsWithTimeReported;
+    Map<Id, List<Job__c>> jobsToCheckTemplate;
+    
+
+    public override void prepareBefore() {
+        jobsToCheckTemplate = new Map<Id, List<Job__c>>();
+    }
 
     public override void prepareAfter() {
         jobsWithTimeReported = new Map<Job__c, Decimal>();
+    }
+
+    public override void beforeInsert(List<SObject> newObjectsMap) {
+        List<Job__c> newJobsList = (List<Job__c>)newObjectsMap;
+        collectJobsToCheckTemplate(newJobsList);
     }
 
     public override void afterInsert(Map<Id, SObject> newObjectsMap) {
@@ -30,6 +41,18 @@ public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
         JobManager.updateRelatedJobs(oldObjectsMap.keySet());
     }
 
+    private void collectJobsToCheckTemplate(List<Job__c> jobsToCollectByStreamId) {
+        for(Job__c jobToCheck : jobsToCollectByStreamId) {
+            if(jobToCheck.Stream__c != null && jobToCheck.RecordTypeId != CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_STANDARD_TEMPLATE)) {
+                if(jobsToCheckTemplate.containsKey(jobToCheck.Stream__c)) {
+                    jobsToCheckTemplate.get(jobToCheck.Stream__c).add(jobToCheck);
+                } else {
+                    jobsToCheckTemplate.put(jobToCheck.Stream__c, new List<Job__c>{jobToCheck});
+                }
+            }
+        }
+    }
+
     private void checkReportedTimeChanges(Job__c oldJob, Job__c newJob) {
         if(
             newJob.Assigned_To__c != null
@@ -42,6 +65,10 @@ public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
     }
 
     public override void finish() {
+        if(jobsToCheckTemplate != null && !jobsToCheckTemplate.isEmpty()) {
+            JobManager.checkJobToTemplateIfTemplateStream(jobsToCheckTemplate);
+        }
+
         if(jobsWithTimeReported != null && !jobsWithTimeReported.isEmpty())
             TimeReportManager.createTimeReports(jobsWithTimeReported);
     }

@@ -41,7 +41,6 @@ export default class ProcessCreator extends LightningElement {
     @api edgeModeEnable = false;
     @api configureJobEnable = false;
     @track selectedJobId;
-    @track assignId = '0051t000002KZfRAAW';
     @track showJobFormArea = false;
 
     @track streamId;
