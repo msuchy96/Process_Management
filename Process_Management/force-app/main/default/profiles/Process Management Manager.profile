@@ -310,6 +310,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Stream__c.JSON_Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Stream__c.Number_Of_Jobs_Done__c</field>
         <readable>true</readable>
