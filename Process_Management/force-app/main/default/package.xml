@@ -65,7 +65,7 @@
         <name>EmailTemplate</name>
     </types>
     <types>
-        <members>Account_Record_Page</members>
+        <members>*</members>
         <name>FlexiPage</name>
     </types>
     <types>
