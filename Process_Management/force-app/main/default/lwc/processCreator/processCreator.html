@@ -64,9 +64,8 @@
                             <lightning-input-field field-name="Name"></lightning-input-field>
                             <lightning-input-field disabled field-name="Stream__c" value={streamId} ></lightning-input-field>
                             <lightning-input-field field-name="Time_Planned__c"></lightning-input-field>
+                            <lightning-input-field field-name="Assigned_To__c"></lightning-input-field>
                             <div if:false={streamTemplate}>
-                                <lightning-input-field field-name="Assigned_To__c"></lightning-input-field>
-                                <lightning-input-field field-name="Time_Spent__c"></lightning-input-field>
                                 <lightning-input-field field-name="Due_Date__c"></lightning-input-field>
                             </div>
                         </div>
