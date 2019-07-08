@@ -15,6 +15,104 @@
         <value>Record has pending approval.</value>
     </labels>
     <labels>
+        <fullName>BTN_DeleteElement</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BTN_DeleteElement</shortDescription>
+        <value>Delete selected element</value>
+    </labels>
+    <labels>
+        <fullName>BTN_EdgeMode</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BTN_EdgeMode</shortDescription>
+        <value>Building Edges</value>
+    </labels>
+    <labels>
+        <fullName>BTN_StreamCreator</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BTN_StreamCreator</shortDescription>
+        <value>Stream Creator</value>
+    </labels>
+    <labels>
+        <fullName>BTN_VariantNeutral</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BTN_VariantNeutral</shortDescription>
+        <value>neutral</value>
+    </labels>
+    <labels>
+        <fullName>BTN_VariantSuccess</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>BTN_VariantSuccess</shortDescription>
+        <value>success</value>
+    </labels>
+    <labels>
+        <fullName>D3_ErrorLoading</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>D3_ErrorLoading</shortDescription>
+        <value>Error loading D3 lib</value>
+    </labels>
+    <labels>
+        <fullName>TST_MSG_EdgeExist</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_EdgeExist</shortDescription>
+        <value>Edge already exist!</value>
+    </labels>
+    <labels>
+        <fullName>TST_MSG_JobHasTwoEdges</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_JobHasTwoEdges</shortDescription>
+        <value>This job already has two edges!</value>
+    </labels>
+    <labels>
+        <fullName>TST_MSG_JobSaved</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_JobSaved</shortDescription>
+        <value>Job successfully saved!</value>
+    </labels>
+    <labels>
+        <fullName>TST_MSG_JobsNotSaved</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_JobsNotSaved</shortDescription>
+        <value>Jobs are not saved!</value>
+    </labels>
+    <labels>
+        <fullName>TST_MSG_SameNode</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_SameNode</shortDescription>
+        <value>You can not create edge to the same node!</value>
+    </labels>
+    <labels>
+        <fullName>TST_TITLE_EdgeCreationNotPossible</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_TITLE_EdgeCreationNotPossible</shortDescription>
+        <value>Edge creation is not possible!</value>
+    </labels>
+    <labels>
+        <fullName>TST_TITLE_Error</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_TITLE_Error</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>TST_TITLE_Success</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_TITLE_Success</shortDescription>
+        <value>Success!</value>
+    </labels>
+    <labels>
         <fullName>Task_JobDeadlineDesc</fullName>
         <language>en_US</language>
         <protected>true</protected>

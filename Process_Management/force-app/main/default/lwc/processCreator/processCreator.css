@@ -1,0 +1,14 @@
+.buttonGroup {
+    display: flex; 
+    justify-content: space-evenly;
+    margin-bottom: 1%;
+}
+
+.svgArea {
+    height: 500px; 
+    border-style: dotted;
+    border-width: 2px; 
+    border-color: blue;
+    margin: 1%;
+}
+

@@ -10,8 +10,7 @@ public without sharing class ResetReminderSentBatch implements Schedulable, Data
                 'WHERE Reminder_Sent__c = true' +
                 ' AND ( Status__c = \'' + CommonUtility.JOB_STATUS_TODO + '\'' +
                     ' OR Status__c = \'' + CommonUtility.JOB_STATUS_INPROGRESS + '\')' +
-                ' AND ( RecordTypeId = \'' + CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_STANDARD) + '\'' +
-                    ' OR RecordTypeId = \'' + CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_FORK) + '\')';
+                ' AND RecordTypeId = \'' + CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_STANDARD) + '\'';
     }
 
     public Database.QueryLocator start(Database.BatchableContext BC) {
@@ -36,4 +35,3 @@ public without sharing class ResetReminderSentBatch implements Schedulable, Data
 		Database.executeBatch(new ResetReminderSentBatch(), 200);
     }
 }
-

@@ -3,6 +3,11 @@ global without sharing class CommonUtility {
     // Class for creating custom exceptions
     global class MyException extends Exception {}
 
+    @AuraEnabled(cacheable=true)
+    public static CommonUtility getAllConstants() {
+        return new CommonUtility();
+    }
+
     // SOBJECT API NAMES
     global static final String SOBJECT_APINAME_ACCOUNT = 'Account';
     global static final String SOBJECT_APINAME_USER = 'User';
@@ -22,9 +27,10 @@ global without sharing class CommonUtility {
 
     // JOB RECORD TYPES
     global static final String JOB_TYPE_STANDARD = 'Standard';
-    global static final String JOB_TYPE_FORK = 'Fork';
     global static final String JOB_TYPE_STANDARD_TEMPLATE = 'Standard_Template';
-    global static final String JOB_TYPE_FORK_TEMPLATE = 'Fork_Template';
+
+    // STREAM RECORD TYPES
+    global static final String STREAM_TYPE_STANDARD_TEMPLATE = 'Standard_Template';
 
     // JOB STATUS PICKLIST FIELD VALUES
     global static final String JOB_STATUS_TODO = 'TO DO';
@@ -51,6 +57,10 @@ global without sharing class CommonUtility {
 
     //PROFILE NAMES
     global static final String PROFILE_SYSTEM_ADMINISTRATOR = 'System Administrator';
+    global static Profile adminProfile;
+    global static Id getAdminProfileId() {
+        return adminProfile != null ? adminProfile.Id : [SELECT Id FROM Profile WHERE Name = :PROFILE_SYSTEM_ADMINISTRATOR LIMIT 1].Id;
+    }
 
     //APPROVAL PROCCESS
     global static final String APPROVAL_PROCESS_NAME_CHANGING_DUE_DATE = 'ChangingDueDate';
@@ -58,11 +68,13 @@ global without sharing class CommonUtility {
     //NOTIFICATION EMAIL
     global static final String EMAIL_NOTIFICATION_SALESFORCE_SENDER = 'Salesforce Notification';
     global static final String EMAIL_NOTIFICATION_DUE_DATE_DEADLINE_TEMPLATE = 'DueDateDeadline';
+    
+    //BUTTON VARIANTS
+    @AuraEnabled
+    public final String BUTTON_VARIANT_NEUTRAL = 'neutral';
+    @AuraEnabled
+    public final String BUTTON_VARIANT_SUCCESS = 'success';
 
-    global static Profile adminProfile;
-    global static Id getAdminProfileId() {
-        return adminProfile != null ? adminProfile.Id : [SELECT Id FROM Profile WHERE Name = :PROFILE_SYSTEM_ADMINISTRATOR LIMIT 1].Id;
-    }
 
     /* map, used to preserve different mechanisms from retrieving (quering) 
         the same record types ids for more than once */
