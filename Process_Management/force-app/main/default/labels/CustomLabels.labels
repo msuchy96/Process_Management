@@ -57,11 +57,25 @@
         <value>Error loading D3 lib</value>
     </labels>
     <labels>
+        <fullName>TST_MSG_EdgeCreated</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_EdgeCreated</shortDescription>
+        <value>Edge successfully created!</value>
+    </labels>
+    <labels>
         <fullName>TST_MSG_EdgeExist</fullName>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>TST_MSG_EdgeExist</shortDescription>
         <value>Edge already exist!</value>
+    </labels>
+    <labels>
+        <fullName>TST_MSG_JobDeleted</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_JobDeleted</shortDescription>
+        <value>Job successfully deleted!</value>
     </labels>
     <labels>
         <fullName>TST_MSG_JobHasTwoEdges</fullName>

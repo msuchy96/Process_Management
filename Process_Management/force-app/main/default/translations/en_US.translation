@@ -33,6 +33,46 @@
         <name>D3_ErrorLoading</name>
     </customLabels>
     <customLabels>
+        <label><!-- TST_MSG_EdgeCreated --></label>
+        <name>TST_MSG_EdgeCreated</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TST_MSG_EdgeExist --></label>
+        <name>TST_MSG_EdgeExist</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TST_MSG_JobDeleted --></label>
+        <name>TST_MSG_JobDeleted</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TST_MSG_JobHasTwoEdges --></label>
+        <name>TST_MSG_JobHasTwoEdges</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TST_MSG_JobSaved --></label>
+        <name>TST_MSG_JobSaved</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TST_MSG_JobsNotSaved --></label>
+        <name>TST_MSG_JobsNotSaved</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TST_MSG_SameNode --></label>
+        <name>TST_MSG_SameNode</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TST_TITLE_EdgeCreationNotPossible --></label>
+        <name>TST_TITLE_EdgeCreationNotPossible</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TST_TITLE_Error --></label>
+        <name>TST_TITLE_Error</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TST_TITLE_Success --></label>
+        <name>TST_TITLE_Success</name>
+    </customLabels>
+    <customLabels>
         <label><!-- Task_JobDeadlineDesc --></label>
         <name>Task_JobDeadlineDesc</name>
     </customLabels>

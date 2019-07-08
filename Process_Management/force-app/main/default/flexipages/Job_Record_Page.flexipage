@@ -120,6 +120,13 @@
     <flexiPageRegions>
         <componentInstances>
             <componentName>submitDueDateForApproval</componentName>
+            <visibilityRule>
+                <criteria>
+                    <leftValue>{!Record.RecordType.Name}</leftValue>
+                    <operator>EQUAL</operator>
+                    <rightValue>Standard</rightValue>
+                </criteria>
+            </visibilityRule>
         </componentInstances>
         <componentInstances>
             <componentInstanceProperties>
