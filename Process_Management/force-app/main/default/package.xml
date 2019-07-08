@@ -35,7 +35,6 @@
         <members>Event</members>
         <members>Job__c</members>
         <members>Stream__c</members>
-        <members>Task</members>
         <members>Time_Report__c</members>
         <members>User</members>
         <name>CustomObject</name>
@@ -46,7 +45,6 @@
         <members>Client__c-en_US</members>
         <members>Event-en_US</members>
         <members>Job__c-en_US</members>
-        <members>Task-en_US</members>
         <members>Time_Report__c-en_US</members>
         <members>User-en_US</members>
         <name>CustomObjectTranslation</name>
