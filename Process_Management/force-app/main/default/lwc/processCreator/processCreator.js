@@ -33,6 +33,7 @@ import toastMsgTwoEdgesExist from '@salesforce/label/c.TST_MSG_JobHasTwoEdges';
 import deleteSelectedJob from '@salesforce/apex/ProcessCreatorController.deleteSelectedJob';
 import createConnectionBetweenJobs from '@salesforce/apex/ProcessCreatorController.createConnectionBetweenJobs';
 import saveStreamAsTemplate from '@salesforce/apex/ProcessCreatorController.saveStreamAsTemplate';
+import updateStreamJSONDescription from '@salesforce/apex/ProcessCreatorController.updateStreamJSONDescription';
 
 export default class ProcessCreator extends LightningElement {
     d3Initialized = false;
@@ -202,7 +203,17 @@ export default class ProcessCreator extends LightningElement {
                         curGraph.addEdge(curGraph.startNodeForEdge, secondSelectedCircle);
                         clearAndRedrawGraph();
                         fireToastEvent(toastTitleSuccess, result.msg, 'success');
-                        // TODO - update stream JSON
+                        updateStreamJSONDescription({jsonStream: JSON.stringify(curGraph), graphId: curGraph.streamId})
+                        .then(result => {
+                            if(result.isSuccess) {
+                               fireToastEvent('KOMUNIKAT1', result.msg, 'success');
+                            } else {
+                               fireToastEvent('KOMUNIKAT2', result.msg, 'error');
+                            }
+                        })
+                        .catch(error => {
+                            this.fireToastEvent('KOMUNIKAT3', JSON.stringify(error), 'error');
+                        });
                     } else {
                         fireToastEvent(toastTitleError, result.msg, 'error');
                     }
@@ -508,7 +519,7 @@ export default class ProcessCreator extends LightningElement {
         this.graph.nodes = this.graph.nodes.filter(el => !el.selected);
         this.selectedJobId = null;
         this.graph.selectedJobId = null;
-        // TODO - update stream JSON
+        this.updateStreamJSON(this.graph);
     }
 
     changeEdgeModeStatus() {
@@ -568,7 +579,7 @@ export default class ProcessCreator extends LightningElement {
 
         this.selectedJobId = null;
         this.graph.selectedJobId = null;
-        // TODO - update stream JSON
+        this.updateStreamJSON(this.graph);
     }
 
     openForm() {
@@ -596,17 +607,32 @@ export default class ProcessCreator extends LightningElement {
         this.showJobFormArea = false;
         this.resetSelectedElements();
         this.fireToastEvent(toastTitleSuccess, toastMsgJobSaved, 'success');
-        // TODO - update stream JSON
+        this.updateStreamJSON(this.graph);
     }
 
     handleSavingStreamSuccess(event) {
         this.streamId = event.detail.id;
+        this.graph.streamId = this.streamId;
         this.showStreamFormArea = false;
         this.fireToastEvent(toastTitleSuccess, 'Stream saved!', 'success');
     }
 
     updateStreamNameValue(event) {
         this.streamName = event.detail.value;
+    }
+
+    updateStreamJSON(graph) {
+        updateStreamJSONDescription({jsonStream: JSON.stringify(graph), graphId: graph.streamId})
+        .then(result => {
+            if(result.isSuccess) {
+                this.fireToastEvent('KOMUNIKAT1', result.msg, 'success');
+            } else {
+                this.fireToastEvent('KOMUNIKAT2', result.msg, 'error');
+            }
+        })
+        .catch(error => {
+            this.fireToastEvent('KOMUNIKAT3', JSON.stringify(error), 'error');
+        });
     }
 
     updateStreamClientValue(event) {

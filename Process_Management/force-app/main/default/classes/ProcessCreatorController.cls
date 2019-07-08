@@ -28,7 +28,7 @@ public with sharing class ProcessCreatorController {
     }
 
     @AuraEnabled
-    public static FrontResponseWrapper saveStreamAsTemplate(String streamNameSelection, String streamClientId){
+    public static FrontResponseWrapper saveStreamAsTemplate(String streamNameSelection, String streamClientId) {
         try {
             Stream__c streamToInsert =  new Stream__c(Name = streamNameSelection,
                                                         Client__c = streamClientId,
@@ -36,7 +36,16 @@ public with sharing class ProcessCreatorController {
             insert streamToInsert;
             return new FrontResponseWrapper(true, 'Stream saved!', JSON.serialize(streamToInsert.Id)); 
         } catch (Exception e) {
-            System.debug('@@MacSuc1: ' + e.getMessage());
+            return new FrontResponseWrapper(false, e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static FrontResponseWrapper updateStreamJSONDescription(String jsonStream, String graphId) {
+        try {
+            update new Stream__c(Id = graphId, JSON_Description__c = jsonStream);
+            return new FrontResponseWrapper(true, 'Stream updated!'); 
+        } catch (Exception e) {
             return new FrontResponseWrapper(false, e.getMessage());
         }
     }

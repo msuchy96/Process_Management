@@ -13,6 +13,7 @@ class Graph {
         this.startNodeForEdge = null;
         this.edgeMode = false;
         this.selectedJobId = null;
+        this.streamId = null;
     }
 }
 
