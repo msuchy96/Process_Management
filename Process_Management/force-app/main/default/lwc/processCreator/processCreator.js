@@ -41,6 +41,7 @@ export default class ProcessCreator extends LightningElement {
     @api configureJobVariant = buttonVariantNeutral;
     @api edgeModeEnable = false;
     @api configureJobEnable = false;
+    @api recordId;
     @track selectedJobId;
     @track showJobFormArea = false;
 
@@ -88,6 +89,7 @@ export default class ProcessCreator extends LightningElement {
         var curGraph = this.graph = new Graph(nodes, edges);
         defineDefaults();
         clickBehaviour();
+        console.log('Test recordId is: ' + this.recordId);
 
         function clickBehaviour() {
             svg.on('click', function () {
