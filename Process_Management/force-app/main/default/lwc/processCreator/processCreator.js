@@ -42,17 +42,16 @@ export default class ProcessCreator extends LightningElement {
     @api edgeModeEnable = false;
     @api configureJobEnable = false;
     @api recordId;
+
     @track selectedJobId;
     @track showJobFormArea = false;
+    @track cardTitle = streamCreator;
 
-    @track streamId;
     @track streamName;
     @track streamClient;
     @track streamTemplate = false;
-    @track showStreamFormArea = true;
 
     label = {
-        streamCreator,
         deleteSelectedElement,
         edgeMode
     };
@@ -89,7 +88,6 @@ export default class ProcessCreator extends LightningElement {
         var curGraph = this.graph = new Graph(nodes, edges);
         defineDefaults();
         clickBehaviour();
-        console.log('Test recordId is: ' + this.recordId);
 
         function clickBehaviour() {
             svg.on('click', function () {
@@ -613,14 +611,14 @@ export default class ProcessCreator extends LightningElement {
     }
 
     handleSavingStreamSuccess(event) {
-        this.streamId = event.detail.id;
-        this.graph.streamId = this.streamId;
-        this.showStreamFormArea = false;
+        this.recordId = event.detail.id;
+        this.graph.streamId = this.recordId;
         this.fireToastEvent(toastTitleSuccess, 'Stream saved!', 'success');
     }
 
     updateStreamNameValue(event) {
         this.streamName = event.detail.value;
+        this.cardTitle = streamCreator + ': ' + this.streamName;
     }
 
     updateStreamJSON(graph) {
@@ -650,8 +648,7 @@ export default class ProcessCreator extends LightningElement {
         saveStreamAsTemplate({streamNameSelection: this.streamName, streamClientId: streamClientToConnect})
         .then(result => {
             if(result.isSuccess) {
-                this.streamId = JSON.parse(result.dataJSON);
-                this.showStreamFormArea = false;
+                this.graph.streamId = this.recordId = JSON.parse(result.dataJSON);
                 this.streamTemplate = true;
                 this.fireToastEvent(toastTitleSuccess, result.msg, 'success');
             } else {
