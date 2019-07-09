@@ -34,7 +34,7 @@ public with sharing class ProcessCreatorController {
                                                         Client__c = streamClientId,
                                                         RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE));
             insert streamToInsert;
-            return new FrontResponseWrapper(true, 'Stream saved!', JSON.serialize(streamToInsert.Id)); 
+            return new FrontResponseWrapper(true, Label.TST_MSG_StreamSaved, JSON.serialize(streamToInsert.Id)); 
         } catch (Exception e) {
             return new FrontResponseWrapper(false, e.getMessage());
         }
@@ -44,7 +44,7 @@ public with sharing class ProcessCreatorController {
     public static FrontResponseWrapper updateStreamJSONDescription(String jsonStream, String graphId) {
         try {
             update new Stream__c(Id = graphId, JSON_Description__c = jsonStream);
-            return new FrontResponseWrapper(true, 'Stream updated!'); 
+            return new FrontResponseWrapper(true, Label.TST_MSG_StreamSaved); 
         } catch (Exception e) {
             return new FrontResponseWrapper(false, e.getMessage());
         }

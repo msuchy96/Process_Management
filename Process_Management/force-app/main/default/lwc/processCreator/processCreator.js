@@ -206,13 +206,13 @@ export default class ProcessCreator extends LightningElement {
                         updateStreamJSONDescription({jsonStream: JSON.stringify(curGraph), graphId: curGraph.streamId})
                         .then(result => {
                             if(result.isSuccess) {
-                               fireToastEvent('KOMUNIKAT1', result.msg, 'success');
+                               fireToastEvent(toastTitleSuccess, result.msg, 'success');
                             } else {
-                               fireToastEvent('KOMUNIKAT2', result.msg, 'error');
+                               fireToastEvent(toastTitleError, result.msg, 'error');
                             }
                         })
                         .catch(error => {
-                            this.fireToastEvent('KOMUNIKAT3', JSON.stringify(error), 'error');
+                            this.fireToastEvent(toastTitleError, JSON.stringify(error), 'error');
                         });
                     } else {
                         fireToastEvent(toastTitleError, result.msg, 'error');
