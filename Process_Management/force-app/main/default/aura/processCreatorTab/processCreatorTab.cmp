@@ -1,4 +1,4 @@
-<aura:component implements="force:appHostable, force:lightningQuickAction, force:hasRecordId, lightning:actionOverride" >
+<aura:component implements="force:appHostable,force:lightningQuickAction,force:hasRecordId,lightning:actionOverride" >
     <ltng:require styles="{!$Resource.popupCSS}"/>
     <c:processCreator recordId="{!v.recordId}"/>
 </aura:component>

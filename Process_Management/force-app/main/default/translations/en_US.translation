@@ -61,6 +61,10 @@
         <name>TST_MSG_SameNode</name>
     </customLabels>
     <customLabels>
+        <label><!-- TST_MSG_StreamSaved --></label>
+        <name>TST_MSG_StreamSaved</name>
+    </customLabels>
+    <customLabels>
         <label><!-- TST_TITLE_EdgeCreationNotPossible --></label>
         <name>TST_TITLE_EdgeCreationNotPossible</name>
     </customLabels>
