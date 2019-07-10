@@ -1,12 +1,12 @@
 class Edge {
-    constructor(nodeStart, nodeEnd) {
+    constructor(nodeStart, nodeEnd, selected = false) {
         console.log('new Edge:');
         console.log('nodeStart:' + JSON.stringify(nodeStart));
         console.log('nodeEnd:' + JSON.stringify(nodeEnd));
 
         this.nodeStart = nodeStart;
         this.nodeEnd = nodeEnd;
-        this.selected = false; 
+        this.selected = selected; 
     }
 }
 

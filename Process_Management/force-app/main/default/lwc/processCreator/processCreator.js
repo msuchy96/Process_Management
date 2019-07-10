@@ -12,6 +12,8 @@ import {
 } from 'lightning/platformResourceLoader';
 import D3 from '@salesforce/resourceUrl/d3';
 import Graph from './Graph';
+import Node from './Node';
+import Edge from './Edge';
 
 // Import custom labels
 import errorLoadingMsg from '@salesforce/label/c.D3_ErrorLoading';
@@ -34,6 +36,7 @@ import deleteSelectedJob from '@salesforce/apex/ProcessCreatorController.deleteS
 import createConnectionBetweenJobs from '@salesforce/apex/ProcessCreatorController.createConnectionBetweenJobs';
 import saveStreamAsTemplate from '@salesforce/apex/ProcessCreatorController.saveStreamAsTemplate';
 import updateStreamJSONDescription from '@salesforce/apex/ProcessCreatorController.updateStreamJSONDescription';
+import retrieveJSONStreamDescription from '@salesforce/apex/ProcessCreatorController.retrieveJSONStreamDescription';
 
 export default class ProcessCreator extends LightningElement {
     d3Initialized = false;
@@ -83,11 +86,40 @@ export default class ProcessCreator extends LightningElement {
         svgWidth = parseInt(svgWidth.substring(0, svgWidth.length-2), 10);
         svgHeight = parseInt(svgHeight.substring(0, svgHeight.length-2), 10);
 
-        var nodes = [];
-        var edges = [];
-        var curGraph = this.graph = new Graph(nodes, edges);
+        var curGraph = null;
         defineDefaults();
-        clickBehaviour();
+        if(this.recordId) {
+            retrieveJSONStreamDescription({streamId: this.recordId})
+            .then(result => {
+                curGraph = this.graph = prepareGraphFromJSON(result.dataJSON);
+                clickBehaviour();
+                clearAndRedrawGraph();
+            })
+            .catch(error => {
+                fireToastEvent(toastTitleError, JSON.stringify(error), 'error');
+            });
+        } else {
+            var nodes = [];
+            var edges = [];
+            curGraph = this.graph = new Graph(nodes, edges);
+            clickBehaviour();
+        }
+
+        function prepareGraphFromJSON(dataJSON) {
+            let parsedGraphFromJSON = JSON.parse(dataJSON);
+            let tempNodes = [];
+            let tempEdges = [];
+            let tempNodesMap = new Map();
+            parsedGraphFromJSON.nodes.forEach(function (node) {
+                let tempNode = new Node(node.x_pos, node.y_pos, node.edgeCounter, node.selected, node.jobId, node.Name)
+                tempNodes.push(tempNode);
+                tempNodesMap.set(tempNode.jobId, tempNode);
+            });
+            parsedGraphFromJSON.edges.forEach(function (edge) {
+                tempEdges.push(new Edge(tempNodesMap.get(edge.nodeStart.jobId), tempNodesMap.get(edge.nodeEnd.jobId), edge.selected));
+            });
+            return new Graph(tempNodes, tempEdges, parsedGraphFromJSON.numberOfNodes, parsedGraphFromJSON.numberOfEdges, parsedGraphFromJSON.streamId);
+        }
 
         function clickBehaviour() {
             svg.on('click', function () {
@@ -203,7 +235,7 @@ export default class ProcessCreator extends LightningElement {
                         curGraph.addEdge(curGraph.startNodeForEdge, secondSelectedCircle);
                         clearAndRedrawGraph();
                         fireToastEvent(toastTitleSuccess, result.msg, 'success');
-                        updateStreamJSONDescription({jsonStream: JSON.stringify(curGraph), graphId: curGraph.streamId})
+                        updateStreamJSONDescription({jsonStream: JSON.stringify(curGraph), streamId: curGraph.streamId})
                         .then(result => {
                             if(result.isSuccess) {
                                fireToastEvent(toastTitleSuccess, result.msg, 'success');
@@ -539,21 +571,18 @@ export default class ProcessCreator extends LightningElement {
                     return d.consts.classNotSelected;
                 });
         });
-
         svg.selectAll("circle").each(function () {
             d3.select(this)
                 .style("fill", function (d) {
                     return d.jobId === '' ? d.consts.standardColor : d.consts.savedColor;
                 });
         });
-
         svg.selectAll("line").each(function () {
             d3.select(this)
                 .style("stroke", function (d) {
                     return d.consts.standardColor;
                 });
         });
-
         svg.selectAll("text").each(function () {
             d3.select(this)
                 .attr("x", function(d) {
@@ -576,7 +605,6 @@ export default class ProcessCreator extends LightningElement {
                     return d.consts.labelFill;
                 });
         });
-
         this.selectedJobId = null;
         this.graph.selectedJobId = null;
         this.updateStreamJSON(this.graph);
@@ -622,7 +650,7 @@ export default class ProcessCreator extends LightningElement {
     }
 
     updateStreamJSON(graph) {
-        updateStreamJSONDescription({jsonStream: JSON.stringify(graph), graphId: graph.streamId})
+        updateStreamJSONDescription({jsonStream: JSON.stringify(graph), streamId: graph.streamId})
         .then(result => {
             if(result.isSuccess) {
                 this.fireToastEvent('KOMUNIKAT1', result.msg, 'success');

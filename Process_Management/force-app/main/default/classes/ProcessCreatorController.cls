@@ -41,12 +41,18 @@ public with sharing class ProcessCreatorController {
     }
 
     @AuraEnabled
-    public static FrontResponseWrapper updateStreamJSONDescription(String jsonStream, String graphId) {
+    public static FrontResponseWrapper updateStreamJSONDescription(String jsonStream, String streamId) {
         try {
-            update new Stream__c(Id = graphId, JSON_Description__c = jsonStream);
+            update new Stream__c(Id = streamId, JSON_Description__c = jsonStream);
             return new FrontResponseWrapper(true, Label.TST_MSG_StreamSaved); 
         } catch (Exception e) {
             return new FrontResponseWrapper(false, e.getMessage());
         }
+    }
+
+    @AuraEnabled
+    public static FrontResponseWrapper retrieveJSONStreamDescription(String streamId) {
+        String jsonDesc = [SELECT Id, JSON_Description__c FROM Stream__c WHERE Id =: streamId].JSON_Description__c;
+        return new FrontResponseWrapper(true, 'JSON Retrieved', jsonDesc);
     }
 }

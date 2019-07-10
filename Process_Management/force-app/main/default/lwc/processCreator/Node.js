@@ -1,12 +1,12 @@
 class Node {
-    constructor(x, y) {
+    constructor(x, y, edgeCounter = 0, selected = false, jobId = '', Name = '') {
         console.log('new Node:  ' + x + ' ' + y);
         this.x_pos = x;
         this.y_pos = y;
-        this.edgeCounter = 0;
-        this.selected = false;
-        this.jobId = '';
-        this.Name = '';
+        this.edgeCounter = edgeCounter;
+        this.selected = selected;
+        this.jobId = jobId;
+        this.Name = Name;
     }
 }
 
