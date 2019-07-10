@@ -119,7 +119,7 @@ export default class ProcessCreator extends LightningElement {
             parsedGraphFromJSON.edges.forEach(function (edge) {
                 tempEdges.push(new Edge(tempNodesMap.get(edge.nodeStart.jobId), tempNodesMap.get(edge.nodeEnd.jobId), edge.selected));
             });
-            return new Graph(tempNodes, tempEdges, parsedGraphFromJSON.numberOfNodes, parsedGraphFromJSON.numberOfEdges, parsedGraphFromJSON.streamId);
+            return new Graph(tempNodes, tempEdges, parsedGraphFromJSON.streamId);
         }
 
         function clickBehaviour() {
@@ -237,7 +237,7 @@ export default class ProcessCreator extends LightningElement {
                         updateStreamJSONDescription({jsonStream: JSON.stringify(curGraph), streamId: curGraph.streamId})
                         .then(result => {
                             if(result.isSuccess) {
-                               fireToastEvent(toastTitleSuccess, result.msg, 'success');
+                               console.log(result.msg);
                             } else {
                                fireToastEvent(toastTitleError, result.msg, 'error');
                             }
@@ -520,6 +520,7 @@ export default class ProcessCreator extends LightningElement {
                 if(result.isSuccess) {
                     this.fireToastEvent(toastTitleSuccess, result.msg, 'success');
                     this.removeNodeFromSVG();
+                    this.updateStreamJSON(this.graph);
                 } else {
                     this.fireToastEvent(toastTitleError, result.msg, 'error');
                 }
@@ -529,6 +530,7 @@ export default class ProcessCreator extends LightningElement {
             });
         } else {
             this.removeNodeFromSVG();
+            this.updateStreamJSON(this.graph);
         }
     }
 
@@ -604,7 +606,6 @@ export default class ProcessCreator extends LightningElement {
         });
         this.selectedJobId = null;
         this.graph.selectedJobId = null;
-        this.updateStreamJSON(this.graph);
     }
 
     openForm() {
@@ -650,7 +651,7 @@ export default class ProcessCreator extends LightningElement {
         updateStreamJSONDescription({jsonStream: JSON.stringify(graph), streamId: graph.streamId})
         .then(result => {
             if(result.isSuccess) {
-                this.fireToastEvent(toastTitleSuccess, result.msg, 'success');
+                console.log(result.msg);
             } else {
                 this.fireToastEvent(toastTitleSuccess, result.msg, 'error');
             }
