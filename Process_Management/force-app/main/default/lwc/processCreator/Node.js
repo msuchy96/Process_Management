@@ -1,6 +1,5 @@
 class Node {
     constructor(x, y, edgeCounter = 0, selected = false, jobId = '', Name = '') {
-        console.log('new Node:  ' + x + ' ' + y);
         this.x_pos = x;
         this.y_pos = y;
         this.edgeCounter = edgeCounter;
