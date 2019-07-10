@@ -234,17 +234,7 @@ export default class ProcessCreator extends LightningElement {
                         curGraph.addEdge(curGraph.startNodeForEdge, secondSelectedCircle);
                         clearAndRedrawGraph();
                         fireToastEvent(toastTitleSuccess, result.msg, 'success');
-                        updateStreamJSONDescription({jsonStream: JSON.stringify(curGraph), streamId: curGraph.streamId})
-                        .then(result => {
-                            if(result.isSuccess) {
-                               console.log(result.msg);
-                            } else {
-                               fireToastEvent(toastTitleError, result.msg, 'error');
-                            }
-                        })
-                        .catch(error => {
-                            this.fireToastEvent(toastTitleError, JSON.stringify(error), 'error');
-                        });
+                        updateStreamJSON(curGraph);
                     } else {
                         fireToastEvent(toastTitleError, result.msg, 'error');
                     }
@@ -359,6 +349,7 @@ export default class ProcessCreator extends LightningElement {
 
         function dragended() {
             d3.select(this).classed("active", false);
+            updateStreamJSON(curGraph);
         }
 
         function deselectAllNodes() {
@@ -498,6 +489,20 @@ export default class ProcessCreator extends LightningElement {
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "15px")
                 .attr("fill", "black");
+        }
+
+        function updateStreamJSON(graph) {
+            updateStreamJSONDescription({jsonStream: JSON.stringify(graph), streamId: graph.streamId})
+            .then(result => {
+                if(result.isSuccess) {
+                    console.log(result.msg);
+                } else {
+                    this.fireToastEvent(toastTitleSuccess, result.msg, 'error');
+                }
+            })
+            .catch(error => {
+                this.fireToastEvent(toastTitleError, JSON.stringify(error), 'error');
+            });
         }
 
         function fireToastEvent(title, msg, variant) {
