@@ -44,7 +44,7 @@ public with sharing class ProcessCreatorController {
     public static FrontResponseWrapper updateStreamJSONDescription(String jsonStream, String streamId) {
         try {
             update new Stream__c(Id = streamId, JSON_Description__c = jsonStream);
-            return new FrontResponseWrapper(true, Label.TST_MSG_StreamSaved); 
+            return new FrontResponseWrapper(true, Label.TST_MSG_StreamUpdated); 
         } catch (Exception e) {
             return new FrontResponseWrapper(false, e.getMessage());
         }

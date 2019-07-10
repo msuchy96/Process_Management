@@ -26,6 +26,7 @@ import toastTitleSuccess from '@salesforce/label/c.TST_TITLE_Success';
 import toastTitleError from '@salesforce/label/c.TST_TITLE_Error';
 import toastTitleNotPossible from '@salesforce/label/c.TST_TITLE_EdgeCreationNotPossible';
 import toastMsgJobSaved from '@salesforce/label/c.TST_MSG_JobSaved';
+import toastMsgStreamSaved from '@salesforce/label/c.TST_MSG_StreamSaved';
 import toastMsgJobNotSaved from '@salesforce/label/c.TST_MSG_JobsNotSaved';
 import toastMsgSameNode from '@salesforce/label/c.TST_MSG_SameNode';
 import toastMsgEdgeExist from '@salesforce/label/c.TST_MSG_EdgeExist';
@@ -150,7 +151,6 @@ export default class ProcessCreator extends LightningElement {
         function selectNode() {
             d3.event.stopPropagation();
             var clickedCircle = this;
-            console.log('selected node  ' + JSON.stringify(clickedCircle));
             curGraph.selectedJobId = null;
             if (curGraph.edgeMode) {
                 if (!valueValidation(curGraph.startNodeForEdge)) {
@@ -223,7 +223,6 @@ export default class ProcessCreator extends LightningElement {
             }
 
             function createEdge() {
-                console.log('create Edge to the : ' + JSON.stringify(clickedCircle));
                 var secondSelectedCircle = null;
                 d3.select(clickedCircle).attr("class", function (d) { 
                     secondSelectedCircle = d; 
@@ -297,7 +296,6 @@ export default class ProcessCreator extends LightningElement {
         function selectEdge() {
             d3.event.stopPropagation();
             var clickedEdge = this;
-            console.log('selected edge  ' + JSON.stringify(clickedEdge));
             if(!curGraph.edgeMode) {
                 svg.selectAll("line").each(function () {
                     var currEdge = this;
@@ -515,7 +513,6 @@ export default class ProcessCreator extends LightningElement {
     }
 
     deleteSelectedElement() {
-        console.log('selected job id to deletion: ' + this.graph.selectedJobId);
         this.selectedJobId = this.graph.selectedJobId;
         if(this.selectedJobId !== '' && this.selectedJobId !== undefined && this.selectedJobId !== null) {
             deleteSelectedJob({jobId: this.selectedJobId})
@@ -641,7 +638,7 @@ export default class ProcessCreator extends LightningElement {
     handleSavingStreamSuccess(event) {
         this.recordId = event.detail.id;
         this.graph.streamId = this.recordId;
-        this.fireToastEvent(toastTitleSuccess, 'Stream saved!', 'success');
+        this.fireToastEvent(toastTitleSuccess, toastMsgStreamSaved, 'success');
     }
 
     updateStreamNameValue(event) {
@@ -653,13 +650,13 @@ export default class ProcessCreator extends LightningElement {
         updateStreamJSONDescription({jsonStream: JSON.stringify(graph), streamId: graph.streamId})
         .then(result => {
             if(result.isSuccess) {
-                this.fireToastEvent('KOMUNIKAT1', result.msg, 'success');
+                this.fireToastEvent(toastTitleSuccess, result.msg, 'success');
             } else {
-                this.fireToastEvent('KOMUNIKAT2', result.msg, 'error');
+                this.fireToastEvent(toastTitleSuccess, result.msg, 'error');
             }
         })
         .catch(error => {
-            this.fireToastEvent('KOMUNIKAT3', JSON.stringify(error), 'error');
+            this.fireToastEvent(toastTitleError, JSON.stringify(error), 'error');
         });
     }
 
