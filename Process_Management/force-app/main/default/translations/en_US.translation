@@ -65,6 +65,10 @@
         <name>TST_MSG_StreamSaved</name>
     </customLabels>
     <customLabels>
+        <label><!-- TST_MSG_StreamUpdated --></label>
+        <name>TST_MSG_StreamUpdated</name>
+    </customLabels>
+    <customLabels>
         <label><!-- TST_TITLE_EdgeCreationNotPossible --></label>
         <name>TST_TITLE_EdgeCreationNotPossible</name>
     </customLabels>
