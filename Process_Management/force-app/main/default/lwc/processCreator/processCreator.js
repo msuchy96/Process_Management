@@ -471,7 +471,6 @@ export default class ProcessCreator extends LightningElement {
                     if(d.selected) {
                         color = d.consts.selectedColor;
                     } else if(d.jobId !== '') {
-                        console.log('test1: ' + d.status);
                         switch(d.status) {
                             case d.consts.statusTODO:
                                 color = d.consts.savedColorTODO;
