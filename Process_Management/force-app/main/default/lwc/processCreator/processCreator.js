@@ -682,8 +682,10 @@ export default class ProcessCreator extends LightningElement {
     handleSavingJobSuccess(event) {
         var upsertedJobId = event.detail.id;
         var upsertedName = event.detail.fields.Name.value;
-        var upsertedStatus = event.detail.fields.Status__c.value;
-        console.log('test001: ' + upsertedStatus);
+        var upsertedStatus = null;
+        if(JSON.stringify(event.detail.fields).includes('Status__c')) {
+            upsertedStatus = event.detail.fields.Status__c.value;
+        }
         this.updateAttributesToSelectedNode(upsertedJobId, upsertedName, upsertedStatus);
         this.selectedJobId = upsertedJobId;
         this.showJobFormArea = false;
@@ -744,16 +746,14 @@ export default class ProcessCreator extends LightningElement {
 
     updateAttributesToSelectedNode(jobId, upsertedName, upsertedStatus) {
         const svg = d3.select(this.template.querySelector('svg.d3'));
-        if(jobId !== null && upsertedName !== null && upsertedStatus !== null) {
+        if(jobId !== null && upsertedName !== null) {
             svg.selectAll("circle").each(function () {
                 d3.select(this)
                     .attr("class", function (d) {
                         if (d.selected) {
-                            console.log('test99: ' + d.status);
                             d.jobId = jobId;
                             d.Name = upsertedName;
-                            d.status = upsertedStatus;
-                            console.log('test100: ' + d.status);
+                            if(upsertedStatus !== null) d.status = upsertedStatus;
                         }
                     });
             });
