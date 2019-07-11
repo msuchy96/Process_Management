@@ -1,0 +1,8 @@
+.svgArea {
+    height: 500px;
+    width: 1200px;
+    border-style: dotted;
+    border-width: 2px; 
+    border-color: blue;
+    margin: 0 auto;
+}
