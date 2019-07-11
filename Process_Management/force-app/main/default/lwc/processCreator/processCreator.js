@@ -112,7 +112,7 @@ export default class ProcessCreator extends LightningElement {
             let tempEdges = [];
             let tempNodesMap = new Map();
             parsedGraphFromJSON.nodes.forEach(function (node) {
-                let tempNode = new Node(node.x_pos, node.y_pos, node.edgeCounter, node.selected, node.jobId, node.Name)
+                let tempNode = new Node(node.x_pos, node.y_pos, node.edgeCounter, node.selected, node.jobId, node.Name, node.status)
                 tempNodes.push(tempNode);
                 tempNodesMap.set(tempNode.jobId, tempNode);
             });
@@ -273,7 +273,19 @@ export default class ProcessCreator extends LightningElement {
                                 curGraph.startNodeForEdge = d;
                                 color = d.consts.createEdgeColor;
                             } else if(valueValidation(d.jobId)){
-                                color = d.consts.savedColor;
+                                switch(d.status) {
+                                    case d.consts.statusTODO:
+                                        color = d.consts.savedColorTODO;
+                                    break;
+                                    case d.consts.statusINPROGRESS:
+                                        color = d.consts.savedColorINPROGRESS;
+                                    break;
+                                    case d.consts.statusDONE:
+                                        color = d.consts.savedColorDONE;
+                                    break;
+                                    default:
+                                        color = d.consts.standardColor;
+                                }
                             } else {
                                 color = d.consts.standardColor;
                             }
@@ -455,9 +467,28 @@ export default class ProcessCreator extends LightningElement {
                     return d.jobId;
                 })
                 .attr("fill", function(d) {
-                    if(d.selected) return d.consts.selectedColor;
-                    if(d.jobId !== '') return d.consts.savedColor;
-                    return d.consts.standardColor;
+                    var color = '';
+                    if(d.selected) {
+                        color = d.consts.selectedColor;
+                    } else if(d.jobId !== '') {
+                        console.log('test1: ' + d.status);
+                        switch(d.status) {
+                            case d.consts.statusTODO:
+                                color = d.consts.savedColorTODO;
+                            break;
+                            case d.consts.statusINPROGRESS:
+                                color = d.consts.savedColorINPROGRESS;
+                            break;
+                            case d.consts.statusDONE:
+                                color = d.consts.savedColorDONE;
+                            break;
+                            default:
+                                color = d.consts.standardColor;
+                        }
+                    } else {
+                        color = d.consts.standardColor;
+                    }
+                    return color;
                 })
                 .on("click", selectNode)
                 .call(d3.drag()
@@ -578,7 +609,25 @@ export default class ProcessCreator extends LightningElement {
         svg.selectAll("circle").each(function () {
             d3.select(this)
                 .style("fill", function (d) {
-                    return d.jobId === '' ? d.consts.standardColor : d.consts.savedColor;
+                    var color = '';
+                    if(d.jobId === '') {
+                        color = d.consts.standardColor;
+                    } else {
+                        switch(d.status) {
+                            case d.consts.statusTODO:
+                                color = d.consts.savedColorTODO;
+                            break;
+                            case d.consts.statusINPROGRESS:
+                                color = d.consts.savedColorINPROGRESS;
+                            break;
+                            case d.consts.statusDONE:
+                                color = d.consts.savedColorDONE;
+                            break;
+                            default:
+                                color = d.consts.standardColor;
+                        }
+                    }
+                    return color;
                 });
         });
         svg.selectAll("line").each(function () {
@@ -633,7 +682,9 @@ export default class ProcessCreator extends LightningElement {
     handleSavingJobSuccess(event) {
         var upsertedJobId = event.detail.id;
         var upsertedName = event.detail.fields.Name.value;
-        this.updateAttributesToSelectedNode(upsertedJobId, upsertedName);
+        var upsertedStatus = event.detail.fields.Status__c.value;
+        console.log('test001: ' + upsertedStatus);
+        this.updateAttributesToSelectedNode(upsertedJobId, upsertedName, upsertedStatus);
         this.selectedJobId = upsertedJobId;
         this.showJobFormArea = false;
         this.resetSelectedElements();
@@ -691,15 +742,18 @@ export default class ProcessCreator extends LightningElement {
         });
     }
 
-    updateAttributesToSelectedNode(jobId, upsertedName) {
+    updateAttributesToSelectedNode(jobId, upsertedName, upsertedStatus) {
         const svg = d3.select(this.template.querySelector('svg.d3'));
-        if(jobId !== null && upsertedName !== null) {
+        if(jobId !== null && upsertedName !== null && upsertedStatus !== null) {
             svg.selectAll("circle").each(function () {
                 d3.select(this)
                     .attr("class", function (d) {
                         if (d.selected) {
+                            console.log('test99: ' + d.status);
                             d.jobId = jobId;
                             d.Name = upsertedName;
+                            d.status = upsertedStatus;
+                            console.log('test100: ' + d.status);
                         }
                     });
             });

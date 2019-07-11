@@ -48,14 +48,8 @@ export default class ProcessDisplayer extends LightningElement {
 
     initializeCreator() {
         this.svg = d3.select(this.template.querySelector('svg.d3'));
-
-        var svgWidth = this.svg.style("width");
-        var svgHeight = this.svg.style("height");
-        svgWidth = parseInt(svgWidth.substring(0, svgWidth.length-2), 10);
-        svgHeight = parseInt(svgHeight.substring(0, svgHeight.length-2), 10);
-
-        this.curGraph = null;
         this.defineDefaults();
+        this.curGraph = null;
         if(this.recordId) {
             this.retrieveStream();
         }
@@ -78,7 +72,7 @@ export default class ProcessDisplayer extends LightningElement {
         let tempEdges = [];
         let tempNodesMap = new Map();
         parsedGraphFromJSON.nodes.forEach(function (node) {
-            let tempNode = new Node(node.x_pos, node.y_pos, node.edgeCounter, node.selected, node.jobId, node.Name)
+            let tempNode = new Node(node.x_pos, node.y_pos, node.edgeCounter, node.selected, node.jobId, node.Name, node.status)
             tempNodes.push(tempNode);
             tempNodesMap.set(tempNode.jobId, tempNode);
         });
@@ -158,9 +152,27 @@ export default class ProcessDisplayer extends LightningElement {
                 return d.jobId;
             })
             .attr("fill", function(d) {
-                if(d.selected) return d.consts.selectedColor;
-                if(d.jobId !== '') return d.consts.savedColor;
-                return d.consts.standardColor;
+                var color = '';
+                if(d.selected) {
+                    color = d.consts.selectedColor;
+                } else if(d.jobId !== '') {
+                    switch(d.status) {
+                        case d.consts.statusTODO:
+                            color = d.consts.savedColorTODO;
+                        break;
+                        case d.consts.statusINPROGRESS:
+                            color = d.consts.savedColorINPROGRESS;
+                        break;
+                        case d.consts.statusDONE:
+                            color = d.consts.savedColorDONE;
+                        break;
+                        default:
+                            color = d.consts.standardColor;
+                    }
+                } else {
+                    color = d.consts.standardColor;
+                }
+                return color;
             });
     }
 
