@@ -201,7 +201,7 @@
     <recordTypes>
         <fullName>Standard_Template</fullName>
         <active>true</active>
-        <label>Standard Template</label>
+        <label>Template</label>
     </recordTypes>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
