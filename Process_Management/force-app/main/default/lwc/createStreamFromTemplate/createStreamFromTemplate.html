@@ -1,0 +1,10 @@
+<template>
+    <div if:false={isLoaded} class="spinnerClass">
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </div>
+    <lightning-button
+        label="Toggle"
+        variant="brand"
+        onclick={toggle}>
+    </lightning-button>
+</template>

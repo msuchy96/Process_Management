@@ -41,13 +41,13 @@ import retrieveJSONStreamDescription from '@salesforce/apex/ProcessCreatorContro
 
 export default class ProcessCreator extends LightningElement {
     d3Initialized = false;
-    @api edgeModeVariant = buttonVariantNeutral;
-    @api configureJobVariant = buttonVariantNeutral;
-    @api disableDeleteElementButton = false;
-    @api disableEdgeModeButton = false;
-    @api disableConfigureJobButton = false;
+    @track edgeModeVariant = buttonVariantNeutral;
+    @track configureJobVariant = buttonVariantNeutral;
+    @track disableDeleteElementButton = false;
+    @track disableEdgeModeButton = false;
+    @track disableConfigureJobButton = false;
 
-    @api configureJobEnable = false;
+    @track configureJobEnable = false;
     @api recordId;
 
     @track selectedJobId;
