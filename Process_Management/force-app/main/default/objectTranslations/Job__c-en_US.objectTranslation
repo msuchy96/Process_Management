@@ -85,6 +85,10 @@
         <errorMessage><!-- Time has to be planned on &apos;TO DO&apos; Status. --></errorMessage>
         <name>JOB06_TimeHasToBePlannedOnTODO</name>
     </validationRules>
+    <validationRules>
+        <errorMessage><!-- You can&apos;t log time if job does not have assigned person. --></errorMessage>
+        <name>JOB07_CantReportTimeIfAssignedToNull</name>
+    </validationRules>
     <workflowTasks>
         <name>tasktest</name>
         <subject><!-- tasktest --></subject>

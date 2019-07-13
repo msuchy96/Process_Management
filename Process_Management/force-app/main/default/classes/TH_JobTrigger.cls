@@ -2,6 +2,7 @@ public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
 
     Map<Job__c, Decimal> jobsWithTimeReported;
     Map<Id, List<Job__c>> jobsToCheckTemplate;
+    Map<Id, Job__c> jobsToUpdateStreamJSON;
     
 
     public override void prepareBefore() {
@@ -10,6 +11,7 @@ public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
 
     public override void prepareAfter() {
         jobsWithTimeReported = new Map<Job__c, Decimal>();
+        jobsToUpdateStreamJSON = new Map<Id, Job__c>();
     }
 
     public override void beforeInsert(List<SObject> newObjectsMap) {
@@ -34,6 +36,7 @@ public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
             Job__c oldJob = oldJobsMap.get(key);
 
             checkReportedTimeChanges(oldJob, newJob);
+            checkForStreamJSONUpdate(oldJob, newJob);
         }
     }
 
@@ -64,13 +67,28 @@ public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
         }  
     }
 
+    private void checkForStreamJSONUpdate(Job__c oldJob, Job__c newJob) {
+        if(
+            newJob.Name != null
+            && ((oldJob.Name != newJob.Name)
+                || oldJob.Status__c != newJob.Status__c)
+        ) {
+            jobsToUpdateStreamJSON.put(newJob.Id, newJob);
+        }
+    }
+
     public override void finish() {
         if(jobsToCheckTemplate != null && !jobsToCheckTemplate.isEmpty()) {
             JobManager.checkJobToTemplateIfTemplateStream(jobsToCheckTemplate);
         }
 
-        if(jobsWithTimeReported != null && !jobsWithTimeReported.isEmpty())
+        if(jobsWithTimeReported != null && !jobsWithTimeReported.isEmpty()) {
             TimeReportManager.createTimeReports(jobsWithTimeReported);
+        }
+
+        if(jobsToUpdateStreamJSON != null && !jobsToUpdateStreamJSON.isEmpty()) {
+            JobManager.updateRelatedStreamJSON(jobsToUpdateStreamJSON);
+        }
     }
 
 }

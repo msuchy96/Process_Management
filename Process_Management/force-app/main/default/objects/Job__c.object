@@ -312,5 +312,20 @@ NOT(ISNEW()),
         <errorDisplayField>Time_Planned__c</errorDisplayField>
         <errorMessage>Time has to be planned on &apos;TO DO&apos; Status.</errorMessage>
     </validationRules>
+    <validationRules>
+        <fullName>JOB07_CantReportTimeIfAssignedToNull</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR(
+AND(
+	ISCHANGED(Time_Spent__c),
+	Assigned_To__c = null
+),
+AND(
+	ISNEW(),
+	Time_Spent__c &lt;&gt; 0,
+	Assigned_To__c = null
+))</errorConditionFormula>
+        <errorMessage>You can&apos;t log time if job does not have assigned person.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>

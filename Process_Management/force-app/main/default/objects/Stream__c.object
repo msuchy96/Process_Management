@@ -77,6 +77,16 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>JSON_Description__c</fullName>
+        <externalId>false</externalId>
+        <label>JSON Description</label>
+        <length>131072</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Number_Of_Jobs_Done__c</fullName>
         <externalId>false</externalId>
         <label>Number Of Jobs Done</label>
@@ -191,7 +201,7 @@
     <recordTypes>
         <fullName>Standard_Template</fullName>
         <active>true</active>
-        <label>Standard Template</label>
+        <label>Template</label>
     </recordTypes>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>

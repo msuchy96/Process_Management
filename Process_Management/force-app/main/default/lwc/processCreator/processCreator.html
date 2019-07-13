@@ -1,5 +1,5 @@
 <template>  
-        <lightning-card title={label.streamCreator} icon-name="custom:custom19">
+        <lightning-card title={cardTitle} icon-name="custom:custom19">
             <div class="buttonGroup">
                 <div class="button">
                     <lightning-button variant="destructive" name="delete" label={label.deleteSelectedElement} disabled={edgeModeEnable} onclick={deleteSelectedElement}></lightning-button> 
@@ -16,11 +16,11 @@
             </div>
         </lightning-card>
         
-        <template if:true={showStreamFormArea}>
+        <template if:false={recordId}>
                 <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
                     <div class="slds-modal__container">
                       
-                        <lightning-record-edit-form record-id={streamId} object-api-name="Stream__c" onsuccess={handleSavingStreamSuccess}>
+                        <lightning-record-edit-form record-id={recordId} object-api-name="Stream__c" onsuccess={handleSavingStreamSuccess}>
                             <header class="slds-modal__header">
                                 <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Configuring Stream</h2>
                             </header>
@@ -62,11 +62,12 @@
                         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
                             <lightning-messages></lightning-messages>
                             <lightning-input-field field-name="Name"></lightning-input-field>
-                            <lightning-input-field disabled field-name="Stream__c" value={streamId} ></lightning-input-field>
+                            <lightning-input-field disabled field-name="Stream__c" value={recordId} ></lightning-input-field>
                             <lightning-input-field field-name="Time_Planned__c"></lightning-input-field>
                             <lightning-input-field field-name="Assigned_To__c"></lightning-input-field>
                             <div if:false={streamTemplate}>
                                 <lightning-input-field field-name="Due_Date__c"></lightning-input-field>
+                                <lightning-input-field field-name="Status__c"></lightning-input-field>
                             </div>
                         </div>
                         <!-- modal footer start-->

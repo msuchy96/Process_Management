@@ -106,6 +106,20 @@
         <value>You can not create edge to the same node!</value>
     </labels>
     <labels>
+        <fullName>TST_MSG_StreamSaved</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_StreamSaved</shortDescription>
+        <value>Stream saved!</value>
+    </labels>
+    <labels>
+        <fullName>TST_MSG_StreamUpdated</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_StreamUpdated</shortDescription>
+        <value>Stream updated!</value>
+    </labels>
+    <labels>
         <fullName>TST_TITLE_EdgeCreationNotPossible</fullName>
         <language>en_US</language>
         <protected>true</protected>
