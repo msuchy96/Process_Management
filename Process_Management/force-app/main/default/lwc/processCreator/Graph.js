@@ -5,13 +5,14 @@ import Node from './Node';
 import Edge from './Edge';
 
 class Graph {
-    constructor(nodes, edges, streamId = null) {
+    constructor(nodes, edges, streamId = null, template = false) {
         this.nodes = nodes;
         this.edges = edges;
         this.startNodeForEdge = null;
         this.edgeMode = false;
         this.selectedJobId = null;
         this.streamId = streamId;
+        this.template = template;
     }
 }
 
