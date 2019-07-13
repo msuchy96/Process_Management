@@ -43,12 +43,16 @@ export default class ProcessCreator extends LightningElement {
     d3Initialized = false;
     @api edgeModeVariant = buttonVariantNeutral;
     @api configureJobVariant = buttonVariantNeutral;
-    @api edgeModeEnable = false;
+    @api disableDeleteElementButton = false;
+    @api disableEdgeModeButton = false;
+    @api disableConfigureJobButton = false;
+
     @api configureJobEnable = false;
     @api recordId;
 
     @track selectedJobId;
     @track showJobFormArea = false;
+    @track showStreamFormArea;
     @track cardTitle = streamCreator;
 
     @track streamName;
@@ -65,6 +69,7 @@ export default class ProcessCreator extends LightningElement {
             return;
         }
         this.d3Initialized = true;
+        this.showStreamFormArea = !this.valueValidation(this.recordId);
 
         Promise.all([
             loadScript(this, D3 + '/d3.v5.min.js'),
@@ -591,7 +596,7 @@ export default class ProcessCreator extends LightningElement {
     changeEdgeModeStatus() {
         this.graph.edgeMode = !this.graph.edgeMode;
         this.edgeModeVariant = this.graph.edgeMode ? buttonVariantSuccess : buttonVariantNeutral ;
-        this.edgeModeEnable = this.graph.edgeMode;
+        this.disableDeleteElementButton = this.disableConfigureJobButton = this.graph.edgeMode;
         this.graph.clearTempParams();
         this.resetSelectedElements();
     }
@@ -695,6 +700,7 @@ export default class ProcessCreator extends LightningElement {
 
     handleSavingStreamSuccess(event) {
         this.recordId = event.detail.id;
+        this.showStreamFormArea = false;
         this.graph.streamId = this.recordId;
         this.fireToastEvent(toastTitleSuccess, toastMsgStreamSaved, 'success');
     }
@@ -765,6 +771,13 @@ export default class ProcessCreator extends LightningElement {
 
     closeJobModal() {
         this.showJobFormArea = !this.showJobFormArea;
+    }
+
+    closeStreamModal() {
+        this.showStreamFormArea = false;
+        this.disableDeleteElementButton = true;
+        this.disableConfigureJobButton = true;
+        this.disableEdgeModeButton = true;
     }
 
     fireToastEvent(title, msg, variant) {

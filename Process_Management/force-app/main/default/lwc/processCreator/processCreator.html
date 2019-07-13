@@ -2,13 +2,13 @@
         <lightning-card title={cardTitle} icon-name="custom:custom19">
             <div class="buttonGroup">
                 <div class="button">
-                    <lightning-button variant="destructive" name="delete" label={label.deleteSelectedElement} disabled={edgeModeEnable} onclick={deleteSelectedElement}></lightning-button> 
+                    <lightning-button variant="destructive" name="delete" label={label.deleteSelectedElement} disabled={disableDeleteElementButton} onclick={deleteSelectedElement}></lightning-button> 
                 </div>
                 <div class="button">
-                    <lightning-button variant={edgeModeVariant} name="addLink" label={label.edgeMode} onclick={changeEdgeModeStatus}></lightning-button>
+                    <lightning-button variant={edgeModeVariant} name="addLink" label={label.edgeMode} disabled={disableEdgeModeButton} onclick={changeEdgeModeStatus}></lightning-button>
                 </div>
                 <div class="button">
-                    <lightning-button variant="neutral" name="configureJob" label="Configure selected job" disabled={edgeModeEnable} onclick={openForm}></lightning-button>
+                    <lightning-button variant="neutral" name="configureJob" label="Configure selected job" disabled={disableConfigureJobButton} onclick={openForm}></lightning-button>
                 </div>
             </div>
             <div class="svgArea">
@@ -16,12 +16,16 @@
             </div>
         </lightning-card>
         
-        <template if:false={recordId}>
+        <template if:true={showStreamFormArea}>
                 <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
                     <div class="slds-modal__container">
                       
                         <lightning-record-edit-form record-id={recordId} object-api-name="Stream__c" onsuccess={handleSavingStreamSuccess}>
                             <header class="slds-modal__header">
+                                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeStreamModal}>
+                                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                                        <span class="slds-assistive-text">Close</span>
+                                    </button>
                                 <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Configuring Stream</h2>
                             </header>
                         
@@ -66,6 +70,7 @@
                             <lightning-input-field field-name="Time_Planned__c"></lightning-input-field>
                             <lightning-input-field field-name="Assigned_To__c"></lightning-input-field>
                             <div if:false={streamTemplate}>
+                                <lightning-input-field field-name="Time_Spent__c"></lightning-input-field>
                                 <lightning-input-field field-name="Due_Date__c"></lightning-input-field>
                                 <lightning-input-field field-name="Status__c"></lightning-input-field>
                             </div>
