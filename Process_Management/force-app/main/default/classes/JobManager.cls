@@ -64,7 +64,44 @@ public without sharing class JobManager {
             }
             stream.JSON_Description__c = JSON.serialize(results);
         }
-
         update streamToUpdate;
+    }
+
+    @AuraEnabled
+    public static FrontResponseWrapper cloneStreamWithJobs(String streamId) {
+        Stream__c streamToClone = [SELECT Id, Name, Client__c, JSON_Description__c, (SELECT Id, Status__c, Assigned_To__c, Name, Time_planned__c, Next_Job__c, Second_Next_Job__c FROM Jobs__r) FROM Stream__c WHERE Id =: streamId];
+        Stream__c clonedStream = streamToClone.clone(false, false, false, false);
+        clonedStream.Name += ' from Template';
+        insert clonedStream;
+        Map<Id, Job__c> jobsToClone = new Map<Id, Job__c>(streamToClone.Jobs__r);
+        Map<Id, Id> nextJobMap = new Map<Id, Id>();
+        Map<Id, Id> secondNextJobMap = new Map<Id, Id>();
+        Map<Id, Job__c> toCloneToClonedJobsMap = new Map<Id, Job__c>();
+        for(Job__c jobToClone : jobsToClone.values()) {
+            nextJobMap.put(jobToClone.Id, jobToClone.Next_Job__c);
+            secondNextJobMap.put(jobToClone.Id, jobToClone.Second_Next_Job__c);
+            Job__c clonedJob = jobToClone.clone(false, false, false, false);
+            clonedJob.Stream__c = clonedStream.Id;
+            clonedJob.Name += ' from Template';
+            toCloneToClonedJobsMap.put(jobToClone.Id, clonedJob);
+        }
+        try{
+            insert toCloneToClonedJobsMap.values();
+            for(Id jobToCloneId : toCloneToClonedJobsMap.keySet()) {
+                if(nextJobMap.get(jobToCloneId) != null) {
+                    toCloneToClonedJobsMap.get(jobToCloneId).Next_Job__c = toCloneToClonedJobsMap.get(nextJobMap.get(jobToCloneId)).Id;
+                }
+                if(secondNextJobMap.get(jobToCloneId) != null) {
+                    toCloneToClonedJobsMap.get(jobToCloneId).Second_Next_Job__c = toCloneToClonedJobsMap.get(secondNextJobMap.get(jobToCloneId)).Id;
+                }
+                clonedStream.JSON_Description__c.replace((String)jobToCloneId, (String)toCloneToClonedJobsMap.get(jobToCloneId).Id);
+                clonedStream.JSON_Description__c.replace((String)jobToCloneId, (String)toCloneToClonedJobsMap.get(jobToCloneId).Id);
+            }
+            update clonedStream;
+            update toCloneToClonedJobsMap.values();
+            return new FrontResponseWrapper(true, 'NIEZLE');
+        } catch(Exception e) {
+            return new FrontResponseWrapper(false, e.getMessage());
+        }
     }
 }
