@@ -1,4 +1,10 @@
-import { LightningElement, api } from 'lwc';
+import { 
+    LightningElement,
+    api
+} from 'lwc';
+import {
+    ShowToastEvent
+} from 'lightning/platformShowToastEvent';
 
 import toastTitleSuccess from '@salesforce/label/c.TST_TITLE_Success';
 import toastTitleError from '@salesforce/label/c.TST_TITLE_Error';
@@ -10,8 +16,6 @@ export default class CreateStreamFromTemplate extends LightningElement {
     @api isLoaded = false;  
 
     renderedCallback() {
-        //  the required business logic to be executed when component is rendered
-
         cloneStreamWithJobs({streamId: this.recordId})
         .then(result => {
             if(result.isSuccess) {
