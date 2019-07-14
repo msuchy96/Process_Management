@@ -82,7 +82,6 @@ public without sharing class JobManager {
             secondNextJobMap.put(jobToClone.Id, jobToClone.Second_Next_Job__c);
             Job__c clonedJob = jobToClone.clone(false, false, false, false);
             clonedJob.Stream__c = clonedStream.Id;
-            clonedJob.Name += ' from Template';
             toCloneToClonedJobsMap.put(jobToClone.Id, clonedJob);
         }
         try{
@@ -99,7 +98,7 @@ public without sharing class JobManager {
             }
             update clonedStream;
             update toCloneToClonedJobsMap.values();
-            return new FrontResponseWrapper(true, 'NIEZLE');
+            return new FrontResponseWrapper(true, 'NIEZLE', clonedStream.Id);
         } catch(Exception e) {
             return new FrontResponseWrapper(false, e.getMessage());
         }

@@ -5,13 +5,16 @@ import {
 import {
     ShowToastEvent
 } from 'lightning/platformShowToastEvent';
+import {
+    NavigationMixin 
+} from 'lightning/navigation';
 
 import toastTitleSuccess from '@salesforce/label/c.TST_TITLE_Success';
 import toastTitleError from '@salesforce/label/c.TST_TITLE_Error';
 
 import cloneStreamWithJobs from '@salesforce/apex/JobManager.cloneStreamWithJobs';
 
-export default class CreateStreamFromTemplate extends LightningElement {
+export default class CreateStreamFromTemplate extends NavigationMixin(LightningElement) {
     @api recordId;
     @api isLoaded = false;  
 
@@ -20,7 +23,8 @@ export default class CreateStreamFromTemplate extends LightningElement {
         .then(result => {
             if(result.isSuccess) {
                 this.fireToastEvent(toastTitleSuccess, result.msg, 'success');
-                this.isLoaded = true;  
+                this.isLoaded = true;
+                this.navigateToRecordViewPage(result.dataJSON)  
             } else {
                 this.fireToastEvent(toastTitleError, result.msg, 'error');
                 this.isLoaded = true;  
@@ -29,6 +33,18 @@ export default class CreateStreamFromTemplate extends LightningElement {
         .catch(error => {
             this.fireToastEvent(toastTitleError, JSON.stringify(error), 'error');
             this.isLoaded = true;  
+        });
+    }
+
+    navigateToRecordViewPage(streamId) {
+        // View a custom object record.
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: streamId,
+                objectApiName: 'Stream__c',
+                actionName: 'view'
+            }
         });
     }
 
