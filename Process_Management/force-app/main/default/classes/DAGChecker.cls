@@ -118,9 +118,9 @@ public without sharing class DAGChecker {
         edgeList.add(new Edge(idToNumberNodes.get((String)mappedStartNewNode.get('jobId')), idToNumberNodes.get((String)mappedEndNewNode.get('jobId'))));
         Graph currentGraph = new Graph(edgeList, numberOfNodes);
         if(isDAG(currentGraph, numberOfNodes)) {
-            return new FrontResponseWrapper(true, 'Succes');
+            return new FrontResponseWrapper(true, Label.TST_MSG_StreamIsAcyclic);
         } else {
-            return new FrontResponseWrapper(false, 'Graph has to be acyclic!');
+            return new FrontResponseWrapper(false, Label.TST_MSG_StreamIsNotAcyclic);
         }
     }
 }
