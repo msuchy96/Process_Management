@@ -61,6 +61,10 @@
         <name>TST_MSG_SameNode</name>
     </customLabels>
     <customLabels>
+        <label><!-- TST_MSG_StreamCreatedFromTemplate --></label>
+        <name>TST_MSG_StreamCreatedFromTemplate</name>
+    </customLabels>
+    <customLabels>
         <label><!-- TST_MSG_StreamSaved --></label>
         <name>TST_MSG_StreamSaved</name>
     </customLabels>
