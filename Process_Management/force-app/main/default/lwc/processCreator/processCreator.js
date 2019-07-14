@@ -41,13 +41,13 @@ import retrieveJSONStreamDescription from '@salesforce/apex/ProcessCreatorContro
 
 export default class ProcessCreator extends LightningElement {
     d3Initialized = false;
-    @api edgeModeVariant = buttonVariantNeutral;
-    @api configureJobVariant = buttonVariantNeutral;
-    @api disableDeleteElementButton = false;
-    @api disableEdgeModeButton = false;
-    @api disableConfigureJobButton = false;
+    @track edgeModeVariant = buttonVariantNeutral;
+    @track configureJobVariant = buttonVariantNeutral;
+    @track disableDeleteElementButton = false;
+    @track disableEdgeModeButton = false;
+    @track disableConfigureJobButton = false;
 
-    @api configureJobEnable = false;
+    @track configureJobEnable = false;
     @api recordId;
 
     @track selectedJobId;
@@ -98,6 +98,7 @@ export default class ProcessCreator extends LightningElement {
             retrieveJSONStreamDescription({streamId: this.recordId})
             .then(result => {
                 curGraph = this.graph = prepareGraphFromJSON(result.dataJSON);
+                this.streamTemplate = curGraph.template;
                 clickBehaviour();
                 clearAndRedrawGraph();
             })
@@ -124,7 +125,7 @@ export default class ProcessCreator extends LightningElement {
             parsedGraphFromJSON.edges.forEach(function (edge) {
                 tempEdges.push(new Edge(tempNodesMap.get(edge.nodeStart.jobId), tempNodesMap.get(edge.nodeEnd.jobId), edge.selected));
             });
-            return new Graph(tempNodes, tempEdges, parsedGraphFromJSON.streamId);
+            return new Graph(tempNodes, tempEdges, parsedGraphFromJSON.streamId, parsedGraphFromJSON.template);
         }
 
         function clickBehaviour() {
@@ -739,7 +740,9 @@ export default class ProcessCreator extends LightningElement {
             if(result.isSuccess) {
                 this.graph.streamId = this.recordId = JSON.parse(result.dataJSON);
                 this.streamTemplate = true;
+                this.graph.template = true;
                 this.fireToastEvent(toastTitleSuccess, result.msg, 'success');
+                this.showStreamFormArea = false;
             } else {
                this.fireToastEvent(toastTitleError, result.msg, 'error');
             }
