@@ -19,6 +19,9 @@ export default class CreateStreamFromTemplate extends NavigationMixin(LightningE
     @api isLoaded = false;  
 
     renderedCallback() {
+        if(this.isLoaded) {
+            return;
+        }
         cloneStreamWithJobs({streamId: this.recordId})
         .then(result => {
             if(result.isSuccess) {
