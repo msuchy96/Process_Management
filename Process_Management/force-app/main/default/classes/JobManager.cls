@@ -98,7 +98,7 @@ public without sharing class JobManager {
             }
             update clonedStream;
             update toCloneToClonedJobsMap.values();
-            return new FrontResponseWrapper(true, 'NIEZLE', clonedStream.Id);
+            return new FrontResponseWrapper(true, Label.TST_MSG_StreamCreatedFromTemplate, clonedStream.Id);
         } catch(Exception e) {
             return new FrontResponseWrapper(false, e.getMessage());
         }
