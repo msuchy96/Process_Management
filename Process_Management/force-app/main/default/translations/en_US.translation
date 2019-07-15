@@ -65,6 +65,14 @@
         <name>TST_MSG_StreamCreatedFromTemplate</name>
     </customLabels>
     <customLabels>
+        <label><!-- TST_MSG_StreamIsAcyclic --></label>
+        <name>TST_MSG_StreamIsAcyclic</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TST_MSG_StreamIsNotAcyclic --></label>
+        <name>TST_MSG_StreamIsNotAcyclic</name>
+    </customLabels>
+    <customLabels>
         <label><!-- TST_MSG_StreamSaved --></label>
         <name>TST_MSG_StreamSaved</name>
     </customLabels>

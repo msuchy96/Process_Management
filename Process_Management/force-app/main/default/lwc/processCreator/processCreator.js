@@ -38,6 +38,7 @@ import createConnectionBetweenJobs from '@salesforce/apex/ProcessCreatorControll
 import saveStreamAsTemplate from '@salesforce/apex/ProcessCreatorController.saveStreamAsTemplate';
 import updateStreamJSONDescription from '@salesforce/apex/ProcessCreatorController.updateStreamJSONDescription';
 import retrieveJSONStreamDescription from '@salesforce/apex/ProcessCreatorController.retrieveJSONStreamDescription';
+import checkIfGraphIsDAG from '@salesforce/apex/DAGChecker.checkIfGraphIsDAG';
 
 export default class ProcessCreator extends LightningElement {
     d3Initialized = false;
@@ -58,6 +59,7 @@ export default class ProcessCreator extends LightningElement {
     @track streamName;
     @track streamClient;
     @track streamTemplate = false;
+    @track isAcyclic = false;
 
     label = {
         deleteSelectedElement,
@@ -164,7 +166,7 @@ export default class ProcessCreator extends LightningElement {
                 } else { // create edge
                     var edgeCreationValidation = checkIfNodeCreationIsPossible();
                     if(edgeCreationValidation.isPossible) {
-                        createEdge();
+                        checkIfGraphWillBeAcyclicAndCreateEdge();
                     } else {
                         fireToastEvent(toastTitleNotPossible, edgeCreationValidation.msg, 'error');
                     }
@@ -222,6 +224,28 @@ export default class ProcessCreator extends LightningElement {
             
             function checkNumberOfNodes() {
                 return curGraph.startNodeForEdge.edgeCounter !== 2;
+            }
+
+            function checkIfGraphWillBeAcyclicAndCreateEdge() {
+                var secondSelectedCircle = null;
+                d3.select(clickedCircle).attr("class", function (d) { 
+                    secondSelectedCircle = d; 
+                });
+                checkIfGraphIsDAG({edges: JSON.stringify(curGraph.edges),
+                                    startNodeNewEdge: JSON.stringify(curGraph.startNodeForEdge),
+                                    endNodeNewEdge: JSON.stringify(secondSelectedCircle),
+                                    numberOfNodes: curGraph.nodes.length})
+                .then(result => {
+                    if(result.isSuccess) {
+                        createEdge();
+                        console.log(result.msg);
+                    } else {
+                        fireToastEvent(toastTitleError, result.msg, 'error');
+                    }
+                })
+                .catch(error => {
+                    fireToastEvent(toastTitleError, JSON.stringify(error), 'error');
+                });
             }
 
             function valueValidation(variable) {

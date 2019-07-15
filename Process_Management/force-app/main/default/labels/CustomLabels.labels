@@ -113,6 +113,20 @@
         <value>New stream created from template!</value>
     </labels>
     <labels>
+        <fullName>TST_MSG_StreamIsAcyclic</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_StreamIsAcyclic</shortDescription>
+        <value>Stream is acyclic!</value>
+    </labels>
+    <labels>
+        <fullName>TST_MSG_StreamIsNotAcyclic</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_StreamIsNotAcyclic</shortDescription>
+        <value>Stream has to be acyclic!</value>
+    </labels>
+    <labels>
         <fullName>TST_MSG_StreamSaved</fullName>
         <language>en_US</language>
         <protected>true</protected>
