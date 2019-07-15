@@ -6,10 +6,19 @@
                         <thead>
                             <tr class="slds-text-heading_label">
                                 <th scope="col">
-                                    <div class="slds-truncate" title="ID">ID</div>
+                                    <div class="slds-truncate" title="Name">Name</div>
                                 </th>
                                 <th scope="col">
-                                    <div class="slds-truncate" title="Name">Name</div>
+                                    <div class="slds-truncate" title="Stream">Stream</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Time Planned (h)">Time Planned (h)</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Time Spent (h)">Time Spent (h)</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Due Date">Due Date</div>
                                 </th>
                             </tr>
                         </thead>
@@ -18,10 +27,19 @@
                             <template for:each={jobs} for:item="job">
                                 <tr key={job.Id}>
                                     <th scope="row">
-                                        <div class="slds-truncate" title={job.Id}>{job.Id}</div>
+                                        <div class="slds-truncate" title={job.Name}>{job.Name}</div>
                                     </th>
                                     <td>
-                                        <div class="slds-truncate" title={job.Name}>{job.Name}</div>
+                                        <div class="slds-truncate" title={job.Stream__r.Name}>{job.Stream__r.Name}</div>
+                                    </td>
+                                    <td>
+                                        <div class="slds-truncate" title={job.Time_Planned__c}>{job.Time_Planned__c}</div>
+                                    </td>
+                                    <td>
+                                        <div class="slds-truncate" title={job.Time_Spent__c}>{job.Time_Spent__c}</div>
+                                    </td>
+                                    <td>
+                                        <div class="slds-truncate" title={job.Due_Date__c}>{job.Due_Date__c}</div>
                                     </td>
                                 </tr>
                             </template>
