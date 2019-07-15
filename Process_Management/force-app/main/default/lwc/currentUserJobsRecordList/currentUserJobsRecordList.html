@@ -1,0 +1,35 @@
+<template>
+        <lightning-card title="Jobs List" icon-name="custom:custom63">
+            <div class="slds-m-around_medium">
+                <template if:true={jobs}>
+                    <table class="slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout">
+                        <thead>
+                            <tr class="slds-text-heading_label">
+                                <th scope="col">
+                                    <div class="slds-truncate" title="ID">ID</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Name">Name</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Use the Apex model and controller to fetch server side data -->
+                            <template for:each={jobs} for:item="job">
+                                <tr key={job.Id}>
+                                    <th scope="row">
+                                        <div class="slds-truncate" title={job.Id}>{job.Id}</div>
+                                    </th>
+                                    <td>
+                                        <div class="slds-truncate" title={job.Name}>{job.Name}</div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </template>
+            </div>
+            <p class="slds-m-vertical_medium content">Total records: <b>{totalrecords} </b> Page <b>{currentpage}</b> of
+                <b> {totalpages}</b></p>
+        </lightning-card>
+</template>
