@@ -5,9 +5,11 @@ import {
 } from 'lwc';
 import getUserJobs from '@salesforce/apex/JobManager.getUserJobs';
 import getUserJobsCount from '@salesforce/apex/JobManager.getUserJobsCount';
+import getBaseURL from '@salesforce/apex/CommonUtility.getBaseURL';
 export default class RecordList extends LightningElement {
     @track jobs;
     @track error;
+    @track baseURL;
     @api currentpage;
     @api pagesize;
     totalpages;
@@ -43,6 +45,12 @@ export default class RecordList extends LightningElement {
         }
         this.isSearchChangeExecuted = true;
         this.localCurrentPage = this.currentpage;
+
+        getBaseURL({}) 
+        .then( result => {
+            this.baseURL = result + '/';
+        })
+        
         getUserJobsCount({})
             .then(recordsCount => {
                 this.totalrecords = recordsCount;
@@ -54,7 +62,12 @@ export default class RecordList extends LightningElement {
                             pageSize: this.pagesize,
                         })
                         .then(jobList => {
+                            var url = this.baseURL;
                             this.jobs = jobList;
+                            this.jobs.forEach(function (item, index) {                                
+                                item.Id = url + item.Id;
+                                item.Stream__c = url + item.Stream__c;
+                            });
                             this.error = undefined;
                         })
                         .catch(error => {

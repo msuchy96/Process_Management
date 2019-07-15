@@ -117,7 +117,7 @@ public without sharing class JobManager {
 
     @AuraEnabled
     public static Integer getUserJobsCount() {
-        return [SELECT Id, Name, Stream__r.Name, Status__c, Due_Date__c, Time_Spent__c, Time_Planned__c
+        return [SELECT Id, Name, Stream__r.Name, Status__c, Due_Date__c, Time_Spent__c, Time_Planned__c, Stream__c
                 FROM Job__c 
                 WHERE Assigned_To__c =: UserInfo.getUserId() 
                 AND RecordTypeId =: CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_STANDARD)

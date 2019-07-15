@@ -1,5 +1,5 @@
 <template>
-        <lightning-card title="Jobs List" icon-name="custom:custom63">
+        <lightning-card title="Job you are assigned to" icon-name="custom:custom63">
             <div class="slds-m-around_medium">
                 <template if:true={jobs}>
                     <table class="slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout">
@@ -27,10 +27,10 @@
                             <template for:each={jobs} for:item="job">
                                 <tr key={job.Id}>
                                     <th scope="row">
-                                        <div class="slds-truncate" title={job.Name}>{job.Name}</div>
+                                        <a class="slds-truncate" href={job.Id}>{job.Name}</a>
                                     </th>
                                     <td>
-                                        <div class="slds-truncate" title={job.Stream__r.Name}>{job.Stream__r.Name}</div>
+                                        <a class="slds-truncate" href={job.Stream__c}>{job.Stream__r.Name}</a>
                                     </td>
                                     <td>
                                         <div class="slds-truncate" title={job.Time_Planned__c}>{job.Time_Planned__c}</div>
