@@ -5,7 +5,7 @@
             <componentName>paginationParentJobs</componentName>
         </componentInstances>
         <componentInstances>
-            <componentName>runtime_sales_activities:todayTaskContainer</componentName>
+            <componentName>paginationParentTimeReports</componentName>
         </componentInstances>
         <mode>Replace</mode>
         <name>top</name>
@@ -22,6 +22,9 @@
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
+        <componentInstances>
+            <componentName>runtime_sales_activities:todayTaskContainer</componentName>
+        </componentInstances>
         <componentInstances>
             <componentName>home:eventContainer</componentName>
         </componentInstances>

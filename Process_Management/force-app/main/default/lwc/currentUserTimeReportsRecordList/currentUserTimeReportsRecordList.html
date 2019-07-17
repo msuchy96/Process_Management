@@ -1,0 +1,47 @@
+<template>
+    <lightning-card title="Job you are assigned to" icon-name="custom:custom63">
+        <div class="slds-m-around_medium">
+            <template if:true={timeReports}>
+                <table class="slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout">
+                    <thead>
+                        <tr class="slds-text-heading_label">
+                            <th scope="col">
+                                <div class="slds-truncate" title="Name">Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Job">Job</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Date">Date</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Time Reported">Time Reported (h)</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Use the Apex model and controller to fetch server side data -->
+                        <template for:each={timeReports} for:item="timeReport">
+                            <tr key={timeReport.Id}>
+                                <th scope="row">
+                                    <a class="slds-truncate" href={timeReport.Id}>{timeReport.Name}</a>
+                                </th>
+                                <td>
+                                    <a class="slds-truncate" href={timeReport.Job__c}>{timeReport.Job__r.Name}</a>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate" title={timeReport.Date__c}>{timeReport.Date__c}</div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate" title={timeReport.Time_Reported__c}>{timeReport.Time_Reported__c}</div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </template>
+        </div>
+        <p class="slds-m-vertical_medium content">Total records: <b>{totalrecords} </b> Page <b>{currentpage}</b> of
+            <b> {totalpages}</b></p>
+    </lightning-card>
+</template>

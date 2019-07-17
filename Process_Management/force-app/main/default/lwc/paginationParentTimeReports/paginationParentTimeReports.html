@@ -1,0 +1,9 @@
+<template>
+    <lightning-card>
+        <c-current-user-time-reports-record-list currentpage={page} onrecordsload={handleRecordsLoad} pagesize={pagesize}></c-current-user-time-reports-record-list>
+        <div class="slds-m-around_medium">
+            <c-pagination-bottom-time-reports onprevious={handlePrevious} onnext={handleNext} onfirst={handleFirst} onlast={handleLast} currentpage={page} totalrecords={totalrecords} pagesize={pagesize}>
+            </c-pagination-bottom-time-reports>
+        </div>
+    </lightning-card>
+</template>
