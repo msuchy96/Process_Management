@@ -67,6 +67,10 @@ export default class RecordList extends LightningElement {
                             this.jobs.forEach(function (item, index) {                                
                                 item.Id = url + item.Id;
                                 item.Stream__c = url + item.Stream__c;
+                                if(item.Due_Date__c !== undefined && item.Due_Date__c !== null && item.Due_Date__c.length > 16) {
+                                    item.Due_Date__c = new Date(item.Due_Date__c.substring(0, 4), item.Due_Date__c.substring(5, 7), item.Due_Date__c.substring(8, 10), item.Due_Date__c.substring(11, 13), item.Due_Date__c.substring(14, 16), 0, 0);
+                                    item.Due_Date__c = item.Due_Date__c.toString().substring(4,21);
+                                }
                             });
                             this.error = undefined;
                         })
