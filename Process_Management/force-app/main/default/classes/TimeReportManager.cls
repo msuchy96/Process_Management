@@ -43,6 +43,24 @@ public without sharing class TimeReportManager {
         upsert timeReportToUpsert;
     }
 
+    @AuraEnabled
+    public static List<Time_Report__c> getUserTimeReports(Integer pagenumber, Integer numberOfRecords, Integer pageSize) {
+        Integer calculatedOffset = (pageSize * (pagenumber - 1));
+        return [SELECT Id, Name, Job__c, Time_Reported__c, Date__c, Job__r.Name
+                FROM Time_Report__c 
+                WHERE Reporter__c =: UserInfo.getUserId() 
+                ORDER BY Date__c
+                LIMIT :pageSize OFFSET :calculatedOffset];
+    }
+
+    @AuraEnabled
+    public static Integer getUserTimeReportsCount() {
+        return [SELECT Id, Name
+                FROM Time_Report__c 
+                WHERE Reporter__c =: UserInfo.getUserId() 
+                ORDER BY Date__c].size();
+    }
+
 
     private class JobWrapper {
         public String externalId {get; set;}
