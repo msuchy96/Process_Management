@@ -8,6 +8,11 @@ global without sharing class CommonUtility {
         return new CommonUtility();
     }
 
+    @AuraEnabled
+    public static String getBaseURL() {
+        return URL.getSalesforceBaseUrl().toExternalForm();
+    }
+
     // SOBJECT API NAMES
     global static final String SOBJECT_APINAME_ACCOUNT = 'Account';
     global static final String SOBJECT_APINAME_USER = 'User';
