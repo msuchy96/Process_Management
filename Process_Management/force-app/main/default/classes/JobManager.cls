@@ -103,4 +103,24 @@ public without sharing class JobManager {
             return new FrontResponseWrapper(false, e.getMessage());
         }
     }
+
+    @AuraEnabled
+    public static List<Job__c> getUserJobs(Integer pagenumber, Integer numberOfRecords, Integer pageSize) {
+        Integer calculatedOffset = (pageSize * (pagenumber - 1));
+        return [SELECT Id, Name, Stream__r.Name, Status__c, Due_Date__c, Time_Spent__c, Time_Planned__c
+                FROM Job__c 
+                WHERE Assigned_To__c =: UserInfo.getUserId() 
+                AND RecordTypeId =: CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_STANDARD)
+                ORDER BY Due_Date__c
+                LIMIT :pageSize OFFSET :calculatedOffset];
+    }
+
+    @AuraEnabled
+    public static Integer getUserJobsCount() {
+        return [SELECT Id, Name, Stream__r.Name, Status__c, Due_Date__c, Time_Spent__c, Time_Planned__c, Stream__c
+                FROM Job__c 
+                WHERE Assigned_To__c =: UserInfo.getUserId() 
+                AND RecordTypeId =: CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_STANDARD)
+                ORDER BY Due_Date__c].size();
+    }
 }
