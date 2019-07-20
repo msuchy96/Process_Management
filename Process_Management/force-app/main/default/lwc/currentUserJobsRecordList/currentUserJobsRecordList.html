@@ -1,5 +1,5 @@
 <template>
-        <lightning-card title="Job you are assigned to" icon-name="custom:custom63">
+        <lightning-card title="Closest due date jobs you are assigned to" icon-name="custom:custom63">
             <div class="slds-m-around_medium">
                 <template if:true={jobs}>
                     <table class="slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout">
@@ -10,6 +10,9 @@
                                 </th>
                                 <th scope="col">
                                     <div class="slds-truncate" title="Stream">Stream</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Status">Status</div>
                                 </th>
                                 <th scope="col">
                                     <div class="slds-truncate" title="Time Planned (h)">Time Planned (h)</div>
@@ -31,6 +34,9 @@
                                     </th>
                                     <td>
                                         <a class="slds-truncate" href={job.Stream__c}>{job.Stream__r.Name}</a>
+                                    </td>
+                                    <td>
+                                        <div class="slds-truncate" title={job.Status__c}>{job.Status__c}</div>
                                     </td>
                                     <td>
                                         <div class="slds-truncate" title={job.Time_Planned__c}>{job.Time_Planned__c}</div>

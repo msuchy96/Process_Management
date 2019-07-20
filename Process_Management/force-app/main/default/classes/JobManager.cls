@@ -111,6 +111,8 @@ public without sharing class JobManager {
                 FROM Job__c 
                 WHERE Assigned_To__c =: UserInfo.getUserId() 
                 AND RecordTypeId =: CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_STANDARD)
+                AND (Status__c =: CommonUtility.JOB_STATUS_TODO
+                    OR Status__c =: CommonUtility.JOB_STATUS_INPROGRESS)
                 ORDER BY Due_Date__c
                 LIMIT :pageSize OFFSET :calculatedOffset];
     }
@@ -121,6 +123,8 @@ public without sharing class JobManager {
                 FROM Job__c 
                 WHERE Assigned_To__c =: UserInfo.getUserId() 
                 AND RecordTypeId =: CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_STANDARD)
+                AND (Status__c =: CommonUtility.JOB_STATUS_TODO
+                    OR Status__c =: CommonUtility.JOB_STATUS_INPROGRESS)
                 ORDER BY Due_Date__c].size();
     }
 }
