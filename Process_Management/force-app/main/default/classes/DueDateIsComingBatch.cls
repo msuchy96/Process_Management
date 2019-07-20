@@ -34,30 +34,36 @@ public without sharing class DueDateIsComingBatch implements Schedulable, Databa
         List<Contact> contactToDelete = new List<Contact>();
         List<Task> taskToInsert = new List<Task>();
         List<Messaging.SingleEmailMessage> emailToSent = new List<Messaging.SingleEmailMessage>();
+        Set<Id> userIdSet = new Set<Id>();
+        Map<Id, Contact> tempContactMap = new Map<Id, Contact>();
+
+        for(Job__c job: scope) {
+            userIdSet.add(job.Assigned_To__c);
+        }
+
+        Map<Id, User> userMap = new Map<Id, User>([SELECT Id, Email, FirstName, LastName FROM User WHERE Id IN: userIdSet]);
+        for(User user: userMap.values()) {
+            Contact tempContact = new Contact(email = user.email, firstName = user.firstName, lastName = user.lastName);
+            tempContactMap.put(user.Id, tempContact);
+        }
+        insert tempContactMap.values();
 
         for(Job__c job: scope) {
             if(job.Time_Planned__c > job.Time_Spent__c && !Approval.isLocked(job.Id)) {
                 String [] hoursAndMinutesRemain = String.valueOf(job.Time_Planned__c - job.Time_Spent__c).split('\\.');
                 Integer hoursRemain = Integer.valueOf(hoursAndMinutesRemain[0]);
                 Integer minutesRemain = Integer.valueOf(hoursAndMinutesRemain[1]);
-
                 if(DateTime.now().addHours(hoursRemain).addMinutes(minutesRemain) > job.Due_Date__c) {
-                    User user = [SELECT email, firstName, lastName FROM User WHERE id =: job.Assigned_To__c];
-                    Contact tempContact = new Contact(email = user.email, firstName = user.firstName, lastName = user.lastName);
-                    insert tempContact;
-                    contactToDelete.add(tempContact);
-
                     job.Reminder_Sent__c = true;
                     jobToUpdate.add(job);
-
-                    emailToSent.add(prepareEmail(job, tempContact));
+                    emailToSent.add(prepareEmail(job, tempContactMap.get(job.Assigned_To__c)));
                     taskToInsert.add(prepareTask(job));
                 } 
             }
         }
 
         Messaging.SendEmailResult [] r = Messaging.sendEmail(emailToSent);
-        delete contactToDelete;
+        delete tempContactMap.values();
         update jobToUpdate;
         insert taskToInsert;
     }
