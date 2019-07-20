@@ -30,9 +30,9 @@ public without sharing class DailyReminderBatch implements Schedulable, Database
         Map<Id, User> userMap = new Map<Id, User>([SELECT Id, Email, FirstName, LastName FROM User WHERE Id IN: userIdSet]);
         for(User user: userMap.values()) {
             Contact tempContact = new Contact(email = user.email, firstName = user.firstName, lastName = user.lastName);
-            insert tempContact;
             tempContactMap.put(user.Id, tempContact);
         }
+        insert tempContactMap.values();
         for(Job__c job: scope) {
             if(!Approval.isLocked(job.Id)) {
                 User user = userMap.get(job.Assigned_To__c);
