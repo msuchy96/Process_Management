@@ -1,12 +1,13 @@
 public without sharing class DailyReminderBatch implements Schedulable, Database.Batchable<SObject> {
     public String query = '';
+    public Datetime tommorowDateTime = null;
 
     public DailyReminderBatch() {
 
-        DateTime tommorowDateTime = DateTime.now().addDays(1);
+        tommorowDateTime = DateTime.now().addDays(1);
         query = 'SELECT Id, Name, Stream__r.Name, Time_Spent__c, Time_Planned__c, Status__c, Assigned_To__c, Due_Date__c ' +
                 'FROM Job__c ' +
-                'WHERE Due_Date__c < \'' + tommorowDateTime + '\'' +
+                'WHERE Due_Date__c < :tommorowDateTime ' +
                 ' AND Assigned_To__r.Allow_Email_Notification__c = true' +
                 ' AND Assigned_To__r.Email != null' +
                 ' AND ( Status__c = \'' + CommonUtility.JOB_STATUS_TODO + '\'' +
@@ -57,6 +58,7 @@ public without sharing class DailyReminderBatch implements Schedulable, Database
         mail.setTargetObjectId(tempContact.Id); 
         mail.setSenderDisplayName(CommonUtility.EMAIL_NOTIFICATION_SALESFORCE_SENDER); 
         mail.setSaveAsActivity(false); 
+        mail.setSubject(CommonUtility.EMAIL_NOTIFICATION_SALESFORCE_SENDER);
         mail.setHtmlBody(prepareEmailBody(jobList));
         return mail;
     }
@@ -64,15 +66,15 @@ public without sharing class DailyReminderBatch implements Schedulable, Database
     private String prepareEmailBody(List<Job__c> jobList) {
         String result =
         'Hello!<br><br>' +
-        'There are some jobs which require your attention:<br><ul style="list-style-type:disc;">';
+        'There are some jobs which require your attention today:<br><ul style="list-style-type:disc;">';
         for(Job__c job : jobList) {
             result += '<li><a href="' + CommonUtility.getBaseURL() + '/' + job.Id +'">' +
-            job.Name + '</a>: ' +
-            'Stream: ' + job.Stream__r.Name + ' ' +
-            'Status: ' + job.Status__c + ' ' +
-            'Time Planned: ' + job.Time_Planned__c + 'h ' +
-            'Time Spent: ' + job.Time_Spent__c + 'h ' +
-            'Due Date: ' + job.Due_Date__c + ' ' + 
+            job.Name + '</a>:' +
+            '<dt>Stream: ' + job.Stream__r.Name + '</dt>' +
+            '<dt>Status: ' + job.Status__c + '</dt>' +
+            '<dt>Time Planned: ' + job.Time_Planned__c + 'h</dt>' +
+            '<dt>Time Spent: ' + job.Time_Spent__c + 'h</dt>' +
+            '<dt>Due Date: ' + String.valueOf(job.Due_Date__c).substring(0, 16) + '</dt>' + 
             '</li>';
         }
         result += '</ul><br><br>Best regards, <br>'+
