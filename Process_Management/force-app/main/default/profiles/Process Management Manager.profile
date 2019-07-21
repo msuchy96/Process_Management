@@ -9,6 +9,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DailyReminderBatch</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>DueDateIsComingBatch</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -474,10 +478,6 @@
     </recordTypeVisibilities>
     <tabVisibilities>
         <tab>Client__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Job__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

@@ -184,11 +184,6 @@
         <unique>false</unique>
     </fields>
     <label>Job</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
     <nameField>
         <label>Job Name</label>
         <trackHistory>false</trackHistory>
