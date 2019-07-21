@@ -103,8 +103,9 @@ public without sharing class JobManager {
                 if(secondNextJobMap.get(jobToCloneId) != null) {
                     toCloneToClonedJobsMap.get(jobToCloneId).Second_Next_Job__c = toCloneToClonedJobsMap.get(secondNextJobMap.get(jobToCloneId)).Id;
                 }
-                clonedStream.JSON_Description__c.replace((String)jobToCloneId, (String)toCloneToClonedJobsMap.get(jobToCloneId).Id);
-                clonedStream.JSON_Description__c.replace((String)jobToCloneId, (String)toCloneToClonedJobsMap.get(jobToCloneId).Id);
+                if(clonedStream.JSON_Description__c != null) {
+                    clonedStream.JSON_Description__c.replace((String)jobToCloneId, (String)toCloneToClonedJobsMap.get(jobToCloneId).Id);
+                }
             }
             update clonedStream;
             update toCloneToClonedJobsMap.values();

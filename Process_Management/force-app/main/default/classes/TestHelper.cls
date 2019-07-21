@@ -15,7 +15,7 @@ global class TestHelper {
         List<Account> result = new List<Account>();
         for(Integer i = 0; i < count; i++) {
             String randomNumber = String.valueOf(createRandomNumber());
-            Account entity = entityTemplate != null ? entityTemplate : new Account();
+            Account entity = entityTemplate != null ? entityTemplate.clone(false, false) : new Account();
             if(entity.Name == null) entity.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_ENTITY + randomNumber;
             result.add(entity);
         } 
@@ -31,7 +31,7 @@ global class TestHelper {
 
         for(Integer i = 0; i < count; i++) {
             String randomNumber = String.valueOf(createRandomNumber());
-            User u = userTemplate == null ? new User() : userTemplate;
+            User u = userTemplate != null ? userTemplate.clone(false, false) : new User();
             if(u.FirstName == null) u.FirstName = TEST_CONST + randomNumber;
             if(u.Lastname == null) u.Lastname = TEST_CONST + randomNumber;
             if(u.Email == null) u.Email = 'email-' + TEST_CONST + randomNumber + '@example.com';
@@ -59,7 +59,7 @@ global class TestHelper {
         List<Stream__c> result = new List<Stream__c>();
         for(Integer i=0; i<count; i++) {
             String randomNumber = String.valueOf(createRandomNumber());
-            Stream__c stream = streamTemplate != null ? streamTemplate : new Stream__c();
+            Stream__c stream = streamTemplate != null ? streamTemplate.clone(false, false) : new Stream__c();
             if(stream.Name == null) stream.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_STREAM + randomNumber;
             result.add(stream);
         }
@@ -75,7 +75,7 @@ global class TestHelper {
         List<Job__c> result = new List<Job__c>();
         for(Integer i=0; i<count; i++) {
             String randomNumber = String.valueOf(createRandomNumber());
-            Job__c job = jobTemplate != null ? jobTemplate : new Job__c();
+            Job__c job = jobTemplate != null ? jobTemplate.clone(false, false) : new Job__c();
             if(job.Name == null) job.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_JOB + randomNumber;
             if(job.Assigned_To__c == null) job.Assigned_To__c = createUser(null, true).Id;
             if(job.Status__c == null) job.Status__c = CommonUtility.JOB_STATUS_TODO;
