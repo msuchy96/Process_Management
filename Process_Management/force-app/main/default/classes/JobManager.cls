@@ -31,7 +31,17 @@ public without sharing class JobManager {
             }
         }
 
-        List<Stream__c> streamToUpdate = [SELECT Id, JSON_Description__c FROM Stream__c WHERE Id IN: streamToJobsMap.keySet()];
+        List<Stream__c> streamToUpdate = [SELECT Id, JSON_Description__c
+                                            FROM Stream__c 
+                                            WHERE Id IN: streamToJobsMap.keySet()];
+
+        List<Stream__c> tempListStream = new List<Stream__c>();
+        for(Stream__c stream : streamToUpdate) {
+            if(stream.JSON_Description__c != null) {
+                tempListStream.add(stream);
+            }
+        }
+        streamToUpdate = tempListStream;
 
         for(Stream__c stream : streamToUpdate) {
             Map<String, Object> results = (Map<String, Object>)JSON.deserializeUntyped(stream.JSON_Description__c);
