@@ -16,7 +16,7 @@ private class ManageApprovalProcessTest {
         Test.startTest();
         FrontResponseWrapper response = ManageApprovalProcess.submitDueDateApproval(jobToTest.Id, newDueDate);
         Test.stopTest();
-        System.assertEquals(true, response.isSuccess);
+        System.assert(response.isSuccess);
     }
 
     @isTest
@@ -29,7 +29,7 @@ private class ManageApprovalProcessTest {
         Test.startTest();
         FrontResponseWrapper response = ManageApprovalProcess.submitDueDateApproval(jobToTest.Id, newDueDate);
         Test.stopTest();
-        System.assertEquals(false, response.isSuccess);
+        System.assert(!response.isSuccess);
     }
 
     @isTest
@@ -40,6 +40,6 @@ private class ManageApprovalProcessTest {
         FrontResponseWrapper response = ManageApprovalProcess.submitDueDateApproval(jobToTest.Id, newDueDate);
         FrontResponseWrapper response2 = ManageApprovalProcess.submitDueDateApproval(jobToTest.Id, newDueDate);
         Test.stopTest();
-        System.assertEquals(false, response2.isSuccess);
+        System.assert(!response2.isSuccess);
     }
 }

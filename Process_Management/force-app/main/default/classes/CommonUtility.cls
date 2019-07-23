@@ -25,6 +25,7 @@ global without sharing class CommonUtility {
     global static final String SOBJECT_NAME_ENTITY = 'Entity';
     global static final String SOBJECT_NAME_JOB = 'Job';
     global static final String SOBJECT_NAME_STREAM = 'Stream';
+    global static final String SOBJECT_NAME_CLIENT = 'Client';
     
     // EMPLOYEE ROLE PICKLIST FIELD VALUES
     global static final String EMPLOYEE_ROLE_MANAGER = 'Manager';

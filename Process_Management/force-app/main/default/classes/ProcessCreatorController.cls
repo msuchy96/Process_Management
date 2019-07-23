@@ -1,5 +1,4 @@
 public with sharing class ProcessCreatorController {
-    public ProcessCreatorController() {}
 
     @AuraEnabled
     public static FrontResponseWrapper deleteSelectedJob(Id jobId) {

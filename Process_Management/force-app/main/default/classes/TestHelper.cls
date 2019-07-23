@@ -86,4 +86,21 @@ global class TestHelper {
         return result;
     }
 
+    public static Client__c createClient(Client__c clientTemplate, Boolean isInsert) {
+        return createClients(clientTemplate, 1, isInsert)[0];
+    }
+
+    public static List<Client__c> createClients(Client__c clientTemplate, Integer count, Boolean isInsert) {
+        List<Client__c> result = new List<Client__c>();
+        for(Integer i=0; i<count; i++) {
+            String randomNumber = String.valueOf(createRandomNumber());
+            Client__c client = clientTemplate != null ? clientTemplate.clone(false, false) : new Client__c();
+            if(client.Name == null) client.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_CLIENT + randomNumber;
+            result.add(client);
+        }
+        if(isInsert) insert result;
+        return result;
+    }
+
+
 }

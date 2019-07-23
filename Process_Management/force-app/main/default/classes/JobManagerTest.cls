@@ -29,7 +29,7 @@ private class JobManagerTest {
     }
 
     @isTest 
-    static void cloneStreamWithJobs() {
+    static void cloneStreamWithJobsSucess() {
         Stream__c stream = TestHelper.createStream(null , true);
         Job__c firstRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true);
         Job__c secondRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true);
@@ -43,9 +43,21 @@ private class JobManagerTest {
         Test.startTest();
         FrontResponseWrapper repsonse = JobManager.cloneStreamWithJobs(stream.Id);
         Test.stopTest();
-        System.assertEquals(true, repsonse.isSuccess);
+        System.assert(repsonse.isSuccess);
         System.assertEquals(1, [SELECT Id FROM Stream__c WHERE Id <> :stream.Id].size());
         System.assertEquals(jobMap.keySet().size(), [SELECT Id FROM Job__c WHERE Id NOT IN :jobMap.keySet()].size());
+    }
+
+    @isTest 
+    static void cloneStreamWithJobsError() {
+        Stream__c stream = TestHelper.createStream(null , true);
+        Id idTopass = stream.Id;
+        delete stream;
+        Test.startTest();
+        FrontResponseWrapper repsonse = JobManager.cloneStreamWithJobs(idTopass);
+        Test.stopTest();
+        System.assert(!repsonse.isSuccess);
+       
     }
 
     @isTest
