@@ -102,5 +102,32 @@ global class TestHelper {
         return result;
     }
 
+    private class GraphStructure {
+        List<NodeStructure> nodes;
+        List<EdgeStructure> edges;
+
+        NodeStructure startNodeForEdge;
+        Boolean edgeMode = false;
+        Id selectedJobId = null;
+        Id streamId;
+        Boolean template = false;
+
+        private class NodeStructure {
+            String x_pos;
+            String y_pos;
+            Integer edgeCounter;
+            Boolean selected = false;
+            Id jobId;
+            String Name;
+            String status;
+        }
+
+        private class EdgeStructure {
+            NodeStructure nodeStart;
+            NodeStructure nodeEnd;
+            Boolean selected = false;
+        }
+    }
+
 
 }

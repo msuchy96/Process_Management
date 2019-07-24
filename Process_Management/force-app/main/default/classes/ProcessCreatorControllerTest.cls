@@ -5,6 +5,8 @@ private class ProcessCreatorControllerTest {
     static void dataSetup() {
         TestHelper.createJobs(null, 10, true);
         TestHelper.createClients(null, 10, true);
+        TestHelper.createClient(null, true);
+        TestHelper.createEntity(null, true);
     }
 
     @isTest

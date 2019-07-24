@@ -1,4 +1,7 @@
 public without sharing class DailyReminderBatch implements Schedulable, Database.Batchable<SObject> {
+    /*  Batch Scheduling: 
+		Each Day 2AM
+	*/
     public String query = '';
     public Datetime tommorowDateTime = null;
 
