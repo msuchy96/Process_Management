@@ -10,7 +10,7 @@ private class TimeReportManagerTest {
     static void timeReportsCreation() {
         Map<Id, Job__c> jobMap = new Map<Id,Job__c>([SELECT Id, Time_Spent__c FROM Job__c]);
         for(Job__c job : jobMap.values()) {
-            job.Time_Spent__c = Decimal.valueOf(TestHelper.createRandomNumber());
+            job.Time_Spent__c = Decimal.valueOf(RandomUtility.createRandomNumber());
             job.Status__c = CommonUtility.JOB_STATUS_INPROGRESS;
         }
         Test.startTest();
@@ -27,7 +27,7 @@ private class TimeReportManagerTest {
     static void timeReportsModified() {
         Map<Id, Job__c> jobMap = new Map<Id,Job__c>([SELECT Id, Time_Spent__c FROM Job__c]);
         for(Job__c job : jobMap.values()) {
-            job.Time_Spent__c = Decimal.valueOf(TestHelper.createRandomNumber());
+            job.Time_Spent__c = Decimal.valueOf(RandomUtility.createRandomNumber());
             job.Status__c = CommonUtility.JOB_STATUS_INPROGRESS;
         }
         update jobMap.values();
@@ -35,7 +35,7 @@ private class TimeReportManagerTest {
 
         Test.startTest();
         for(Job__c job : jobMap.values()) {
-            job.Time_Spent__c = job.Time_Spent__c + Decimal.valueOf(TestHelper.createRandomNumber());
+            job.Time_Spent__c = job.Time_Spent__c + Decimal.valueOf(RandomUtility.createRandomNumber());
         }
         update jobMap.values();
         Test.stopTest();
@@ -49,7 +49,7 @@ private class TimeReportManagerTest {
     static void timeReportsDeletion() {
         Map<Id, Job__c> jobMap = new Map<Id,Job__c>([SELECT Id, Time_Spent__c FROM Job__c]);
         for(Job__c job : jobMap.values()) {
-            job.Time_Spent__c = Decimal.valueOf(TestHelper.createRandomNumber());
+            job.Time_Spent__c = Decimal.valueOf(RandomUtility.createRandomNumber());
             job.Status__c = CommonUtility.JOB_STATUS_INPROGRESS;
         }
         update jobMap.values();
@@ -72,7 +72,7 @@ private class TimeReportManagerTest {
         User testUser = [SELECT Id FROM User LIMIT 1];
         Test.startTest();
         for(Job__c job : jobMap.values()) {
-            job.Time_Spent__c = Decimal.valueOf(TestHelper.createRandomNumber());
+            job.Time_Spent__c = Decimal.valueOf(RandomUtility.createRandomNumber());
             job.Status__c = CommonUtility.JOB_STATUS_INPROGRESS;
             job.Assigned_To__c = testUser.Id;
         }
