@@ -34,7 +34,7 @@ private class JobManagerTest {
         Job__c firstRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true);
         Job__c secondRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true);
         Job__c testJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id, Next_Job__c = firstRelJob.Id, Second_Next_Job__c = secondRelJob.Id), true);
-        stream.JSON_Description__c = 'JSON: ' + testJob.Id;
+        TestHelper.generateGraphJSONDescription(stream.Id);
         update stream;
         Map<Id, Job__c> jobMap = new Map<Id, Job__c>();
         jobMap.put(firstRelJob.Id, firstRelJob);
@@ -70,5 +70,32 @@ private class JobManagerTest {
             System.assertEquals(5, JobManager.getUserJobs(1,5,5).size());
         }
         Test.stopTest();
+    }
+
+    @isTest
+    static void updateRelatedJSONStream() {
+        Stream__c stream = TestHelper.createStream(null , true);
+        List<Job__c> jobList = TestHelper.createJobs(new Job__c(Stream__c = stream.Id), 10, true);
+        TestHelper.generateGraphJSONDescription(stream.Id);
+        for(Integer i = 0; i < jobList.size(); i++) {
+            if(i > 0) {
+                jobList.get(i).Next_Job__c = jobList.get(i-1).Id;
+            } 
+            if(i > 1) {
+                jobList.get(i).Second_Next_Job__c = jobList.get(i-2).Id;
+            }
+            jobList.get(i).Name = 'test' + String.valueOf(i);
+            jobList.get(i).Status__c = CommonUtility.JOB_STATUS_INPROGRESS;
+        }
+        update jobList;
+        Test.startTest();
+        update jobList;
+        TestHelper.generateGraphJSONDescription(stream.Id);
+        JobManager.updateRelatedStreamJSON(new Map<Id, Job__c>(jobList));
+        Test.stopTest();
+        stream = [SELECT JSON_Description__c FROM Stream__c];
+        for(Job__c job: jobList) {
+            System.assert(stream.JSON_Description__c.contains(job.Name));
+        }
     }
 }

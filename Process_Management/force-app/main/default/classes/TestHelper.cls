@@ -34,7 +34,7 @@ global class TestHelper {
             if(u.Alias == null) { 
                 u.Alias = 'U-'+ randomNumber;
             }
-            if(u.Username == null) u.Username = TEST_CONST + randomNumber + '@example.com';
+            if(u.Username == null) u.Username = TEST_CONST + randomNumber + String.valueOf(i) + '@example.com';
             if(u.LocaleSidKey == null) u.LocaleSidKey = 'en_US';
             if(u.TimeZoneSidKey == null) u.TimeZoneSidKey = 'GMT';
             if(u.ProfileID == null) u.ProfileID = CommonUtility.getAdminProfileId();

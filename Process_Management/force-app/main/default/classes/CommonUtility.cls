@@ -3,11 +3,6 @@ global without sharing class CommonUtility {
     // Class for creating custom exceptions
     global class MyException extends Exception {}
 
-    @AuraEnabled(cacheable=true)
-    public static CommonUtility getAllConstants() {
-        return new CommonUtility();
-    }
-
     @AuraEnabled
     public static String getBaseURL() {
         return URL.getSalesforceBaseUrl().toExternalForm();
@@ -75,13 +70,6 @@ global without sharing class CommonUtility {
     global static final String EMAIL_NOTIFICATION_SALESFORCE_SENDER = 'Salesforce Notification';
     global static final String EMAIL_NOTIFICATION_DUE_DATE_DEADLINE_TEMPLATE = 'DueDateDeadline';
     
-    //BUTTON VARIANTS
-    @AuraEnabled
-    public final String BUTTON_VARIANT_NEUTRAL = 'neutral';
-    @AuraEnabled
-    public final String BUTTON_VARIANT_SUCCESS = 'success';
-
-
     /* map, used to preserve different mechanisms from retrieving (quering) 
         the same record types ids for more than once */
     global final static String NO_SUCH_RT_FOUND = 'No such record type found!';
