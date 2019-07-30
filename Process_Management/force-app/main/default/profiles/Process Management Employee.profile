@@ -5,11 +5,31 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CommonUtilityTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>DAGChecker</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DAGCheckerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DailyReminderBatch</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DailyReminderBatchTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>DueDateIsComingBatch</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DueDateIsComingBatchTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -21,7 +41,15 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>JobManagerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ManageApprovalProcess</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ManageApprovalProcessTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -29,7 +57,19 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProcessCreatorControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>RandomUtility</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ResetReminderSentBatch</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ResetReminderSentBatchTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -395,11 +435,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>User.Allow_SMS_Notification__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>User.Earnings__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -478,7 +513,7 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Job__c</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Stream_Creator</tab>
