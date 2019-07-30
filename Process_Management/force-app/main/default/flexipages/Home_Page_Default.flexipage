@@ -23,6 +23,9 @@
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
+            <componentName>dataGeneratorComponent</componentName>
+        </componentInstances>
+        <componentInstances>
             <componentName>runtime_sales_activities:todayTaskContainer</componentName>
         </componentInstances>
         <componentInstances>

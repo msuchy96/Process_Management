@@ -25,6 +25,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DataGenerator</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>DueDateIsComingBatch</apexClass>
         <enabled>false</enabled>
     </classAccesses>
