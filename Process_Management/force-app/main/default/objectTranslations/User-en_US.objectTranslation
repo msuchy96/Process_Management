@@ -5,10 +5,6 @@
         <name>Allow_Email_Notification__c</name>
     </fields>
     <fields>
-        <label><!-- Allow SMS Notification --></label>
-        <name>Allow_SMS_Notification__c</name>
-    </fields>
-    <fields>
         <label><!-- Earnings --></label>
         <name>Earnings__c</name>
     </fields>
