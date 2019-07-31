@@ -12,7 +12,7 @@ global class TestHelper {
         for(Integer i = 0; i < count; i++) {
             String randomNumber = String.valueOf(RandomUtility.createRandomNumber());
             Account entity = entityTemplate != null ? entityTemplate.clone(false, false) : new Account();
-            if(entity.Name == null) entity.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_ENTITY + randomNumber;
+            if(entity.Name == null) entity.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_ENTITY + '-' + randomNumber;
             result.add(entity);
         } 
         if(isInsert) insert result;
@@ -56,7 +56,7 @@ global class TestHelper {
         for(Integer i=0; i<count; i++) {
             String randomNumber = String.valueOf(RandomUtility.createRandomNumber());
             Stream__c stream = streamTemplate != null ? streamTemplate.clone(false, false) : new Stream__c();
-            if(stream.Name == null) stream.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_STREAM + randomNumber;
+            if(stream.Name == null) stream.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_STREAM + '-' + randomNumber;
             result.add(stream);
         }
         if(isInsert) insert result;
@@ -72,7 +72,7 @@ global class TestHelper {
         for(Integer i=0; i<count; i++) {
             String randomNumber = String.valueOf(RandomUtility.createRandomNumber());
             Job__c job = jobTemplate != null ? jobTemplate.clone(false, false) : new Job__c();
-            if(job.Name == null) job.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_JOB + randomNumber;
+            if(job.Name == null) job.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_JOB + '-' + randomNumber;
             if(job.Assigned_To__c == null) job.Assigned_To__c = createUser(null, true).Id;
             if(job.Status__c == null) job.Status__c = CommonUtility.JOB_STATUS_TODO;
             if(job.Stream__c == null) job.Stream__c = createStream(null, true).Id;
@@ -91,7 +91,7 @@ global class TestHelper {
         for(Integer i=0; i<count; i++) {
             String randomNumber = String.valueOf(RandomUtility.createRandomNumber());
             Client__c client = clientTemplate != null ? clientTemplate.clone(false, false) : new Client__c();
-            if(client.Name == null) client.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_CLIENT + randomNumber;
+            if(client.Name == null) client.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_CLIENT + '-' + randomNumber;
             result.add(client);
         }
         if(isInsert) insert result;
