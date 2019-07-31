@@ -15,6 +15,6 @@ public with sharing class DataGenerator {
         } catch (Exception e) {
             return new FrontResponseWrapper(false, e.getMessage());
         }
-        return new FrontResponseWrapper(true, 'sukces usuwania!');
+        return new FrontResponseWrapper(true, Label.TST_MSG_DataDeleted);
     }
 }
