@@ -33,6 +33,10 @@
         <name>D3_ErrorLoading</name>
     </customLabels>
     <customLabels>
+        <label><!-- TST_MSG_DataDeleted --></label>
+        <name>TST_MSG_DataDeleted</name>
+    </customLabels>
+    <customLabels>
         <label><!-- TST_MSG_EdgeCreated --></label>
         <name>TST_MSG_EdgeCreated</name>
     </customLabels>
