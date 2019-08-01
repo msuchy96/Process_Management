@@ -34,7 +34,7 @@ private class JobManagerTest {
         Job__c firstRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true);
         Job__c secondRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true);
         Job__c testJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id, Next_Job__c = firstRelJob.Id, Second_Next_Job__c = secondRelJob.Id), true);
-        TestHelper.generateGraphJSONDescription(stream.Id);
+        TestHelper.generateGraphJSONDescription(new Set<Id>{stream.Id});
         update stream;
         Map<Id, Job__c> jobMap = new Map<Id, Job__c>();
         jobMap.put(firstRelJob.Id, firstRelJob);
@@ -76,7 +76,7 @@ private class JobManagerTest {
     static void updateRelatedJSONStream() {
         Stream__c stream = TestHelper.createStream(null , true);
         List<Job__c> jobList = TestHelper.createJobs(new Job__c(Stream__c = stream.Id), 10, true);
-        TestHelper.generateGraphJSONDescription(stream.Id);
+        TestHelper.generateGraphJSONDescription(new Set<Id>{stream.Id});
         for(Integer i = 0; i < jobList.size(); i++) {
             if(i > 0) {
                 jobList.get(i).Next_Job__c = jobList.get(i-1).Id;
@@ -90,7 +90,7 @@ private class JobManagerTest {
         update jobList;
         Test.startTest();
         update jobList;
-        TestHelper.generateGraphJSONDescription(stream.Id);
+        TestHelper.generateGraphJSONDescription(new Set<Id>{stream.Id});
         JobManager.updateRelatedStreamJSON(new Map<Id, Job__c>(jobList));
         Test.stopTest();
         stream = [SELECT JSON_Description__c FROM Stream__c];

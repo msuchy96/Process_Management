@@ -100,27 +100,29 @@ global class TestHelper {
 
 
 
-    public static void generateGraphJSONDescription(Id streamId) {
-        Stream__c stream = [SELECT Id, JSON_Description__c, (SELECT Id, Name, Status__c, Next_Job__c, Second_Next_Job__c FROM Jobs__r) FROM Stream__c WHERE Id =: streamId];
-        Map<Id, Job__c> jobs = new Map<Id, Job__c>(stream.Jobs__r);
-        Map<Id, NodeStructure> nodeStructureMap = new Map<Id, NodeStructure>();
-        GraphStructure graphStruct = new GraphStructure(stream.Id);
-        for(Job__c job: jobs.values()) {
-            NodeStructure node = new NodeStructure(job);
-            nodeStructureMap.put(node.jobId, node);
-            graphStruct.nodes.add(node);
-        }
-        for(Job__c job: jobs.values()) {
-            if(job.Next_Job__c != null) {
-                graphStruct.edges.add(new EdgeStructure(nodeStructureMap.get(job.Id), nodeStructureMap.get(job.Next_Job__c)));
+    public static void generateGraphJSONDescription(Set<Id> streamIdSet) {
+        List<Stream__c> streamList = [SELECT Id, JSON_Description__c, (SELECT Id, Name, Status__c, Next_Job__c, Second_Next_Job__c FROM Jobs__r) FROM Stream__c WHERE Id IN :streamIdSet];
+        for(Stream__c stream : streamList) {
+            Map<Id, Job__c> jobs = new Map<Id, Job__c>(stream.Jobs__r);
+            Map<Id, NodeStructure> nodeStructureMap = new Map<Id, NodeStructure>();
+            GraphStructure graphStruct = new GraphStructure(stream.Id);
+            for(Job__c job: jobs.values()) {
+                NodeStructure node = new NodeStructure(job);
+                nodeStructureMap.put(node.jobId, node);
+                graphStruct.nodes.add(node);
             }
-            if(job.Second_Next_Job__c != null) {
-                graphStruct.edges.add(new EdgeStructure(nodeStructureMap.get(job.Id), nodeStructureMap.get(job.Second_Next_Job__c)));
+            for(Job__c job: jobs.values()) {
+                if(job.Next_Job__c != null) {
+                    graphStruct.edges.add(new EdgeStructure(nodeStructureMap.get(job.Id), nodeStructureMap.get(job.Next_Job__c)));
+                }
+                if(job.Second_Next_Job__c != null) {
+                    graphStruct.edges.add(new EdgeStructure(nodeStructureMap.get(job.Id), nodeStructureMap.get(job.Second_Next_Job__c)));
+                }
             }
+            stream.JSON_Description__c = JSON.serialize(graphStruct);
         }
-
-        stream.JSON_Description__c = JSON.serialize(graphStruct);
-        update stream;
+        
+        update streamList;
     }
 
     private class GraphStructure {

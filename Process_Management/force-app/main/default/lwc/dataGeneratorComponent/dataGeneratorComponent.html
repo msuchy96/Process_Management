@@ -7,4 +7,7 @@
             <lightning-button variant="neutral" name="generateData" label="Generate Random Data" onclick={generateData}></lightning-button>
         </div>
     </div>
+    <div if:true={showSpinner} class="spinnerClass">
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </div>
 </template>

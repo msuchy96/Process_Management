@@ -1,4 +1,4 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import {
     ShowToastEvent
 } from 'lightning/platformShowToastEvent';
@@ -10,8 +10,11 @@ import generateRandomData from '@salesforce/apex/DataGenerator.generateRandomDat
 import deleteAllData from '@salesforce/apex/DataGenerator.deleteAllData';
 
 export default class DataGeneratorComponent extends LightningElement {
+
+    @api showSpinner = false;
     
     deleteAllData() {
+        this.showSpinner = true;
         deleteAllData({})
         .then(result => {
             if(result.isSuccess) {
@@ -19,13 +22,16 @@ export default class DataGeneratorComponent extends LightningElement {
             } else {
                 this.fireToastEvent(toastTitleError, result.msg, 'error');
             }
+            this.showSpinner = false;
         })
         .catch(error => {
             this.fireToastEvent(toastTitleError, JSON.stringify(error), 'error');
+            this.showSpinner = false;
         });
     }
 
     generateData() {
+        this.showSpinner = true;
         generateRandomData({})
         .then(result => {
             if(result.isSuccess) {
@@ -33,9 +39,11 @@ export default class DataGeneratorComponent extends LightningElement {
             } else {
                 this.fireToastEvent(toastTitleError, result.msg, 'error');
             }
+            this.showSpinner = false;
         })
         .catch(error => {
             this.fireToastEvent(toastTitleError, JSON.stringify(error), 'error');
+            this.showSpinner = false;
         });
     }
 
