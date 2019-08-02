@@ -30,39 +30,19 @@ public with sharing class DataGenerator {
             for(Integer i = 0; i < streamList.size() ; i++) {
                 if (i < streamList.size()/3) {
                     for(Integer j = 0 ; j < numberOfFirstRange ; j++) {
-                        Job__c job = prepareRandomJob(streamList.get(i), userList);
-                        if(job.Status__c == CommonUtility.JOB_STATUS_TODO) {
-                            if(streamToJobTODOList.containsKey(job.Stream__c)) {
-                                streamToJobTODOList.get(job.Stream__c).add(job);
-                            } else {
-                                streamToJobTODOList.put(job.Stream__c, new List<Job__c>(job));
-                            }
-                        } else if(job.Status__c == CommonUtility.JOB_STATUS_INPROGRESS) {
-                            if(streamToJobINPROGRESSList.containsKey(job.Stream__c)) {
-                                streamToJobINPROGRESSList.get(job.Stream__c).add(job);
-                            } else {
-                                streamToJobINPROGRESSList.put(job.Stream__c, new List<Job__c>(job));
-                            }
-                        } else {
-                            if(streamToJobDONEList.containsKey(job.Stream__c)) {
-                                streamToJobDONEList.get(job.Stream__c).add(job);
-                            } else {
-                                streamToJobDONEList.put(job.Stream__c, new List<Job__c>(job));
-                            }
-                        }
-                        jobList.add(job);
+                        jobList.add(prepareRandomJob(streamList.get(i), userList, streamToJobTODOList, streamToJobINPROGRESSList, streamToJobDONEList));
                     }
                 } else if(i < streamList.size()/2) {
                     for(Integer j = 0 ; j < numberOfFSecondRange ; j++) {
-                        jobList.add(prepareRandomJob(streamList.get(i), userList));
+                        jobList.add(prepareRandomJob(streamList.get(i), userList, streamToJobTODOList, streamToJobINPROGRESSList, streamToJobDONEList));
                     }
                 } else if(i < streamList.size()/1.5) {
                     for(Integer j = 0 ; j < numberOfThirdRange ; j++) {
-                        jobList.add(prepareRandomJob(streamList.get(i), userList));
+                        jobList.add(prepareRandomJob(streamList.get(i), userList, streamToJobTODOList, streamToJobINPROGRESSList, streamToJobDONEList));
                     }
                 } else {
                     for(Integer j = 0 ; j < numberOfFourthRange ; j++) {
-                        jobList.add(prepareRandomJob(streamList.get(i), userList));
+                        jobList.add(prepareRandomJob(streamList.get(i), userList, streamToJobTODOList, streamToJobINPROGRESSList, streamToJobDONEList));
                     }
                 }
             }
@@ -95,17 +75,37 @@ public with sharing class DataGenerator {
         return new FrontResponseWrapper(true, 'sukces tworzenia!');
     }
 
-    private static Job__c prepareRandomJob(Stream__c stream, List<User> userList) {
+    private static Job__c prepareRandomJob(Stream__c stream, List<User> userList, Map<Id, List<Job__c>> streamToJobTODOList, Map<Id, List<Job__c>> streamToJobINPROGRESSList, Map<Id, List<Job__c>> streamToJobDONEList) {
         Integer statusOption = RandomUtility.generateRandomFromRange(1, 4);
         String status = (statusOption == 1 ? CommonUtility.JOB_STATUS_TODO : (statusOption == 2 ? CommonUtility.JOB_STATUS_INPROGRESS : CommonUtility.JOB_STATUS_DONE));
         Integer timeSpent = status == CommonUtility.JOB_STATUS_TODO ? 0 : RandomUtility.generateRandomFromRange(0, 9);
         
-        return TestHelper.createJob(new Job__c(Stream__c = stream.Id,
+        Job__c job = TestHelper.createJob(new Job__c(Stream__c = stream.Id,
                                                 Assigned_To__c = userList.get(RandomUtility.generateRandomFromRange(1, userList.size())).Id,
                                                 Time_Planned__c = RandomUtility.generateRandomFromRange(1, 16),
                                                 Time_Spent__c = timeSpent,
                                                 Status__c = status,
                                                 Due_Date__c = prepareRandomDateTime(status)), false);
+        if(job.Status__c == CommonUtility.JOB_STATUS_TODO) {
+            if(streamToJobTODOList.containsKey(job.Stream__c)) {
+                streamToJobTODOList.get(job.Stream__c).add(job);
+            } else {
+                streamToJobTODOList.put(job.Stream__c, new List<Job__c>{job});
+            }
+        } else if(job.Status__c == CommonUtility.JOB_STATUS_INPROGRESS) {
+            if(streamToJobINPROGRESSList.containsKey(job.Stream__c)) {
+                streamToJobINPROGRESSList.get(job.Stream__c).add(job);
+            } else {
+                streamToJobINPROGRESSList.put(job.Stream__c, new List<Job__c>{job});
+            }
+        } else {
+            if(streamToJobDONEList.containsKey(job.Stream__c)) {
+                streamToJobDONEList.get(job.Stream__c).add(job);
+            } else {
+                streamToJobDONEList.put(job.Stream__c, new List<Job__c>{job});
+            }
+        }
+        return job;
     }
 
     private static DateTime prepareRandomDateTime(String status) {
