@@ -15,7 +15,6 @@ public class RandomUtility {
         integer diffInRange = endNum-startNum;
         //Now find random number staring from 0 to diffInRange
         Integer randomNum = Math.mod(Math.round(Math.random()*diffInRange+1),diffInRange);
-      
         return diffInRange > 1 ? startNum + randomNum : startNum;
     }
 }

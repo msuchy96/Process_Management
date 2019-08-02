@@ -69,7 +69,6 @@ public with sharing class DataGenerator {
                 jobListToUpdate.addAll(streamToJobListHierarchy.get(streamId));
             }
             update jobListToUpdate;
-
             /* TODO 
             -update stream (generateGraphJSONDescription)
             -create tasks
@@ -87,13 +86,12 @@ public with sharing class DataGenerator {
         Integer statusOption = RandomUtility.generateRandomFromRange(1, 4);
         String status = (statusOption == 1 ? CommonUtility.JOB_STATUS_TODO : (statusOption == 2 ? CommonUtility.JOB_STATUS_INPROGRESS : CommonUtility.JOB_STATUS_DONE));
         Integer timeSpent = status == CommonUtility.JOB_STATUS_TODO ? 0 : RandomUtility.generateRandomFromRange(0, 9);
-        
         Job__c job = TestHelper.createJob(new Job__c(Stream__c = stream.Id,
                                                 Assigned_To__c = userList.get(RandomUtility.generateRandomFromRange(0, userList.size())).Id,
                                                 Time_Planned__c = RandomUtility.generateRandomFromRange(1, 16),
                                                 Time_Spent__c = timeSpent,
                                                 Status__c = status,
-                                                Due_Date__c = prepareRandomDateTime(2, status)), false);
+                                                Due_Date__c = prepareRandomDateTime(status)), false);
         if(job.Status__c == CommonUtility.JOB_STATUS_TODO) {
             if(streamToJobTODOList.containsKey(job.Stream__c)) {
                 streamToJobTODOList.get(job.Stream__c).add(job);
@@ -116,10 +114,10 @@ public with sharing class DataGenerator {
         return job;
     }
 
-    private static DateTime prepareRandomDateTime( Integer monthDelay, String status) {
+    private static DateTime prepareRandomDateTime(String status) {
         Integer delayPropability = RandomUtility.generateRandomFromRange(0, 5);
         return delayPropability < 2 ? Datetime.now()
-                                        .addMonths(-RandomUtility.generateRandomFromRange(0, status == CommonUtility.JOB_STATUS_DONE ? monthDelay + 5 : monthDelay))
+                                        .addMonths(status == CommonUtility.JOB_STATUS_DONE ? RandomUtility.generateRandomFromRange(0,7) : 0)
                                         .addDays(-RandomUtility.generateRandomFromRange(0, 31))
                                         .addHours(-RandomUtility.generateRandomFromRange(0, 24))
                                         .addMinutes(-RandomUtility.generateRandomFromRange(1, 60)) :
@@ -133,16 +131,14 @@ public with sharing class DataGenerator {
     private static Time_Report__c prepareRandomTimeReport(Job__c job) {
         Integer delayPropability = RandomUtility.generateRandomFromRange(0, 5);
         DateTime dateReported;
-        if(delayPropability < 2) {
-            dateReported = job.Due_Date__c
-                                .addDays(RandomUtility.generateRandomFromRange(0, 12))
-                                .addHours(RandomUtility.generateRandomFromRange(0, 24))
-                                .addMinutes(RandomUtility.generateRandomFromRange(1, 60));
+        if(job.Due_Date__c > System.now()) {
+            dateReported = addTimeToBase(System.now(), 4, 24, 60, -1);
+        } else if(delayPropability < 2) {
+            dateReported = addTimeToBase(job.Due_Date__c, 4, 24, 60, 1);
+                                
         } else {
-            dateReported = job.Due_Date__c
-                                .addDays(-RandomUtility.generateRandomFromRange(0, 12))
-                                .addHours(-RandomUtility.generateRandomFromRange(0, 24))
-                                .addMinutes(-RandomUtility.generateRandomFromRange(1, 60));
+            dateReported = addTimeToBase(job.Due_Date__c, 4, 24, 60, -1);
+                                
         }
         String externalId = String.valueOf(job.Id).substring(0, 15) +
                             String.valueOf(job.Assigned_To__c).substring(0, 15) +
@@ -152,6 +148,13 @@ public with sharing class DataGenerator {
                                     Date__c = Date.newinstance(dateReported.year(), dateReported.month(), dateReported.day()),
                                     Reporter__c = job.Assigned_To__c);
            
+    }
+
+    private static DateTime addTimeToBase(DateTime base, Integer days, Integer hours, Integer minutes, Integer past) {
+        return base
+                .addDays(past * RandomUtility.generateRandomFromRange(0, days))
+                .addHours(past * RandomUtility.generateRandomFromRange(0, hours))
+                .addMinutes(past * RandomUtility.generateRandomFromRange(0, minutes));
     }
 
     @AuraEnabled
