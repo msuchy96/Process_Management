@@ -49,7 +49,7 @@ public with sharing class DataGenerator {
             insert jobList;
             for(Job__c job : jobList) {
                 if(job.Time_Spent__c > 0) {
-                    DateTime dT = prepareRandomDateTime(job.Status__c);
+                    DateTime dT = prepareRandomDateTime(job.Status__c == CommonUtility.JOB_STATUS_DONE);
                     Date dateReported = Date.newInstance(dT.year(), dT.month(), dT.day());
                     String externalId = String.valueOf(job.Id).substring(0, 15) +
                                         String.valueOf(job.Assigned_To__c).substring(0, 15) +
@@ -81,11 +81,11 @@ public with sharing class DataGenerator {
         Integer timeSpent = status == CommonUtility.JOB_STATUS_TODO ? 0 : RandomUtility.generateRandomFromRange(0, 9);
         
         Job__c job = TestHelper.createJob(new Job__c(Stream__c = stream.Id,
-                                                Assigned_To__c = userList.get(RandomUtility.generateRandomFromRange(1, userList.size())).Id,
+                                                Assigned_To__c = userList.get(RandomUtility.generateRandomFromRange(0, userList.size())).Id,
                                                 Time_Planned__c = RandomUtility.generateRandomFromRange(1, 16),
                                                 Time_Spent__c = timeSpent,
                                                 Status__c = status,
-                                                Due_Date__c = prepareRandomDateTime(status)), false);
+                                                Due_Date__c = prepareRandomDateTime(false)), false);
         if(job.Status__c == CommonUtility.JOB_STATUS_TODO) {
             if(streamToJobTODOList.containsKey(job.Stream__c)) {
                 streamToJobTODOList.get(job.Stream__c).add(job);
@@ -108,17 +108,18 @@ public with sharing class DataGenerator {
         return job;
     }
 
-    private static DateTime prepareRandomDateTime(String status) {
-        return status == CommonUtility.JOB_STATUS_DONE ? Datetime.now()
-                                                            .addMonths(-1)
-                                                            .addDays(-RandomUtility.generateRandomFromRange(0, 31))
-                                                            .addHours(-RandomUtility.generateRandomFromRange(0, 24))
-                                                            .addMinutes(-RandomUtility.generateRandomFromRange(1, 60)) :
-                                                        Datetime.now()
-                                                            .addMonths(-1)
-                                                            .addDays(RandomUtility.generateRandomFromRange(0, 31))
-                                                            .addHours(RandomUtility.generateRandomFromRange(0, 24))
-                                                            .addMinutes(RandomUtility.generateRandomFromRange(1, 60));
+    private static DateTime prepareRandomDateTime(Boolean onlyPast) {
+        Integer delayPropability = RandomUtility.generateRandomFromRange(0, 5);
+        return delayPropability < 2 || onlyPast ? Datetime.now()
+                                                    .addMonths(-1)
+                                                    .addDays(-RandomUtility.generateRandomFromRange(0, 31))
+                                                    .addHours(-RandomUtility.generateRandomFromRange(0, 24))
+                                                    .addMinutes(-RandomUtility.generateRandomFromRange(1, 60)) :
+                                                Datetime.now()
+                                                    .addMonths(-1)
+                                                    .addDays(RandomUtility.generateRandomFromRange(0, 31))
+                                                    .addHours(RandomUtility.generateRandomFromRange(0, 24))
+                                                    .addMinutes(RandomUtility.generateRandomFromRange(1, 60));
     }
 
     @AuraEnabled
