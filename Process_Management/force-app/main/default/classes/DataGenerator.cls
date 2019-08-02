@@ -49,16 +49,9 @@ public with sharing class DataGenerator {
             insert jobList;
             for(Job__c job : jobList) {
                 if(job.Time_Spent__c > 0) {
-                    DateTime dT = prepareRandomDateTime(job.Status__c == CommonUtility.JOB_STATUS_DONE);
-                    Date dateReported = Date.newInstance(dT.year(), dT.month(), dT.day());
-                    String externalId = String.valueOf(job.Id).substring(0, 15) +
-                                        String.valueOf(job.Assigned_To__c).substring(0, 15) +
-                                        String.valueOf(dateReported);
-                    timeReportList.add(new Time_Report__c(Job__c = job.Id,
-                                                        Time_Reported__c = job.Time_Spent__c,
-                                                        Date__c = dateReported,
-                                                        Reporter__c = job.Assigned_To__c));
+                    timeReportList.add(prepareRandomTimeReport(job));
                 }
+                
             }
             insert timeReportList;
             /* TODO 
@@ -85,7 +78,7 @@ public with sharing class DataGenerator {
                                                 Time_Planned__c = RandomUtility.generateRandomFromRange(1, 16),
                                                 Time_Spent__c = timeSpent,
                                                 Status__c = status,
-                                                Due_Date__c = prepareRandomDateTime(false)), false);
+                                                Due_Date__c = prepareRandomDateTime(false, 2)), false);
         if(job.Status__c == CommonUtility.JOB_STATUS_TODO) {
             if(streamToJobTODOList.containsKey(job.Stream__c)) {
                 streamToJobTODOList.get(job.Stream__c).add(job);
@@ -108,18 +101,31 @@ public with sharing class DataGenerator {
         return job;
     }
 
-    private static DateTime prepareRandomDateTime(Boolean onlyPast) {
+    private static DateTime prepareRandomDateTime(Boolean onlyPast, Integer monthDelay) {
         Integer delayPropability = RandomUtility.generateRandomFromRange(0, 5);
         return delayPropability < 2 || onlyPast ? Datetime.now()
-                                                    .addMonths(-1)
+                                                    .addMonths(-RandomUtility.generateRandomFromRange(0, monthDelay))
                                                     .addDays(-RandomUtility.generateRandomFromRange(0, 31))
                                                     .addHours(-RandomUtility.generateRandomFromRange(0, 24))
                                                     .addMinutes(-RandomUtility.generateRandomFromRange(1, 60)) :
                                                 Datetime.now()
-                                                    .addMonths(-1)
+                                                    .addMonths(RandomUtility.generateRandomFromRange(0, 6))
                                                     .addDays(RandomUtility.generateRandomFromRange(0, 31))
                                                     .addHours(RandomUtility.generateRandomFromRange(0, 24))
                                                     .addMinutes(RandomUtility.generateRandomFromRange(1, 60));
+    }
+
+    private static Time_Report__c prepareRandomTimeReport(Job__c job) {
+        DateTime dT = prepareRandomDateTime(true, 7);
+        Date dateReported = Date.newInstance(dT.year(), dT.month(), dT.day());
+        String externalId = String.valueOf(job.Id).substring(0, 15) +
+        String.valueOf(job.Assigned_To__c).substring(0, 15) +
+        String.valueOf(dateReported);
+        return new Time_Report__c(Job__c = job.Id,
+                                    Time_Reported__c = job.Time_Spent__c,
+                                    Date__c = dateReported,
+                                    Reporter__c = job.Assigned_To__c);
+           
     }
 
     @AuraEnabled
