@@ -86,6 +86,7 @@ public with sharing class DataGenerator {
             -update stream (generateGraphJSONDescription)
             -create tasks
             -create events
+            -create stream templates
             */
 
         } catch (Exception e) {
