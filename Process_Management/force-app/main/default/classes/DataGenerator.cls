@@ -132,7 +132,7 @@ public with sharing class DataGenerator {
 
     private static Time_Report__c prepareRandomTimeReport(Job__c job) {
         Integer delayPropability = RandomUtility.generateRandomFromRange(0, 5);
-        Date dateReported;
+        DateTime dateReported;
         if(delayPropability < 2) {
             dateReported = job.Due_Date__c
                                 .addDays(RandomUtility.generateRandomFromRange(0, 12))
@@ -149,7 +149,7 @@ public with sharing class DataGenerator {
                             String.valueOf(dateReported);
         return new Time_Report__c(Job__c = job.Id,
                                     Time_Reported__c = job.Time_Spent__c,
-                                    Date__c = dateReported,
+                                    Date__c = Date.newinstance(dateReported.year(), dateReported.month(), dateReported.day()),
                                     Reporter__c = job.Assigned_To__c);
            
     }
