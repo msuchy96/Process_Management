@@ -13,32 +13,32 @@ public with sharing class DataGenerator {
         try {
             List<User> userList = [SELECT Id, Name FROM User WHERE Name LIKE '%Employee%'];
             //create companies
-            List<Account> companyList = TestHelper.createEntity(new Account(Type = CommonUtility.ENTITY_TYPE_COMPANY), 2, true);
+            Account company = TestHelper.createEntity(new Account(Type = CommonUtility.ENTITY_TYPE_COMPANY), true);
             //create departments
-            for(Account comp : companyList) {
-                departmentList.addAll(TestHelper.createEntity(new Account(ParentId = comp.Id, Type = CommonUtility.ENTITY_TYPE_DEPARTMENT), 5, false));
-            }
+            departmentList.addAll(TestHelper.createEntity(new Account(ParentId = company.Id, Type = CommonUtility.ENTITY_TYPE_DEPARTMENT), 2, false));
             insert departmentList;
             //create clients and streams
-            List<Client__c> clientList = TestHelper.createClients(null, 10, true);
+            List<Client__c> clientList = TestHelper.createClients(null, 5, true);
             for(Client__c client : clientList) {
-                streamList.addAll(TestHelper.createStreams(new Stream__c(Client__c = client.Id), 10, true));
+                streamList.addAll(TestHelper.createStreams(new Stream__c(Client__c = client.Id), RandomUtility.generateRandomFromRange(2, 6), true));
             }
+            streamList.addAll(TestHelper.createStreams(new Stream__c(RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)), 3, true));
             //create job and collect in proper order to create hierarhy
             for(Integer i = 0; i < streamList.size() ; i++) {
-                Integer numberOfJobs = RandomUtility.generateRandomFromRange(2, 8);
+                Integer numberOfJobs = RandomUtility.generateRandomFromRange(2, 6);
                 for(Integer j = 0 ; j < numberOfJobs ; j++) {
                     jobList.add(prepareRandomJob(streamList.get(i), userList, streamToJobTODOList, streamToJobINPROGRESSList, streamToJobDONEList));
                 }
             }
             insert jobList;
+            //create time reports
             for(Job__c job : jobList) {
                 if(job.Time_Spent__c > 0) {
                     timeReportList.add(prepareRandomTimeReport(job));
                 }
             }
             insert timeReportList;
-
+            //create job hierarchy in stream
             for(Id streamId : streamToJobTODOList.keySet()) {
                 streamToJobListHierarchy.put(streamId, streamToJobTODOList.get(streamId));
             }
@@ -56,7 +56,6 @@ public with sharing class DataGenerator {
                     streamToJobListHierarchy.put(streamId, streamToJobDONEList.get(streamId));
                 } 
             }
-
             for(Id streamId : streamToJobListHierarchy.keySet()) {
                 if(streamToJobListHierarchy.get(streamId).size() > 2) {
                     for(Integer i = 0; i < streamToJobListHierarchy.get(streamId).size()-2 ; i++) {
@@ -69,11 +68,13 @@ public with sharing class DataGenerator {
                 jobListToUpdate.addAll(streamToJobListHierarchy.get(streamId));
             }
             update jobListToUpdate;
+            Map<Id, Stream__c> streamMap = new Map<Id, Stream__c>(streamList);
+            //create stream graph
+            TestHelper.generateGraphJSONDescription(streamMap.keySet());
             /* TODO 
-            -update stream (generateGraphJSONDescription)
+            -users to department
             -create tasks
             -create events
-            -create stream templates
             */
 
         } catch (Exception e) {
@@ -86,12 +87,23 @@ public with sharing class DataGenerator {
         Integer statusOption = RandomUtility.generateRandomFromRange(1, 4);
         String status = (statusOption == 1 ? CommonUtility.JOB_STATUS_TODO : (statusOption == 2 ? CommonUtility.JOB_STATUS_INPROGRESS : CommonUtility.JOB_STATUS_DONE));
         Integer timeSpent = status == CommonUtility.JOB_STATUS_TODO ? 0 : RandomUtility.generateRandomFromRange(0, 9);
-        Job__c job = TestHelper.createJob(new Job__c(Stream__c = stream.Id,
+        Job__c job; 
+        if(stream.RecordTypeId == CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)) {
+            job = TestHelper.createJob(new Job__c(Stream__c = stream.Id,
+                                                Assigned_To__c = null,
+                                                Time_Planned__c = RandomUtility.generateRandomFromRange(1, 16),
+                                                Time_Spent__c = 0,
+                                                Status__c = status,
+                                                Due_Date__c = null), false, true);
+        } else {
+            job = TestHelper.createJob(new Job__c(Stream__c = stream.Id,
                                                 Assigned_To__c = userList.get(RandomUtility.generateRandomFromRange(0, userList.size())).Id,
                                                 Time_Planned__c = RandomUtility.generateRandomFromRange(1, 16),
                                                 Time_Spent__c = timeSpent,
                                                 Status__c = status,
-                                                Due_Date__c = prepareRandomDateTime(status)), false);
+                                                Due_Date__c = prepareRandomDateTime(status)), false, false);
+        }
+        
         if(job.Status__c == CommonUtility.JOB_STATUS_TODO) {
             if(streamToJobTODOList.containsKey(job.Stream__c)) {
                 streamToJobTODOList.get(job.Stream__c).add(job);

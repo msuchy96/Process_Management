@@ -2,7 +2,7 @@
 private class ResetReminderSentBatchTest {
     @TestSetup
     static void dataSetup() {
-        TestHelper.createJobs(new Job__c(Reminder_Sent__c = true), 10, true);
+        TestHelper.createJobs(new Job__c(Reminder_Sent__c = true), 10, true, false);
     }
 
     @isTest

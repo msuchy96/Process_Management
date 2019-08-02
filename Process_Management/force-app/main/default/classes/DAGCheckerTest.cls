@@ -5,7 +5,7 @@ private class DAGCheckerTest {
     static void dataSetup() {
         User testUser = TestHelper.createUser(null, true);
         Stream__c stream = TestHelper.createStream(new Stream__c() , true);
-        List<Job__c> jobList = TestHelper.createJobs(new Job__c(Stream__c = stream.Id, Assigned_To__c = testUser.Id), 10, true);
+        List<Job__c> jobList = TestHelper.createJobs(new Job__c(Stream__c = stream.Id, Assigned_To__c = testUser.Id), 10, true, false);
         for(Integer i = 0; i < jobList.size(); i++) {
             if(i > 0) {
                 jobList.get(i).Next_Job__c = jobList.get(i-1).Id;

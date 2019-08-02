@@ -4,7 +4,7 @@ private class JobManagerTest {
     @isTest
     static void changeJobToTemplateIfStreamIsTemplate() {
         Stream__c stream = TestHelper.createStream(new Stream__c(RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)), true);
-        List<Job__c> jobList = TestHelper.createJobs(new Job__c(Stream__c = stream.Id), 10, false);
+        List<Job__c> jobList = TestHelper.createJobs(new Job__c(Stream__c = stream.Id), 10, false, false);
         Test.startTest();
         insert jobList;
         Test.stopTest();
@@ -16,9 +16,9 @@ private class JobManagerTest {
     @isTest 
     static void updateLookupAfterRelatedJobDeletion() {
         Stream__c stream = TestHelper.createStream(new Stream__c(RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)), true);
-        Job__c firstRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true);
-        Job__c secondRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true);
-        Job__c testJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id, Next_Job__c = firstRelJob.Id, Second_Next_Job__c = secondRelJob.Id), true);
+        Job__c firstRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true, false);
+        Job__c secondRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true, false);
+        Job__c testJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id, Next_Job__c = firstRelJob.Id, Second_Next_Job__c = secondRelJob.Id), true, false);
         Test.startTest();
         delete firstRelJob;
         Test.stopTest();
@@ -31,9 +31,9 @@ private class JobManagerTest {
     @isTest 
     static void cloneStreamWithJobsSucess() {
         Stream__c stream = TestHelper.createStream(null , true);
-        Job__c firstRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true);
-        Job__c secondRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true);
-        Job__c testJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id, Next_Job__c = firstRelJob.Id, Second_Next_Job__c = secondRelJob.Id), true);
+        Job__c firstRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true, false);
+        Job__c secondRelJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id), true, false);
+        Job__c testJob = TestHelper.createJob(new Job__c(Stream__c = stream.Id, Next_Job__c = firstRelJob.Id, Second_Next_Job__c = secondRelJob.Id), true, false);
         TestHelper.generateGraphJSONDescription(new Set<Id>{stream.Id});
         update stream;
         Map<Id, Job__c> jobMap = new Map<Id, Job__c>();
@@ -63,7 +63,7 @@ private class JobManagerTest {
     @isTest
     static void userJobsCount() {
         User testUser = TestHelper.createUser(null, true);
-        List<Job__c> jobList = TestHelper.createJobs(new Job__c(Assigned_To__c = testUser.Id, Status__c = CommonUtility.JOB_STATUS_TODO), 10, true);
+        List<Job__c> jobList = TestHelper.createJobs(new Job__c(Assigned_To__c = testUser.Id, Status__c = CommonUtility.JOB_STATUS_TODO), 10, true, false);
         Test.startTest();
         System.runAs(testUser) {
             System.assertEquals(jobList.size(), JobManager.getUserJobsCount());
@@ -75,7 +75,7 @@ private class JobManagerTest {
     @isTest
     static void updateRelatedJSONStream() {
         Stream__c stream = TestHelper.createStream(null , true);
-        List<Job__c> jobList = TestHelper.createJobs(new Job__c(Stream__c = stream.Id), 10, true);
+        List<Job__c> jobList = TestHelper.createJobs(new Job__c(Stream__c = stream.Id), 10, true, false);
         TestHelper.generateGraphJSONDescription(new Set<Id>{stream.Id});
         for(Integer i = 0; i < jobList.size(); i++) {
             if(i > 0) {

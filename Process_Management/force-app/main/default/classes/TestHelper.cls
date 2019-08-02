@@ -63,17 +63,17 @@ global class TestHelper {
         return result;
     }
 
-    public static Job__c createJob(Job__c jobTemplate, Boolean isInsert) {
-        return createJobs(jobTemplate, 1, isInsert)[0];
+    public static Job__c createJob(Job__c jobTemplate, Boolean isInsert, Boolean isTemplate) {
+        return createJobs(jobTemplate, 1, isInsert, isTemplate)[0];
     }
 
-    public static List<Job__c> createJobs(Job__c jobTemplate, Integer count, Boolean isInsert) {
+    public static List<Job__c> createJobs(Job__c jobTemplate, Integer count, Boolean isInsert, Boolean isTemplate) {
         List<Job__c> result = new List<Job__c>();
         for(Integer i=0; i<count; i++) {
             String randomNumber = String.valueOf(RandomUtility.createRandomNumber());
             Job__c job = jobTemplate != null ? jobTemplate.clone(false, false) : new Job__c();
             if(job.Name == null) job.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_JOB + '-' + randomNumber;
-            if(job.Assigned_To__c == null) job.Assigned_To__c = createUser(null, true).Id;
+            if(job.Assigned_To__c == null && !isTemplate) job.Assigned_To__c = createUser(null, true).Id;
             if(job.Status__c == null) job.Status__c = CommonUtility.JOB_STATUS_TODO;
             if(job.Stream__c == null) job.Stream__c = createStream(null, true).Id;
             result.add(job);
