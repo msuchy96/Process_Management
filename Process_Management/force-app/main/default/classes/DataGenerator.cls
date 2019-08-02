@@ -142,7 +142,7 @@ public with sharing class DataGenerator {
             dateReported = job.Due_Date__c
                                 .addDays(-RandomUtility.generateRandomFromRange(0, 12))
                                 .addHours(-RandomUtility.generateRandomFromRange(0, 24))
-                                .addMinutes-(RandomUtility.generateRandomFromRange(1, 60));
+                                .addMinutes(-RandomUtility.generateRandomFromRange(1, 60));
         }
         String externalId = String.valueOf(job.Id).substring(0, 15) +
                             String.valueOf(job.Assigned_To__c).substring(0, 15) +
