@@ -10,8 +10,10 @@ public with sharing class DataGenerator {
         Map<Id, List<Job__c>> streamToJobDONEList = new Map<Id, List<Job__c>>();
         List<Time_Report__c> timeReportList = new List<Time_Report__c>();
         Map<Id, List<Job__c>> streamToJobListHierarchy = new Map<Id, List<Job__c>>();
+        List<Task> taskList = new List<Task>();
+        List<Event> eventList = new List<Event>();
         try {
-            List<User> userList = [SELECT Id, Name FROM User WHERE Name LIKE '%Employee%'];
+            List<User> userList = [SELECT Id, Name FROM User WHERE Name LIKE '%Employee%' ORDER BY IsActive DESC];
             //create companies
             Account company = TestHelper.createEntity(new Account(Type = CommonUtility.ENTITY_TYPE_COMPANY), true);
             //create departments
@@ -21,10 +23,14 @@ public with sharing class DataGenerator {
             List<Client__c> clientList = TestHelper.createClients(null, 5, true);
             for(Client__c client : clientList) {
                 streamList.addAll(TestHelper.createStreams(new Stream__c(Client__c = client.Id), RandomUtility.generateRandomFromRange(2, 6), true));
+                taskList.add(TestHelper.createTask(new Task(WhatId = client.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                eventList.add(TestHelper.createEvent(new Event(WhatId = client.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
             }
             streamList.addAll(TestHelper.createStreams(new Stream__c(RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)), 3, true));
             //create job and collect in proper order to create hierarhy
             for(Integer i = 0; i < streamList.size() ; i++) {
+                taskList.add(TestHelper.createTask(new Task(WhatId = streamList.get(i).Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                eventList.add(TestHelper.createEvent(new Event(WhatId = streamList.get(i).Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
                 Integer numberOfJobs = RandomUtility.generateRandomFromRange(2, 6);
                 for(Integer j = 0 ; j < numberOfJobs ; j++) {
                     jobList.add(prepareRandomJob(streamList.get(i), userList, streamToJobTODOList, streamToJobINPROGRESSList, streamToJobDONEList));
@@ -33,6 +39,8 @@ public with sharing class DataGenerator {
             insert jobList;
             //create time reports
             for(Job__c job : jobList) {
+                taskList.add(TestHelper.createTask(new Task(WhatId = job.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                eventList.add(TestHelper.createEvent(new Event(WhatId = job.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
                 if(job.Time_Spent__c > 0) {
                     timeReportList.add(prepareRandomTimeReport(job));
                 }
@@ -71,12 +79,8 @@ public with sharing class DataGenerator {
             Map<Id, Stream__c> streamMap = new Map<Id, Stream__c>(streamList);
             //create stream graph
             TestHelper.generateGraphJSONDescription(streamMap.keySet());
-            /* TODO 
-            -users to department
-            -create tasks
-            -create events
-            */
-
+            insert taskList;
+            insert eventList;
         } catch (Exception e) {
             return new FrontResponseWrapper(false, e.getMessage());
         }
@@ -101,7 +105,7 @@ public with sharing class DataGenerator {
                                                 Time_Planned__c = RandomUtility.generateRandomFromRange(1, 16),
                                                 Time_Spent__c = timeSpent,
                                                 Status__c = status,
-                                                Due_Date__c = prepareRandomDateTime(status)), false, false);
+                                                Due_Date__c = RandomUtility.prepareRandomDateTime(status, false)), false, false);
         }
         
         if(job.Status__c == CommonUtility.JOB_STATUS_TODO) {
@@ -126,19 +130,7 @@ public with sharing class DataGenerator {
         return job;
     }
 
-    private static DateTime prepareRandomDateTime(String status) {
-        Integer delayPropability = RandomUtility.generateRandomFromRange(0, 5);
-        return delayPropability < 2 ? Datetime.now()
-                                        .addMonths(status == CommonUtility.JOB_STATUS_DONE ? RandomUtility.generateRandomFromRange(0,7) : 0)
-                                        .addDays(-RandomUtility.generateRandomFromRange(0, 31))
-                                        .addHours(-RandomUtility.generateRandomFromRange(0, 24))
-                                        .addMinutes(-RandomUtility.generateRandomFromRange(1, 60)) :
-                                    Datetime.now()
-                                        .addMonths(RandomUtility.generateRandomFromRange(0, 6))
-                                        .addDays(RandomUtility.generateRandomFromRange(0, 31))
-                                        .addHours(RandomUtility.generateRandomFromRange(0, 24))
-                                        .addMinutes(RandomUtility.generateRandomFromRange(1, 60));
-    }
+    
 
     private static Time_Report__c prepareRandomTimeReport(Job__c job) {
         Integer delayPropability = RandomUtility.generateRandomFromRange(0, 5);
@@ -172,6 +164,8 @@ public with sharing class DataGenerator {
     @AuraEnabled
     public static FrontResponseWrapper deleteAllData() {
         try {
+            delete [SELECT Id FROM Task];
+            delete [SELECT Id FROM Event];
             delete [SELECT Id FROM Account];
             delete [SELECT Id FROM Time_Report__c];
             delete [SELECT Id FROM Client__c];

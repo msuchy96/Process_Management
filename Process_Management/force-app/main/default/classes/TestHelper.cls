@@ -98,6 +98,66 @@ global class TestHelper {
         return result;
     }
 
+    public static Task createTask(Task taskTemplate, Boolean isInsert) {
+        return createTasks(taskTemplate, 1, isInsert)[0];
+    }
+
+    public static List<Task> createTasks(Task taskTemplate, Integer count, Boolean isInsert) {
+        List<Task> result = new List<Task>();
+        List<String> subjects = new List<String>{'Call', 'Email', 'Other', 'Check if you can make it on time'};
+        List<String> statuses = new List<String>{'Not Started', 'In Progress', 'Completed', 'Waiting on someone else', 'Deferred'};
+        List<String> priorities = new List<String>{'High', 'Normal', 'Low'}; 
+        for(Integer i=0; i<count; i++) {
+            Integer subjectIndex = RandomUtility.generateRandomFromRange(0, 4);
+            Integer statusIndex = RandomUtility.generateRandomFromRange(0, 5);
+            Integer todayPropability = RandomUtility.generateRandomFromRange(0, 5);
+            Integer priorityIndex = RandomUtility.generateRandomFromRange(0, 3);
+            Task task = taskTemplate != null ? taskTemplate.clone(false, false) : new Task();
+            if(task.Subject == null) task.Subject = subjects.get(subjectIndex);
+            if(task.OwnerId == null) task.OwnerId = UserInfo.getUserId();
+            if(task.Status == null) task.Status = statuses.get(statusIndex);
+            if(task.Priority == null) task.Priority = priorities.get(priorityIndex);
+            if(task.ActivityDate == null) {
+                if(todayPropability > 3) {
+                    task.ActivityDate = Date.today();
+                } else {
+                    DateTime dT = RandomUtility.prepareRandomDateTime(null, true);
+                    task.ActivityDate = Date.newinstance(dT.year(), dT.month(), dT.day());
+                } 
+            }
+            result.add(task);
+        }
+        if(isInsert) insert result;
+        return result;
+    }
+
+    public static Event createEvent(Event eventTemplate, Boolean isInsert) {
+        return createEvents(eventTemplate, 1, isInsert)[0];
+    }
+
+    public static List<Event> createEvents(Event eventTemplate, Integer count, Boolean isInsert) {
+        List<Event> result = new List<Event>();
+        List<String> subjects = new List<String>{'Call', 'Email', 'Other', 'Meeting', 'Send Offer'};
+        for(Integer i=0; i<count; i++) {
+            Integer subjectIndex = RandomUtility.generateRandomFromRange(0, 5);
+            Integer todayPropability = RandomUtility.generateRandomFromRange(0, 6);
+            Event event = eventTemplate != null ? eventTemplate.clone(false, false) : new Event();
+            if(event.Subject == null) event.Subject = subjects.get(subjectIndex);
+            if(event.OwnerId == null) event.OwnerId = UserInfo.getUserId();
+            if(event.DurationInMinutes == null) event.DurationInMinutes = 60;
+            if(event.StartDateTime == null) {
+                if(todayPropability > 4) {
+                    event.StartDateTime = DateTime.now().addHours(RandomUtility.generateRandomFromRange(0, 6)).addMinutes(RandomUtility.generateRandomFromRange(0, 60));
+                } else {
+                    event.StartDateTime = RandomUtility.prepareRandomDateTime(null, true);
+                }
+            }
+            result.add(event);
+        }
+        if(isInsert) insert result;
+        return result;
+    }
+
 
 
     public static void generateGraphJSONDescription(Set<Id> streamIdSet) {
