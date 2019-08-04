@@ -1,59 +1,58 @@
 <template>
-        <lightning-card title="Closest due date jobs you are assigned to" icon-name="custom:custom63">
-            <div class="slds-m-around_medium">
-                <template if:true={jobs}>
-                    <table class="slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout">
-                        <thead>
-                            <tr class="slds-text-heading_label">
-                                <th scope="col">
-                                    <div class="slds-truncate" title="Name">Name</div>
-                                </th>
-                                <th scope="col">
-                                    <div class="slds-truncate" title="Stream">Stream</div>
-                                </th>
-                                <th scope="col">
-                                    <div class="slds-truncate" title="Status">Status</div>
-                                </th>
-                                <th scope="col">
-                                    <div class="slds-truncate" title="Time Planned (h)">Time Planned (h)</div>
-                                </th>
-                                <th scope="col">
-                                    <div class="slds-truncate" title="Time Spent (h)">Time Spent (h)</div>
-                                </th>
-                                <th scope="col">
-                                    <div class="slds-truncate" title="Due Date">Due Date</div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Use the Apex model and controller to fetch server side data -->
-                            <template for:each={jobs} for:item="job">
-                                <tr key={job.Id}>
-                                    <th scope="row">
-                                        <a class="slds-truncate" href={job.Id}>{job.Name}</a>
-                                    </th>
-                                    <td>
-                                        <a class="slds-truncate" href={job.Stream__c}>{job.Stream__r.Name}</a>
-                                    </td>
-                                    <td>
-                                        <div class="slds-truncate" title={job.Status__c}>{job.Status__c}</div>
-                                    </td>
-                                    <td>
-                                        <div class="slds-truncate" title={job.Time_Planned__c}>{job.Time_Planned__c}</div>
-                                    </td>
-                                    <td>
-                                        <div class="slds-truncate" title={job.Time_Spent__c}>{job.Time_Spent__c}</div>
-                                    </td>
-                                    <td>
-                                        <div class="slds-truncate" title={job.Due_Date__c}>{job.Due_Date__c}</div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </template>
-            </div>
-            <p class="slds-m-vertical_medium content">Total records: <b>{totalrecords} </b> Page <b>{currentpage}</b> of
-                <b> {totalpages}</b></p>
-        </lightning-card>
+    <div class="slds-m-around_medium">
+        <template if:true={jobs}>
+            <table
+                class="slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout">
+                <thead>
+                    <tr class="slds-text-heading_label">
+                        <th scope="col">
+                            <div class="slds-truncate" title="Name">Name</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Stream">Stream</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Status">Status</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Time Planned (h)">Time Planned (h)</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Time Spent (h)">Time Spent (h)</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Due Date">Due Date</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Use the Apex model and controller to fetch server side data -->
+                    <template for:each={jobs} for:item="job">
+                        <tr key={job.Id}>
+                            <th scope="row">
+                                <a class="slds-truncate" href={job.Id}>{job.Name}</a>
+                            </th>
+                            <td>
+                                <a class="slds-truncate" href={job.Stream__c}>{job.Stream__r.Name}</a>
+                            </td>
+                            <td>
+                                <div class="slds-truncate" title={job.Status__c}>{job.Status__c}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate" title={job.Time_Planned__c}>{job.Time_Planned__c}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate" title={job.Time_Spent__c}>{job.Time_Spent__c}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate" title={job.Due_Date__c}>{job.Due_Date__c}</div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+    </div>
+    <p class="slds-m-vertical_medium content">Total records: <b>{totalrecords} </b> Page <b>{currentpage}</b> of
+        <b> {totalpages}</b></p>
 </template>

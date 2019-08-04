@@ -1,9 +1,11 @@
 <template>
-        <lightning-card>
-            <c-current-user-jobs-record-list currentpage={page} onrecordsload={handleRecordsLoad} pagesize={pagesize}></c-current-user-jobs-record-list>
-            <div class="slds-m-around_medium">
-                <c-pagination-bottom-jobs onprevious={handlePrevious} onnext={handleNext} onfirst={handleFirst} onlast={handleLast} currentpage={page} totalrecords={totalrecords} pagesize={pagesize}>
-                </c-pagination-bottom-jobs>
-            </div>
-        </lightning-card>
+    <lightning-card title="Closest due date jobs you are assigned to" icon-name="custom:custom63">
+        <c-current-user-jobs-record-list currentpage={page} onrecordsload={handleRecordsLoad} pagesize={pagesize}>
+        </c-current-user-jobs-record-list>
+        <div class="slds-m-around_medium">
+            <c-pagination-bottom-jobs onprevious={handlePrevious} onnext={handleNext} onfirst={handleFirst}
+                onlast={handleLast} currentpage={page} totalrecords={totalrecords} pagesize={pagesize}>
+            </c-pagination-bottom-jobs>
+        </div>
+    </lightning-card>
 </template>
