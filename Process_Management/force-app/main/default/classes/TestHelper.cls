@@ -9,10 +9,13 @@ global class TestHelper {
 
     public static List<Account> createEntity(Account entityTemplate, Integer count, Boolean isInsert) {
         List<Account> result = new List<Account>();
+        List<String> industryList = new List<String>{'Transport', 'IT', 'Finance', 'Sales'};
         for(Integer i = 0; i < count; i++) {
             String randomNumber = String.valueOf(RandomUtility.createRandomNumber());
             Account entity = entityTemplate != null ? entityTemplate.clone(false, false) : new Account();
             if(entity.Name == null) entity.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_ENTITY + '-' + randomNumber;
+            if(entity.Phone == null) entity.Phone = '123456789';
+            if(entity.Industry == null) entity.Industry = industryList.get(RandomUtility.generateRandomFromRange(0, 4));
             result.add(entity);
         } 
         if(isInsert) insert result;
