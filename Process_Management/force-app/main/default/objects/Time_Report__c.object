@@ -141,7 +141,7 @@
         <label>Time Reports View</label>
     </listViews>
     <nameField>
-        <displayFormat>TR# {0}-{DD}{MM}{YY}</displayFormat>
+        <displayFormat>TR# {00000}</displayFormat>
         <label>Time Report Name</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>

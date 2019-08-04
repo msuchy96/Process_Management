@@ -8,7 +8,7 @@ private class DueDateIsComingBatchTest {
                                             Due_Date__c = Datetime.now(),
                                             Reminder_Sent__c = false,
                                             Time_Planned__c = 10,
-                                            Time_Spent__c = 4), 10, true);
+                                            Time_Spent__c = 4), 10, true, false);
     }
 
     @isTest

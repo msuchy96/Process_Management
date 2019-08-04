@@ -5,7 +5,7 @@ private class ManageApprovalProcessTest {
     static void dataSetup() {
         User managerUser = [SELECT Id FROM User LIMIT 1];
         User testUser = TestHelper.createUser(new User(managerId = managerUser.Id), true);
-        TestHelper.createJob(new Job__c(Assigned_To__c = testUser.Id), true);
+        TestHelper.createJob(new Job__c(Assigned_To__c = testUser.Id), true, false);
         
     }
 

@@ -3,7 +3,7 @@ private class TimeReportManagerTest {
 
     @TestSetup
     static void dataSetup() {
-        TestHelper.createJobs(null, 10, true);
+        TestHelper.createJobs(null, 10, true, false);
     }
 
     @isTest

@@ -49,7 +49,7 @@ public without sharing class TimeReportManager {
         return [SELECT Id, Name, Job__c, Time_Reported__c, Date__c, Job__r.Name
                 FROM Time_Report__c 
                 WHERE Reporter__c =: UserInfo.getUserId() 
-                ORDER BY Date__c
+                ORDER BY Date__c DESC
                 LIMIT :pageSize OFFSET :calculatedOffset];
     }
 
@@ -58,7 +58,7 @@ public without sharing class TimeReportManager {
         return [SELECT Id, Name
                 FROM Time_Report__c 
                 WHERE Reporter__c =: UserInfo.getUserId() 
-                ORDER BY Date__c].size();
+                ORDER BY Date__c DESC].size();
     }
 
 

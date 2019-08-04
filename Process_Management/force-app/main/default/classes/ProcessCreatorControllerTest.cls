@@ -3,7 +3,7 @@ private class ProcessCreatorControllerTest {
 
     @TestSetup
     static void dataSetup() {
-        TestHelper.createJobs(null, 10, true);
+        TestHelper.createJobs(null, 10, true, false);
         TestHelper.createClients(null, 10, true);
         TestHelper.createClient(null, true);
         TestHelper.createEntity(null, true);

@@ -23,8 +23,6 @@ public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
         Map<Id, Job__c> newJobsMap = (Map<Id, Job__c>)newObjectsMap;
         for (Id key : newJobsMap.keySet()) {
             Job__c newJob = newJobsMap.get(key);
-
-            checkReportedTimeChanges(null, newJob);
         }
     }
 
@@ -59,9 +57,7 @@ public without sharing class TH_JobTrigger extends TriggerHandler.DelegateBase {
     private void checkReportedTimeChanges(Job__c oldJob, Job__c newJob) {
         if(
             newJob.Assigned_To__c != null
-            && ((oldJob != null && oldJob.Time_Spent__c != newJob.Time_Spent__c)                    //afterUpdate
-                || (oldJob == null && newJob.Time_Spent__c != null && newJob.Time_Spent__c != 0)   //afterInsert
-            )
+            && (oldJob != null && oldJob.Time_Spent__c != newJob.Time_Spent__c)                    //afterUpdate
         ) {
             jobsWithTimeReported.put(newJob, oldJob != null ? newJob.Time_Spent__c - oldJob.Time_Spent__c : newJob.Time_Spent__c);
         }  
