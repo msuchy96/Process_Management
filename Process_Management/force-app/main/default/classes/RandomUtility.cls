@@ -27,7 +27,7 @@ public class RandomUtility {
                                         .addHours(generateRandomFromRange(0, 24))
                                         .addMinutes(generateRandomFromRange(1, 60)) : 
                                     Datetime.now()
-                                        .addMonths(status == CommonUtility.JOB_STATUS_DONE ? generateRandomFromRange(0,7) : 0)
+                                        .addMonths(status == CommonUtility.JOB_STATUS_DONE ? -generateRandomFromRange(0,7) : 0)
                                         .addDays(-generateRandomFromRange(0, 31))
                                         .addHours(-generateRandomFromRange(0, 24))
                                         .addMinutes(-generateRandomFromRange(1, 60)) ;
