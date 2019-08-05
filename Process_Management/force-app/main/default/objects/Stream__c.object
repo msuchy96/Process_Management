@@ -186,6 +186,15 @@
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
+    <listViews>
+        <fullName>Stream_List</fullName>
+        <columns>NAME</columns>
+        <columns>Client__c</columns>
+        <columns>Number_Of_Jobs__c</columns>
+        <columns>Progress__c</columns>
+        <filterScope>Mine</filterScope>
+        <label>Stream List</label>
+    </listViews>
     <nameField>
         <label>Stream Name</label>
         <trackHistory>false</trackHistory>
