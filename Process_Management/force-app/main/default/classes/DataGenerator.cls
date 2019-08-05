@@ -84,7 +84,7 @@ public with sharing class DataGenerator {
         } catch (Exception e) {
             return new FrontResponseWrapper(false, e.getMessage());
         }
-        return new FrontResponseWrapper(true, 'sukces tworzenia!');
+        return new FrontResponseWrapper(true, Label.TST_MSG_DataGenerated);
     }
 
     private static Job__c prepareRandomJob(Stream__c stream, List<User> userList, Map<Id, List<Job__c>> streamToJobTODOList, Map<Id, List<Job__c>> streamToJobINPROGRESSList, Map<Id, List<Job__c>> streamToJobDONEList) {
@@ -97,7 +97,7 @@ public with sharing class DataGenerator {
                                                 Assigned_To__c = null,
                                                 Time_Planned__c = RandomUtility.generateRandomFromRange(1, 16),
                                                 Time_Spent__c = 0,
-                                                Status__c = status,
+                                                Status__c = CommonUtility.JOB_STATUS_TODO,
                                                 Due_Date__c = null), false, true);
         } else {
             job = TestHelper.createJob(new Job__c(Stream__c = stream.Id,

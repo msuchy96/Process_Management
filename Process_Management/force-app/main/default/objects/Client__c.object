@@ -302,6 +302,15 @@
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
+    <listViews>
+        <fullName>Client_List</fullName>
+        <columns>NAME</columns>
+        <columns>Industry__c</columns>
+        <columns>Phone__c</columns>
+        <columns>Email__c</columns>
+        <filterScope>Mine</filterScope>
+        <label>Client List</label>
+    </listViews>
     <nameField>
         <label>Client Name</label>
         <trackHistory>false</trackHistory>

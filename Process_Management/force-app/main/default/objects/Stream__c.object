@@ -186,6 +186,32 @@
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
+    <listViews>
+        <fullName>Stream_List</fullName>
+        <columns>NAME</columns>
+        <columns>Client__c</columns>
+        <columns>Number_Of_Jobs__c</columns>
+        <columns>Progress__c</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Stream__c.Standard</value>
+        </filters>
+        <label>Stream List</label>
+    </listViews>
+    <listViews>
+        <fullName>Template_List</fullName>
+        <columns>NAME</columns>
+        <columns>Number_Of_Jobs__c</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Stream__c.Standard_Template</value>
+        </filters>
+        <label>Template List</label>
+    </listViews>
     <nameField>
         <label>Stream Name</label>
         <trackHistory>false</trackHistory>

@@ -16,6 +16,7 @@ global class TestHelper {
             if(entity.Name == null) entity.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_ENTITY + '-' + randomNumber;
             if(entity.Phone == null) entity.Phone = '123456789';
             if(entity.Industry == null) entity.Industry = industryList.get(RandomUtility.generateRandomFromRange(0, 4));
+            if(entity.Site == null) entity.Site = 'www.' + TEST_CONST + randomNumber + '.com';
             result.add(entity);
         } 
         if(isInsert) insert result;
@@ -91,10 +92,14 @@ global class TestHelper {
 
     public static List<Client__c> createClients(Client__c clientTemplate, Integer count, Boolean isInsert) {
         List<Client__c> result = new List<Client__c>();
+        List<String> industryList = new List<String>{'Transport', 'IT', 'Finance', 'Sales'};
         for(Integer i=0; i<count; i++) {
             String randomNumber = String.valueOf(RandomUtility.createRandomNumber());
             Client__c client = clientTemplate != null ? clientTemplate.clone(false, false) : new Client__c();
             if(client.Name == null) client.Name = TEST_CONST + CommonUtility.SOBJECT_NAME_CLIENT + '-' + randomNumber;
+            if(client.Phone__c == null) client.Phone__c = '111222333';
+            if(client.Email__c == null) client.Email__c = 'email-' + TEST_CONST + randomNumber + '@example.com';
+            if(client.Industry__c == null) client.Industry__c = industryList.get(RandomUtility.generateRandomFromRange(0, 4));
             result.add(client);
         }
         if(isInsert) insert result;
