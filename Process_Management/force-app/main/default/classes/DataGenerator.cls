@@ -97,7 +97,7 @@ public with sharing class DataGenerator {
                                                 Assigned_To__c = null,
                                                 Time_Planned__c = RandomUtility.generateRandomFromRange(1, 16),
                                                 Time_Spent__c = 0,
-                                                Status__c = status,
+                                                Status__c = CommonUtility.JOB_STATUS_TODO,
                                                 Due_Date__c = null), false, true);
         } else {
             job = TestHelper.createJob(new Job__c(Stream__c = stream.Id,
