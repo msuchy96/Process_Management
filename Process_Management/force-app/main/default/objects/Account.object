@@ -75,8 +75,6 @@
         <fields>Type</fields>
         <fields>Industry</fields>
         <fields>Phone</fields>
-        <fields>Website</fields>
-        <fields>ParentId</fields>
         <label>Account Compact Layout</label>
     </compactLayouts>
     <enableFeeds>true</enableFeeds>
@@ -257,36 +255,6 @@
         <fullName>MyAccounts</fullName>
         <filterScope>Mine</filterScope>
         <label>My Accounts</label>
-    </listViews>
-    <listViews>
-        <fullName>NewLastWeek</fullName>
-        <filterScope>Everything</filterScope>
-        <filters>
-            <field>ACCOUNT.CREATED_DATE</field>
-            <operation>equals</operation>
-            <value>LAST_WEEK</value>
-        </filters>
-        <label>New Last Week</label>
-    </listViews>
-    <listViews>
-        <fullName>NewThisWeek</fullName>
-        <filterScope>Everything</filterScope>
-        <filters>
-            <field>ACCOUNT.CREATED_DATE</field>
-            <operation>equals</operation>
-            <value>THIS_WEEK</value>
-        </filters>
-        <label>New This Week</label>
-    </listViews>
-    <listViews>
-        <fullName>PlatinumandGoldSLACustomers</fullName>
-        <columns>ACCOUNT.NAME</columns>
-        <columns>ACCOUNT.SITE</columns>
-        <columns>ACCOUNT.ADDRESS1_STATE</columns>
-        <columns>ACCOUNT.PHONE1</columns>
-        <columns>CORE.USERS.ALIAS</columns>
-        <filterScope>Everything</filterScope>
-        <label>Platinum and Gold SLA Customers</label>
     </listViews>
     <searchLayouts>
         <customTabListAdditionalFields>ACCOUNT.NAME</customTabListAdditionalFields>
