@@ -37,6 +37,10 @@
         <name>TST_MSG_DataDeleted</name>
     </customLabels>
     <customLabels>
+        <label><!-- TST_MSG_DataGenerated --></label>
+        <name>TST_MSG_DataGenerated</name>
+    </customLabels>
+    <customLabels>
         <label><!-- TST_MSG_EdgeCreated --></label>
         <name>TST_MSG_EdgeCreated</name>
     </customLabels>

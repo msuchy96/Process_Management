@@ -84,7 +84,7 @@ public with sharing class DataGenerator {
         } catch (Exception e) {
             return new FrontResponseWrapper(false, e.getMessage());
         }
-        return new FrontResponseWrapper(true, 'sukces tworzenia!');
+        return new FrontResponseWrapper(true, Label.TST_MSG_DataGenerated);
     }
 
     private static Job__c prepareRandomJob(Stream__c stream, List<User> userList, Map<Id, List<Job__c>> streamToJobTODOList, Map<Id, List<Job__c>> streamToJobINPROGRESSList, Map<Id, List<Job__c>> streamToJobDONEList) {

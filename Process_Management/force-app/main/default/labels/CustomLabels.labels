@@ -64,6 +64,13 @@
         <value>All data deleted!</value>
     </labels>
     <labels>
+        <fullName>TST_MSG_DataGenerated</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>TST_MSG_DataGenerated</shortDescription>
+        <value>Random data generated!</value>
+    </labels>
+    <labels>
         <fullName>TST_MSG_EdgeCreated</fullName>
         <language>en_US</language>
         <protected>true</protected>
