@@ -428,6 +428,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Time_Report__c.ReporterIsCurrentUser__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Time_Report__c.Reporter__c</field>
         <readable>true</readable>
