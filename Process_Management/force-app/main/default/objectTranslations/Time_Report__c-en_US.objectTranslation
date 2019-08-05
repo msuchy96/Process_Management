@@ -22,6 +22,10 @@
         <relationshipLabel><!-- Time Reports --></relationshipLabel>
     </fields>
     <fields>
+        <label><!-- ReporterIsCurrentUser --></label>
+        <name>ReporterIsCurrentUser__c</name>
+    </fields>
+    <fields>
         <label><!-- Reporter --></label>
         <name>Reporter__c</name>
         <relationshipLabel><!-- Time Reports --></relationshipLabel>

@@ -99,6 +99,26 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>ReporterIsCurrentUser__c</fullName>
+        <externalId>false</externalId>
+        <formula>Reporter__c = $User.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ReporterIsCurrentUser</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ReporterIsCurrentUser__c</fullName>
+        <externalId>false</externalId>
+        <formula>Reporter__c = $User.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ReporterIsCurrentUser</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Reporter__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
