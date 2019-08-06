@@ -19,8 +19,8 @@ public class RandomUtility {
     }
 
     public static DateTime prepareRandomDateTime(String status, Boolean isFuture) {
-        Integer delayPropability = generateRandomFromRange(0, 5);
-        return delayPropability >= 2 || isFuture ? 
+        Integer delayPropability = generateRandomFromRange(0, 50);
+        return delayPropability <= 2 || isFuture ? 
                                     Datetime.now()
                                         .addMonths(generateRandomFromRange(0, 6))
                                         .addDays(generateRandomFromRange(0, 31))
