@@ -9,8 +9,24 @@
         <value>Time Reports</value>
     </caseValues>
     <fields>
+        <label><!-- Client Industry --></label>
+        <name>Client_Industry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Client --></label>
+        <name>Client__c</name>
+    </fields>
+    <fields>
         <label><!-- Date --></label>
         <name>Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Due Date Exceeded --></label>
+        <name>Due_Date_Exceeded__c</name>
+    </fields>
+    <fields>
+        <label><!-- IsCurrentUsers --></label>
+        <name>IsCurrentUsers__c</name>
     </fields>
     <fields>
         <label><!-- Job Reporter Date Id --></label>
@@ -22,6 +38,10 @@
         <relationshipLabel><!-- Time Reports --></relationshipLabel>
     </fields>
     <fields>
+        <label><!-- Number of Days Exceeded --></label>
+        <name>Number_of_Days_Exceeded__c</name>
+    </fields>
+    <fields>
         <label><!-- ReporterIsCurrentUser --></label>
         <name>ReporterIsCurrentUser__c</name>
     </fields>
@@ -29,6 +49,10 @@
         <label><!-- Reporter --></label>
         <name>Reporter__c</name>
         <relationshipLabel><!-- Time Reports --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Spendings --></label>
+        <name>Spendings__c</name>
     </fields>
     <fields>
         <label><!-- Time Reported (h) --></label>

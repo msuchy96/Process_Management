@@ -78,6 +78,16 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Due_Date_In_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>DATEVALUE(Due_Date__c)</formula>
+        <label>Due Date In Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Due_Date_To_Change__c</fullName>
         <externalId>false</externalId>
         <label>Due Date To Change</label>
@@ -94,6 +104,16 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>IsCurrentUsers__c</fullName>
+        <externalId>false</externalId>
+        <formula>Assigned_To__c = $User.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>IsCurrentUsers</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Next_Job__c</fullName>
@@ -182,6 +202,16 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Underestimated__c</fullName>
+        <externalId>false</externalId>
+        <formula>Time_Spent__c &gt; Time_Planned__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Underestimated</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <label>Job</label>
     <nameField>

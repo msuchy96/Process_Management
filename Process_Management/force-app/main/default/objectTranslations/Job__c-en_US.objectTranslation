@@ -14,12 +14,20 @@
         <relationshipLabel><!-- Jobs --></relationshipLabel>
     </fields>
     <fields>
+        <label><!-- Due Date In Date --></label>
+        <name>Due_Date_In_Date__c</name>
+    </fields>
+    <fields>
         <label><!-- Due Date To Change --></label>
         <name>Due_Date_To_Change__c</name>
     </fields>
     <fields>
         <label><!-- Due Date --></label>
         <name>Due_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- IsCurrentUsers --></label>
+        <name>IsCurrentUsers__c</name>
     </fields>
     <fields>
         <label><!-- Next Job --></label>
@@ -51,6 +59,10 @@
     <fields>
         <label><!-- Time Spent (h) --></label>
         <name>Time_Spent__c</name>
+    </fields>
+    <fields>
+        <label><!-- Underestimated --></label>
+        <name>Underestimated__c</name>
     </fields>
     <recordTypes>
         <label><!-- Standard --></label>
