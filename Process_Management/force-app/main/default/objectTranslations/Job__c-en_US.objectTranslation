@@ -14,6 +14,10 @@
         <relationshipLabel><!-- Jobs --></relationshipLabel>
     </fields>
     <fields>
+        <label><!-- Due Date In Date --></label>
+        <name>Due_Date_In_Date__c</name>
+    </fields>
+    <fields>
         <label><!-- Due Date To Change --></label>
         <name>Due_Date_To_Change__c</name>
     </fields>

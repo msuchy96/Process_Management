@@ -313,6 +313,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Job__c.Due_Date_In_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Job__c.Due_Date_To_Change__c</field>
         <readable>true</readable>
