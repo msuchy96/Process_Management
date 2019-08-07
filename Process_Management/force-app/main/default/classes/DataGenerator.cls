@@ -25,8 +25,9 @@ public with sharing class DataGenerator {
                 streamList.addAll(TestHelper.createStreams(new Stream__c(Client__c = client.Id), RandomUtility.generateRandomFromRange(20, 30), true));
                 taskList.add(TestHelper.createTask(new Task(WhatId = client.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
                 eventList.add(TestHelper.createEvent(new Event(WhatId = client.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                streamList.addAll(TestHelper.createStreams(new Stream__c(Client__c = client.Id, RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)), RandomUtility.generateRandomFromRange(0, 15), true));
             }
-            streamList.addAll(TestHelper.createStreams(new Stream__c(RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)), 3, true));
+            
             //create job and collect in proper order to create hierarhy
             for(Integer i = 0; i < streamList.size() ; i++) {
                 taskList.add(TestHelper.createTask(new Task(WhatId = streamList.get(i).Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
@@ -89,7 +90,7 @@ public with sharing class DataGenerator {
 
     private static Job__c prepareRandomJob(Stream__c stream, List<User> userList, Map<Id, List<Job__c>> streamToJobTODOList, Map<Id, List<Job__c>> streamToJobINPROGRESSList, Map<Id, List<Job__c>> streamToJobDONEList) {
         Integer statusOption = RandomUtility.generateRandomFromRange(1, 150);
-        String status = (statusOption <= 4 ? CommonUtility.JOB_STATUS_TODO : (statusOption == 5 ? CommonUtility.JOB_STATUS_INPROGRESS : CommonUtility.JOB_STATUS_DONE));
+        String status = (statusOption <= 4 ? CommonUtility.JOB_STATUS_TODO : (statusOption > 4 && statusOption < 7? CommonUtility.JOB_STATUS_INPROGRESS : CommonUtility.JOB_STATUS_DONE));
         Integer timeSpent = status == CommonUtility.JOB_STATUS_TODO ? 0 : RandomUtility.generateRandomFromRange(3, 9);
         Job__c job; 
         if(stream.RecordTypeId == CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)) {
