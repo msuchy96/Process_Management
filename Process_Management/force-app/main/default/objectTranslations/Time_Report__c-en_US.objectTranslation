@@ -30,6 +30,10 @@
         <relationshipLabel><!-- Time Reports --></relationshipLabel>
     </fields>
     <fields>
+        <label><!-- Number of Days Exceeded --></label>
+        <name>Number_of_Days_Exceeded__c</name>
+    </fields>
+    <fields>
         <label><!-- ReporterIsCurrentUser --></label>
         <name>ReporterIsCurrentUser__c</name>
     </fields>
@@ -37,6 +41,10 @@
         <label><!-- Reporter --></label>
         <name>Reporter__c</name>
         <relationshipLabel><!-- Time Reports --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Spendings --></label>
+        <name>Spendings__c</name>
     </fields>
     <fields>
         <label><!-- Time Reported (h) --></label>

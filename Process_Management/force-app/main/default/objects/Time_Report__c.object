@@ -119,6 +119,20 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Number_of_Days_Exceeded__c</fullName>
+        <externalId>false</externalId>
+        <formula>If( Date__c - Job__r.Due_Date_In_Date__c &gt; 0, Date__c - Job__r.Due_Date_In_Date__c, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Number of Days Exceeded</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>ReporterIsCurrentUser__c</fullName>
         <externalId>false</externalId>
         <formula>Reporter__c = $User.Id</formula>
@@ -139,6 +153,19 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Spendings__c</fullName>
+        <externalId>false</externalId>
+        <formula>Time_Reported__c * Reporter__r.Earnings__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Spendings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Time_Reported__c</fullName>

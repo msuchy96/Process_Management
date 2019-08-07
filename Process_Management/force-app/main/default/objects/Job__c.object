@@ -203,6 +203,16 @@
         <type>Number</type>
         <unique>false</unique>
     </fields>
+    <fields>
+        <fullName>Underestimated__c</fullName>
+        <externalId>false</externalId>
+        <formula>Time_Spent__c &gt; Time_Planned__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Underestimated</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
     <label>Job</label>
     <nameField>
         <label>Job Name</label>
