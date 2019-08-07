@@ -106,6 +106,16 @@
         <type>DateTime</type>
     </fields>
     <fields>
+        <fullName>IsCurrentUsers__c</fullName>
+        <externalId>false</externalId>
+        <formula>Assigned_To__c = $User.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>IsCurrentUsers</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Next_Job__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>

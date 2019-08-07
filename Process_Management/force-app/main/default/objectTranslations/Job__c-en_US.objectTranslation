@@ -26,6 +26,10 @@
         <name>Due_Date__c</name>
     </fields>
     <fields>
+        <label><!-- IsCurrentUsers --></label>
+        <name>IsCurrentUsers__c</name>
+    </fields>
+    <fields>
         <label><!-- Next Job --></label>
         <name>Next_Job__c</name>
         <relationshipLabel><!-- Previous Jobs --></relationshipLabel>
