@@ -89,7 +89,7 @@ public with sharing class DataGenerator {
 
     private static Job__c prepareRandomJob(Stream__c stream, List<User> userList, Map<Id, List<Job__c>> streamToJobTODOList, Map<Id, List<Job__c>> streamToJobINPROGRESSList, Map<Id, List<Job__c>> streamToJobDONEList) {
         Integer statusOption = RandomUtility.generateRandomFromRange(1, 150);
-        String status = (statusOption <= 2 ? CommonUtility.JOB_STATUS_TODO : (statusOption == 3 ? CommonUtility.JOB_STATUS_INPROGRESS : CommonUtility.JOB_STATUS_DONE));
+        String status = (statusOption <= 3 ? CommonUtility.JOB_STATUS_TODO : (statusOption > 3 && statusOption < 6 ? CommonUtility.JOB_STATUS_INPROGRESS : CommonUtility.JOB_STATUS_DONE));
         Integer timeSpent = status == CommonUtility.JOB_STATUS_TODO ? 0 : RandomUtility.generateRandomFromRange(3, 9);
         Job__c job; 
         if(stream.RecordTypeId == CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)) {
