@@ -9,6 +9,14 @@
         <value>Time Reports</value>
     </caseValues>
     <fields>
+        <label><!-- Client Industry --></label>
+        <name>Client_Industry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Client --></label>
+        <name>Client__c</name>
+    </fields>
+    <fields>
         <label><!-- Date --></label>
         <name>Date__c</name>
     </fields>
