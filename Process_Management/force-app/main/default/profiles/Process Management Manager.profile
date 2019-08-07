@@ -429,6 +429,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Time_Report__c.Due_Date_Exceeded__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Time_Report__c.Job_Reporter_Date_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
