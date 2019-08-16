@@ -29,6 +29,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DataGeneratorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>DueDateIsComingBatch</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -571,7 +575,7 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Stream_Creator</tab>
-        <visibility>DefaultOff</visibility>
+        <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Stream__c</tab>

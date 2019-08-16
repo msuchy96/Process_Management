@@ -25,7 +25,7 @@ public with sharing class DataGenerator {
                 streamList.addAll(TestHelper.createStreams(new Stream__c(Client__c = client.Id), RandomUtility.generateRandomFromRange(20, 30), true));
                 taskList.add(TestHelper.createTask(new Task(WhatId = client.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
                 eventList.add(TestHelper.createEvent(new Event(WhatId = client.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
-                streamList.addAll(TestHelper.createStreams(new Stream__c(Client__c = client.Id, RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)), RandomUtility.generateRandomFromRange(0, 15), true));
+                streamList.addAll(TestHelper.createStreams(new Stream__c(Client__c = client.Id, RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)), RandomUtility.generateRandomFromRange(0, 4), true));
             }
             
             //create job and collect in proper order to create hierarhy

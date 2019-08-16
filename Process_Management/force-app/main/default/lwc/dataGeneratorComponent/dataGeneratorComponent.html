@@ -1,10 +1,10 @@
 <template>
     <div class="buttonGroup">
         <div class="button">
-            <lightning-button variant="destructive" name="delete" label="Delete All Data" onclick={deleteAllData}></lightning-button> 
+            <lightning-button variant="destructive" name="delete" label="Delete All Data" onclick={deleteAllData} disabled={showSpinner}></lightning-button> 
         </div>
         <div class="button">
-            <lightning-button variant="neutral" name="generateData" label="Generate Random Data" onclick={generateData}></lightning-button>
+            <lightning-button variant="neutral" name="generateData" label="Generate Random Data" onclick={generateData} disabled={showSpinner}></lightning-button>
         </div>
     </div>
     <div if:true={showSpinner} class="spinnerClass">
