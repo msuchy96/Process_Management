@@ -3,7 +3,12 @@
     <active>true</active>
     <allowRecall>false</allowRecall>
     <allowedSubmitters>
-        <type>owner</type>
+        <submitter>msuchock@mion.elka.pw.edu.pl</submitter>
+        <type>user</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <submitter>msuchocki96@gmail.com</submitter>
+        <type>user</type>
     </allowedSubmitters>
     <approvalPageFields>
         <field>Name</field>
