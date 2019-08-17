@@ -39,12 +39,17 @@ public with sharing class DataGenerator {
             }
             insert jobList;
             //create time reports
+            Integer createTaskAndEvent = 0;
             for(Job__c job : jobList) {
-                taskList.add(TestHelper.createTask(new Task(WhatId = job.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
-                eventList.add(TestHelper.createEvent(new Event(WhatId = job.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                if(Math.mod(createTaskAndEvent, 20) == 0) {
+                    taskList.add(TestHelper.createTask(new Task(WhatId = job.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                    eventList.add(TestHelper.createEvent(new Event(WhatId = job.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                }
+
                 if(job.Time_Spent__c > 0) {
                     timeReportList.add(prepareRandomTimeReport(job));
                 }
+                createTaskAndEvent++;
             }
             insert timeReportList;
             //create job hierarchy in stream
