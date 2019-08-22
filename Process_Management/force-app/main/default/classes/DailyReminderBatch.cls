@@ -13,6 +13,7 @@ public without sharing class DailyReminderBatch implements Schedulable, Database
                 'WHERE Due_Date__c < :tommorowDateTime ' +
                 ' AND Assigned_To__r.Allow_Email_Notification__c = true' +
                 ' AND Assigned_To__r.Email != null' +
+                ' AND Assigned_To__r.isActive = true' +
                 ' AND ( Status__c = \'' + CommonUtility.JOB_STATUS_TODO + '\'' +
                     ' OR Status__c = \'' + CommonUtility.JOB_STATUS_INPROGRESS + '\')' +
                 ' AND RecordTypeId = \'' + CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_STANDARD) + '\'';

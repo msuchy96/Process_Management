@@ -8,6 +8,7 @@ public without sharing class DueDateIsComingBatch implements Schedulable, Databa
 	*/
     public String query = '';
     public EmailTemplate emailTemplate = null;
+    public Integer counter = 0;
 
     public DueDateIsComingBatch() {
         query = 'SELECT Id, Time_Planned__c, Time_Spent__c, Assigned_To__c, Due_Date__c ' +
@@ -18,6 +19,7 @@ public without sharing class DueDateIsComingBatch implements Schedulable, Databa
                 ' AND Time_Spent__c != null' +
                 ' AND Assigned_To__r.Allow_Email_Notification__c = true' +
                 ' AND Assigned_To__r.Email != null' +
+            	' AND Assigned_To__r.isActive = true' +
                 ' AND ( Status__c = \'' + CommonUtility.JOB_STATUS_TODO + '\'' +
                     ' OR Status__c = \'' + CommonUtility.JOB_STATUS_INPROGRESS + '\')' +
                 ' AND RecordTypeId = \'' + CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_JOB, CommonUtility.JOB_TYPE_STANDARD) + '\'';
@@ -41,10 +43,11 @@ public without sharing class DueDateIsComingBatch implements Schedulable, Databa
             userIdSet.add(job.Assigned_To__c);
         }
 
-        Map<Id, User> userMap = new Map<Id, User>([SELECT Id, Email, FirstName, LastName FROM User WHERE Id IN: userIdSet]);
+        Map<Id, User> userMap = new Map<Id, User>([SELECT Id, Email, FirstName, LastName FROM User WHERE Id IN: userIdSet AND IsActive = true]);
         for(User user: userMap.values()) {
-            Contact tempContact = new Contact(email = user.email, firstName = user.firstName, lastName = user.lastName);
+            Contact tempContact = new Contact(email = user.email, firstName = user.firstName + String.valueOf(counter), lastName = user.lastName + String.valueOf(counter));
             tempContactMap.put(user.Id, tempContact);
+            counter++;
         }
         insert tempContactMap.values();
 

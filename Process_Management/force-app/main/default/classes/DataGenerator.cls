@@ -25,26 +25,34 @@ public with sharing class DataGenerator {
                 streamList.addAll(TestHelper.createStreams(new Stream__c(Client__c = client.Id), RandomUtility.generateRandomFromRange(20, 30), true));
                 taskList.add(TestHelper.createTask(new Task(WhatId = client.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
                 eventList.add(TestHelper.createEvent(new Event(WhatId = client.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
-                streamList.addAll(TestHelper.createStreams(new Stream__c(Client__c = client.Id, RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)), RandomUtility.generateRandomFromRange(0, 15), true));
+                streamList.addAll(TestHelper.createStreams(new Stream__c(Client__c = client.Id, RecordTypeId = CommonUtility.getRecordTypeId(CommonUtility.SOBJECT_APINAME_STREAM, CommonUtility.STREAM_TYPE_STANDARD_TEMPLATE)), RandomUtility.generateRandomFromRange(0, 4), true));
             }
             
             //create job and collect in proper order to create hierarhy
+            Integer createTaskAndEvent = 0;
             for(Integer i = 0; i < streamList.size() ; i++) {
-                taskList.add(TestHelper.createTask(new Task(WhatId = streamList.get(i).Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
-                eventList.add(TestHelper.createEvent(new Event(WhatId = streamList.get(i).Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                if(Math.mod(createTaskAndEvent, 5) == 0) {
+                    taskList.add(TestHelper.createTask(new Task(WhatId = streamList.get(i).Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                    eventList.add(TestHelper.createEvent(new Event(WhatId = streamList.get(i).Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                }
                 Integer numberOfJobs = RandomUtility.generateRandomFromRange(2, 6);
                 for(Integer j = 0 ; j < numberOfJobs ; j++) {
                     jobList.add(prepareRandomJob(streamList.get(i), userList, streamToJobTODOList, streamToJobINPROGRESSList, streamToJobDONEList));
                 }
+                createTaskAndEvent++;
             }
+            createTaskAndEvent = 0;
             insert jobList;
             //create time reports
             for(Job__c job : jobList) {
-                taskList.add(TestHelper.createTask(new Task(WhatId = job.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
-                eventList.add(TestHelper.createEvent(new Event(WhatId = job.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                if(Math.mod(createTaskAndEvent, 30) == 0) {
+                    taskList.add(TestHelper.createTask(new Task(WhatId = job.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                    eventList.add(TestHelper.createEvent(new Event(WhatId = job.Id, OwnerId = userList.get(RandomUtility.generateRandomFromRange(0, 2)).Id), false));
+                }
                 if(job.Time_Spent__c > 0) {
                     timeReportList.add(prepareRandomTimeReport(job));
                 }
+                createTaskAndEvent++;
             }
             insert timeReportList;
             //create job hierarchy in stream
