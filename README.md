@@ -1,4 +1,3 @@
-# Process_Management
 Bachelor's Degree project
 ===============================
 
