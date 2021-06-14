@@ -21,7 +21,7 @@ Technologies used
 Worth attention
 ===============================
 
-<b>Stream creator in LWC</b></br>
+<b>Stream creator in LWC with D3.js</b></br>
 ![image](https://user-images.githubusercontent.com/24355089/120639787-07234580-c472-11eb-9506-2f258e2781b1.png)
 </br></br>
 <b>Directed graph acyclicity validation</b></br>
